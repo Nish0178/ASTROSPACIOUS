@@ -2,44 +2,31 @@ import { useState } from "react";
 import SpaceBg from "./Extra/Space-bg.tsx";
 import "./css/base.css";
 import "./css/Articles.css";
-
-const articles = [
-  {
-  id: 1,
-  category: "Solar System",
-  title: "Journey Through the Solar System",
-  description:
-    "Explore the planets, moons and fascinating objects of our solar system.",
-  image:
-    "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800",
-},
-  {
-  id: 2,
-  category: "Black Holes",
-  title: "The Mystery of Black Holes",
-  description:
-    "Understand how black holes are formed and why they are so powerful.",
-  image:
-    "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800",
-},
-  {
-  id: 3,
-  category: "Space Telescope",
-  title: "James Webb Space Telescope",
-  description:
-    "Discover how the James Webb Space Telescope is transforming astronomy.",
-  image:
-    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800",
-},
-];
+import { articles } from "./data/articles";
+import ArticleCard from "./components/ArticleCard/ArticleCard";
 
 export default function Articles() {
   const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const categories = [
+  "All",
+  ...new Set(articles.map((article) => article.category)),
+];
 
-  const filteredArticles = articles.filter((article) =>
-    article.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredArticles = articles.filter((article) => {
+  const query = search.toLowerCase();
 
+  const matchesSearch =
+    article.title.toLowerCase().includes(query) ||
+    article.category.toLowerCase().includes(query) ||
+    article.description.toLowerCase().includes(query);
+
+  const matchesCategory =
+    selectedCategory === "All" ||
+    article.category === selectedCategory;
+
+  return matchesSearch && matchesCategory;
+});
   return (
     <main className="articles-page">
       <SpaceBg />
@@ -59,27 +46,30 @@ export default function Articles() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <div className="category-filter">
+  {categories.map((category) => (
+    <button
+      key={category}
+      className={
+        selectedCategory === category
+          ? "category-btn active"
+          : "category-btn"
+      }
+      onClick={() => setSelectedCategory(category)}
+    >
+      {category}
+    </button>
+  ))}
+</div>
       </section>
 
       <section className="articles-grid">
         {filteredArticles.map((article) => (
-          <div className="article-card glow glow-hover" key={article.id}>
-    <img src={article.image} alt={article.title} />
-
-    <span className="article-category">
-        {article.category}
-    </span>
-
-    <div className="article-content">
-              <h3>{article.title}</h3>
-
-              <p>{article.description}</p>
-
-              <button className="gradient">Read More</button>
-            </div>
-          </div>
-        ))}
-
+  <ArticleCard
+    key={article.id}
+    article={article}
+  />
+))}
         {filteredArticles.length === 0 && (
           <h2
             style={{

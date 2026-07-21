@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Space_bg from './Extra/Space-bg.tsx';
+import React, { useState, useEffect, useRef } from "react";
+import Space_bg from "./Extra/Space-bg.tsx";
+import { articles } from "./data/articles";
+import ArticleCard from "./components/ArticleCard/ArticleCard";
 
-import './css/Home.css';
-import './css/base.css';  
+import "./css/Home.css";
+import "./css/base.css";
+import "./css/Articles.css";
 
 // The original ShowcaseItem component, updated with classNames
 const ShowcaseItem = ({ title, description, gradient }) => (
@@ -12,6 +15,17 @@ const ShowcaseItem = ({ title, description, gradient }) => (
     <p className="showcaseDescription">{description}</p>
   </div>
 );
+
+const featuredArticles = articles.filter(
+    article => article.featured
+);
+const latestArticles = [...articles]
+  .sort(
+    (a, b) =>
+      new Date(b.date).getTime() -
+      new Date(a.date).getTime()
+  )
+  .slice(0, 3);
 
 // The original FeatureCard component, updated with classNames
 // Not used in Home component, but included for completeness
@@ -183,10 +197,24 @@ const Home = () => {
         </div>
     </section>
 
-      {/* Introduction Section */}
-      <section className="introSection">
-        {/* Content goes here */}
-      </section>
+      {/* Featured Articles Section */}
+      {/* Latest Articles */}
+<section className="showcaseSection">
+  <div className="contentWrapper">
+    <h2 className="sectionTitle gradient-text centered">
+      Latest Articles
+    </h2>
+
+    <div className="articles-grid">
+      {latestArticles.map((article) => (
+        <ArticleCard
+          key={article.id}
+          article={article}
+        />
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Features Showcase */}
       <section className="showcaseSection">
