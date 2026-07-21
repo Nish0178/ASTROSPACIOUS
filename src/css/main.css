@@ -106,3 +106,46 @@
   .btn:hover {
     background: #000;
   }
+  /* ===== New Navbar Dropdown ===== */
+
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  padding-bottom: 8px;
+  top: 100%;
+margin-top: 8px;
+  right: 0;
+left: auto;
+  min-width: 220px;
+  background: #000;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+  z-index: 1000;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-menu a {
+  padding: 12px 18px;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.dropdown-menu a:hover {
+  background: rgb(34, 33, 33);
+}

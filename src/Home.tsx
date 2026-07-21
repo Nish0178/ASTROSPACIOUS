@@ -176,7 +176,7 @@ const Home = () => {
           <div className="logoContainer">
             <img className='logo-text' src="astrospacious.png"></img>
           </div>
-          <p className="heroSubtitle">Explore the Universe Within</p>
+          <p className="heroSubtitle">MAKING SPACE ACCESSIBLE</p>
           <div className="heroTagline">
             Where cosmic wonder meets infinite learning
           </div>

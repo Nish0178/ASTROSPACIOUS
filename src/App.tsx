@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Nav from "./Extra/Nav.tsx";
 import Footer from "./Extra/Footer.tsx";
 
+import Magazines from "./Magazines.tsx";
+import Articles from "./Articles.tsx";
+import Contact from "./Contact.tsx";
 import Select from "./Select.tsx";
 import Topic from "./Topic.tsx";
 //import Galaxy from "./Extra/Galaxy.tsx";
@@ -18,6 +21,9 @@ export default function App() {
         <Nav />
         <div style={{ flex: 1 }}>
           <Routes>
+            <Route path="/Articles" element={<Articles />} />
+            <Route path="/Magazines" element={<Magazines />} />
+            <Route path="/Contact" element={<Contact />} />
             <Route path="/" element={<Home />} />
             <Route path="/Select" element={<Select />} />
             <Route path="/Subject" element={<Subject />} />

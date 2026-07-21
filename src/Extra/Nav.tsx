@@ -56,9 +56,31 @@ function Nav() {
         </div>
 
         <div className="nav-links" id="nav-links">
-          <a href="/">Home</a>
-          <a href="/About">About</a>
 
+  <div className="nav-dropdown">
+    <a href="/" className="dropdown-toggle">HOME</a>
+
+    <div className="dropdown-menu">
+      <a href="/About">ABOUT</a>
+      <a href="/Contact">CONTACT US</a>
+    </div>
+  </div>
+
+  <div className="nav-dropdown">
+    <a href="/Articles" className="dropdown-toggle">READ</a>
+
+    <div className="dropdown-menu">
+      <a href="/Articles">ARTICLES</a>
+      <a href="/Magazines">MAGAZINES</a>
+      <a href="/Subject">EXPLORE SUBJECTS</a>
+    </div>
+  </div>
+
+  <a href="/Select" className="btn">
+    NEW
+  </a>
+
+</div>
           {/* HOVER WRAPPER
           <div
             className="subject-wrapper"
@@ -83,8 +105,7 @@ function Nav() {
           </div>
           */}
 
-          <a href="/Select" className="btn">New</a>
-        </div>
+          
       </div>
     </nav>
   );
