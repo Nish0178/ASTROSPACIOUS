@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Space_bg from "./Extra/Space-bg.tsx";
 import { articles } from "./data/articles";
 import ArticleCard from "./components/ArticleCard/ArticleCard";
 

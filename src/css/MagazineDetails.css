@@ -1,0 +1,46 @@
+.magazine-details-page {
+  min-height: 100vh;
+  padding: 120px 0 80px;
+  position: relative;
+}
+
+.magazine-container {
+  width: min(1200px, 92%);
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.magazine-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: white;
+  margin: 20px 0;
+}
+
+.magazine-meta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  color: #b9bfd3;
+  margin-bottom: 30px;
+}
+
+.magazine-cover {
+  width: 100%;
+  max-width: 900px;
+  display: block;
+  margin: 40px auto;
+  border-radius: 18px;
+}
+
+.magazine-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.magazine-actions {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
