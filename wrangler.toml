@@ -6,5 +6,5 @@ pages_build_output_dir = "./dist"
 # KV bindings
 [[kv_namespaces]]
 binding = "topic-data"
-id = "7644d9aa95af4930adcba0334a57f2f0"
-preview_id = "7644d9aa95af4930adcba0334a57f2f0"
+id = "bb1be2087af6466fb8e995fa12648c1d"
+preview_id = "bb1be2087af6466fb8e995fa12648c1d"
