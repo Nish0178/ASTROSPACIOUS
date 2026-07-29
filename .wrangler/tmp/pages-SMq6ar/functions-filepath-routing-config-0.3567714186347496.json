@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {
+      "routePath": "/data/:subject/:topic",
+      "mountPath": "/data/:subject",
+      "method": "",
+      "module": [
+        "data/[subject]/[topic].ts:onRequest"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}
