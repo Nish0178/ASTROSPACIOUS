@@ -13,11 +13,6 @@ const Footer: React.FC = () => {
       zIndex: 100,
     },
 
-    row: {
-      width: "100%",
-      margin: "15px 0",
-    },
-
     iconContainer: {
       display: "flex",
       justifyContent: "center",
@@ -31,13 +26,6 @@ const Footer: React.FC = () => {
       transition: "0.3s",
     },
 
-    link: {
-      color: "#bfbfbf",
-      textDecoration: "none",
-      transition: "0.3s",
-      cursor: "pointer",
-    },
-
     menu: {
       display: "flex",
       justifyContent: "center",
@@ -47,6 +35,13 @@ const Footer: React.FC = () => {
       padding: 0,
       margin: "20px 0",
       fontSize: "15px",
+    },
+
+    link: {
+      color: "#bfbfbf",
+      textDecoration: "none",
+      transition: "0.3s ease",
+      cursor: "pointer",
     },
 
     email: {
@@ -64,92 +59,148 @@ const Footer: React.FC = () => {
     },
   };
 
+  const hoverIn = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.color = "#ffffff";
+  };
+
+  const hoverOut = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.color = "#bfbfbf";
+  };
+
   return (
     <footer style={styles.footer}>
       {/* Social Icons */}
-
       <div style={styles.iconContainer}>
         <a
           href="https://www.instagram.com/astrospacious/"
-target="_blank"
-rel="noopener noreferrer"
-                  >
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+          style={styles.link}
+          onMouseEnter={hoverIn}
+          onMouseLeave={hoverOut}
+        >
           <i className="fa fa-instagram" style={styles.icon}></i>
         </a>
 
         <a
-          href="https://www.linkedin.com/company/astrospacious/"
-target="_blank"
-rel="noopener noreferrer"
-                >
+          href="https://www.linkedin.com/in/anvita-srivastava-311b86325/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+          style={styles.link}
+          onMouseEnter={hoverIn}
+          onMouseLeave={hoverOut}
+        >
           <i className="fa fa-linkedin" style={styles.icon}></i>
         </a>
 
         <a
-  href="mailto:outreach.astrospacious@gmail.com?subject=Contact%20from%20Astrospacious%20Website"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <i className="fa fa-envelope" style={styles.icon}></i>
-</a>
+          href="mailto:outreach.astrospacious@gmail.com?subject=Contact%20from%20Astrospacious%20Website"
+          aria-label="Email"
+          style={styles.link}
+          onMouseEnter={hoverIn}
+          onMouseLeave={hoverOut}
+        >
+          <i className="fa fa-envelope" style={styles.icon}></i>
+        </a>
       </div>
 
-      {/* Footer Links */}
-
+      {/* Footer Navigation */}
       <ul style={styles.menu}>
         <li>
-          <a href="/about" style={styles.link}>
+          <a
+            href="/About"
+            style={styles.link}
+            onMouseEnter={hoverIn}
+            onMouseLeave={hoverOut}
+          >
             About Us
           </a>
         </li>
 
         <li>
-          <a href="/articles" style={styles.link}>
+          <a
+            href="/Articles"
+            style={styles.link}
+            onMouseEnter={hoverIn}
+            onMouseLeave={hoverOut}
+          >
             Articles
           </a>
         </li>
 
         <li>
-          <a href="/magazines" style={styles.link}>
+          <a
+            href="/Magazines"
+            style={styles.link}
+            onMouseEnter={hoverIn}
+            onMouseLeave={hoverOut}
+          >
             Magazines
           </a>
         </li>
 
         <li>
-          <a href="/explore" style={styles.link}>
+          <a
+            href="/Subject"
+            style={styles.link}
+            onMouseEnter={hoverIn}
+            onMouseLeave={hoverOut}
+          >
             Explore Subjects
           </a>
         </li>
 
         <li>
-          <a href="/contact" style={styles.link}>
+          <a
+            href="/Contact"
+            style={styles.link}
+            onMouseEnter={hoverIn}
+            onMouseLeave={hoverOut}
+          >
             Contact Us
           </a>
         </li>
 
         <li>
-          <a href="/privacy-policy" style={styles.link}>
+          <a
+            href="/privacy-policy"
+            style={styles.link}
+            onMouseEnter={hoverIn}
+            onMouseLeave={hoverOut}
+          >
             Privacy Policy
           </a>
         </li>
 
         <li>
-          <a href="/terms-and-conditions" style={styles.link}>
+          <a
+            href="/terms-and-conditions"
+            style={styles.link}
+            onMouseEnter={hoverIn}
+            onMouseLeave={hoverOut}
+          >
             Terms & Conditions
           </a>
         </li>
       </ul>
 
       {/* Email */}
-
       <div style={styles.email}>
-        outreach.astrospacious@gmail.com
+        <a
+          href="mailto:outreach.astrospacious@gmail.com"
+          style={styles.link}
+          onMouseEnter={hoverIn}
+          onMouseLeave={hoverOut}
+        >
+          outreach.astrospacious@gmail.com
+        </a>
       </div>
 
       {/* Copyright */}
-
       <div style={styles.copyright}>
-        © 2026 ASTROSPACIOUS. All Rights Reserved. 
+        © 2026 ASTROSPACIOUS. All Rights Reserved.
       </div>
     </footer>
   );
