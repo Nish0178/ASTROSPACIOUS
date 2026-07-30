@@ -149,7 +149,7 @@ rel="noopener noreferrer"
       {/* Copyright */}
 
       <div style={styles.copyright}>
-        © 2026 ASTROSPACIOUS. All Rights Reserved.
+        © 2026 ASTROSPACIOUS. All Rights Reserved. 
       </div>
     </footer>
   );
