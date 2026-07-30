@@ -254,12 +254,6 @@ button: {
 
 <input
   type="hidden"
-  name="_template"
-  value="table"
-/>
-
-<input
-  type="hidden"
   name="_next"
   value="https://www.astrospacious.com/thank-you"
 />
@@ -274,7 +268,7 @@ button: {
   name="_honey"
   style={{ display: "none" }}
 />
-  
+
       <div style={styles.formGrid}>
 
   <div style={styles.inputGroup}>
