@@ -36,7 +36,7 @@ export default function ThankYou() {
       maxWidth: "700px",
       background: "#0F172A",
       borderRadius: "24px",
-      padding: "60px",
+      padding: "clamp(20px, 6vw, 60px)",
       textAlign: "center",
       border: "1px solid rgba(16,185,129,.25)",
       boxShadow: "0 25px 70px rgba(0,0,0,.35)",
@@ -48,7 +48,7 @@ export default function ThankYou() {
     },
 
     title: {
-      fontSize: "48px",
+      fontSize: "clamp(32px, 8vw, 48px)",
       fontWeight: 800,
       marginBottom: "20px",
     },
@@ -61,7 +61,7 @@ export default function ThankYou() {
     },
 
     countdown: {
-      fontSize: "32px",
+      fontSize: "clamp(22px, 6vw, 32px)",
       color: "#10B981",
       fontWeight: 700,
       marginBottom: "40px",

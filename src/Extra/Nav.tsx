@@ -15,6 +15,7 @@ function Nav() {
 
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [showSubjects, setShowSubjects] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -51,11 +52,11 @@ function Nav() {
           {isMobile && <span>ASTROSPACIOUS</span>}
         </a>
 
-        <div className="menu-btn" id="menu-btn">
+        <div className="menu-btn" id="menu-btn" onClick={() => setIsOpen(!isOpen)}>
           <span></span><span></span><span></span>
         </div>
 
-        <div className="nav-links" id="nav-links">
+        <div className={`nav-links ${isOpen ? 'active' : ''}`} id="nav-links">
 
   <div className="nav-dropdown">
     <a href="/" className="dropdown-toggle">HOME</a>
