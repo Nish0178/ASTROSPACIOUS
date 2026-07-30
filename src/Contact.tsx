@@ -237,7 +237,7 @@ button: {
   </p>
 
   <form
-  action="https://formsubmit.co/trivedinishant880@gmail.com"
+ action="https://formsubmit.co/outreach.astrospacious@gmail.com"
   method="POST"
 >
   <input
