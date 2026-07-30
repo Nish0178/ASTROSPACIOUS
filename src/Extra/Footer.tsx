@@ -1,141 +1,155 @@
-import React from 'react';
+import React from "react";
 import "font-awesome/css/font-awesome.min.css";
-
 
 const Footer: React.FC = () => {
   const styles: Record<string, React.CSSProperties> = {
     footer: {
-      background: '#000',
-      padding: '30px 0px',
+      background: "#000",
+      color: "#fff",
+      padding: "40px 20px",
       fontFamily: "'Play', sans-serif",
-      textAlign: 'center',
-      position: 'relative',
+      textAlign: "center",
+      position: "relative",
       zIndex: 100,
     },
+
     row: {
-      width: '100%',
-      margin: '1% 0%',
-      padding: '0.6% 0%',
-      color: 'gray',
-      fontSize: '0.8em',
+      width: "100%",
+      margin: "15px 0",
     },
-    link: {
-      textDecoration: 'none',
-      color: 'gray',
-      transition: '0.5s',
+
+    iconContainer: {
+      display: "flex",
+      justifyContent: "center",
+      gap: "30px",
+      marginBottom: "20px",
     },
-    ul: {
-      width: '100%',
-      listStyle: 'none',
-      padding: 0,
-      margin: 0,
-    },
-    li: {
-      display: 'inline-block',
-      margin: '0px 30px',
-    },
+
     icon: {
-      fontSize: '2em',
-      margin: '0% 1%',
+      color: "#fff",
+      fontSize: "26px",
+      transition: "0.3s",
+    },
+
+    link: {
+      color: "#bfbfbf",
+      textDecoration: "none",
+      transition: "0.3s",
+      cursor: "pointer",
+    },
+
+    menu: {
+      display: "flex",
+      justifyContent: "center",
+      flexWrap: "wrap",
+      gap: "20px",
+      listStyle: "none",
+      padding: 0,
+      margin: "20px 0",
+      fontSize: "15px",
+    },
+
+    email: {
+      color: "#ffffff",
+      marginTop: "15px",
+      fontSize: "15px",
+    },
+
+    copyright: {
+      marginTop: "25px",
+      paddingTop: "20px",
+      borderTop: "1px solid #333",
+      color: "#999",
+      fontSize: "14px",
     },
   };
 
   return (
-    <footer>
-      <div style={styles.footer}>
-        <div style={styles.row}>
-          <a
-            href="#"
-            style={styles.link}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-          >
-            <i className="fa fa-facebook" style={styles.icon}></i>
-          </a>
-          <a
-            href="#"
-            style={styles.link}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-          >
-            <i className="fa fa-instagram" style={styles.icon}></i>
-          </a>
-          <a
-            href="#"
-            style={styles.link}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-          >
-            <i className="fa fa-envelope" style={styles.icon}></i>
-          </a>
-          <a
-            href="#"
-            style={styles.link}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-          >
-            <i className="fa fa-twitter" style={styles.icon}></i>
-          </a>
-        </div>
+    <footer style={styles.footer}>
+      {/* Social Icons */}
 
-        <div style={styles.row}>
-          <ul style={styles.ul}>
-            <li style={styles.li}>
-              <a
-                href="#"
-                style={styles.link}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-              >
-                Contact us
-              </a>
-            </li>
-            <li style={styles.li}>
-              <a
-                href="#"
-                style={styles.link}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-              >
-                Our Services
-              </a>
-            </li>
-            <li style={styles.li}>
-              <a
-                href="#"
-                style={styles.link}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-              >
-                Privacy Policy
-              </a>
-            </li>
-            <li style={styles.li}>
-              <a
-                href="#"
-                style={styles.link}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-              >
-                Terms & Conditions
-              </a>
-            </li>
-            <li style={styles.li}>
-              <a
-                href="#"
-                style={styles.link}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'gray'}
-              >
-                Career
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div style={styles.iconContainer}>
+        <a
+          href="https://www.instagram.com/astrospacious/"
+target="_blank"
+rel="noopener noreferrer"
+                  >
+          <i className="fa fa-instagram" style={styles.icon}></i>
+        </a>
 
-        <div style={styles.row}>
-          ASTROSPACIOUS Copyright © 2021 Inferno - All rights reserved || Designed By: Mahesh
-        </div>
+        <a
+          href="https://www.linkedin.com/company/astrospacious/"
+target="_blank"
+rel="noopener noreferrer"
+                >
+          <i className="fa fa-linkedin" style={styles.icon}></i>
+        </a>
+
+        <a
+  href="mailto:outreach.astrospacious@gmail.com?subject=Contact%20from%20Astrospacious%20Website"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <i className="fa fa-envelope" style={styles.icon}></i>
+</a>
+      </div>
+
+      {/* Footer Links */}
+
+      <ul style={styles.menu}>
+        <li>
+          <a href="/about" style={styles.link}>
+            About Us
+          </a>
+        </li>
+
+        <li>
+          <a href="/articles" style={styles.link}>
+            Articles
+          </a>
+        </li>
+
+        <li>
+          <a href="/magazines" style={styles.link}>
+            Magazines
+          </a>
+        </li>
+
+        <li>
+          <a href="/explore" style={styles.link}>
+            Explore Subjects
+          </a>
+        </li>
+
+        <li>
+          <a href="/contact" style={styles.link}>
+            Contact Us
+          </a>
+        </li>
+
+        <li>
+          <a href="/privacy-policy" style={styles.link}>
+            Privacy Policy
+          </a>
+        </li>
+
+        <li>
+          <a href="/terms-and-conditions" style={styles.link}>
+            Terms & Conditions
+          </a>
+        </li>
+      </ul>
+
+      {/* Email */}
+
+      <div style={styles.email}>
+        outreach.astrospacious@gmail.com
+      </div>
+
+      {/* Copyright */}
+
+      <div style={styles.copyright}>
+        © 2026 ASTROSPACIOUS. All Rights Reserved.
       </div>
     </footer>
   );
