@@ -56,7 +56,8 @@ export default function App() {
             <Route path="/Contact" element={<Contact />} />
 
             {/* Thank You */}
-            <Route path="/ThankYou" element={<ThankYou />} />
+            <Route path="/thank-you" element={<ThankYou />} />
+
             {/* Subjects */}
             <Route path="/Subject" element={<Subject />} />
             <Route
