@@ -3,10 +3,10 @@ import React from "react";
 export default function Contact() {
   const styles: Record<string, React.CSSProperties> = {
     page: {
-      minHeight: "100vh",
-      background:
-        "linear-gradient(180deg,#06131F 0%,#081B29 50%,#09111B 100%)",
-      color: "#FFFFFF",
+  minHeight: "100vh",
+  background:
+    "linear-gradient(180deg,#06131F 0%,#081B29 50%,#09111B 100%)",
+  color: "#FFFFFF",
       fontFamily: "'Inter', sans-serif",
       padding: "60px 20px",
     },
@@ -264,71 +264,120 @@ button: {
   value="https://www.astrospacious.com/thank-you"
 />
 
-    <div style={styles.formGrid}>
+<input
+  type="hidden"
+  name="_autoresponse"
+  value="Thank you for contacting Astrospacious! We have received your message and will get back to you within 24–48 hours."
+/>
+  <input
+  type="text"
+  name="_honey"
+  style={{ display: "none" }}
+/>
+  
+      <div style={styles.formGrid}>
 
-      <div style={styles.inputGroup}>
-        <label style={styles.label}>First Name *</label>
-        <input type="text" placeholder="John" style={styles.input}/>
-      </div>
+  <div style={styles.inputGroup}>
+    <label style={styles.label}>First Name *</label>
+    <input
+      type="text"
+      name="first name"
+      placeholder="John"
+      style={styles.input}
+      required
+    />
+  </div>
 
-      <div style={styles.inputGroup}>
-        <label style={styles.label}>Last Name *</label>
-        <input type="text" placeholder="Doe" style={styles.input}/>
-      </div>
+  <div style={styles.inputGroup}>
+    <label style={styles.label}>Last Name *</label>
+    <input
+      type="text"
+      name="last name"
+      placeholder="Doe"
+      style={styles.input}
+      required
+    />
+  </div>
 
-      <div style={styles.inputGroup}>
-        <label style={styles.label}>Email *</label>
-        <input type="email" placeholder="john@example.com" style={styles.input}/>
-      </div>
+  <div style={styles.inputGroup}>
+    <label style={styles.label}>Email *</label>
+    <input
+      type="email"
+      name="email"
+      placeholder="john@example.com"
+      style={styles.input}
+      required
+    />
+  </div>
 
-      <div style={styles.inputGroup}>
-        <label style={styles.label}>Phone</label>
-        <input type="tel" placeholder="+91 9876543210" style={styles.input}/>
-      </div>
+  <div style={styles.inputGroup}>
+    <label style={styles.label}>Phone number</label>
+    <input
+      type="tel"
+      name="phone number"
+      placeholder="+91 9876543210"
+      style={styles.input}
+    />
+  </div>
 
-      <div style={styles.inputGroup}>
-        <label style={styles.label}>Subject *</label>
-        <input type="text" placeholder="Enter subject" style={styles.input}/>
-      </div>
+  <div style={styles.inputGroup}>
+    <label style={styles.label}>Subject *</label>
+    <input
+      type="text"
+      name="subject"
+      placeholder="Enter subject"
+      style={styles.input}
+      required
+    />
+  </div>
 
-      <div style={styles.inputGroup}>
-        <label style={styles.label}>Category *</label>
+  <div style={styles.inputGroup}>
+    <label style={styles.label}>Category *</label>
 
-        <select style={styles.input} defaultValue="">
-          <option value="" disabled>Select Category</option>
-          <option>General Inquiry</option>
-          <option>Technical Support</option>
-          <option>Partnership</option>
-          <option>Feedback</option>
-          <option>Bug Report</option>
-          <option>Other</option>
-        </select>
-
-      </div>
-
-    </div>
-
-    <label
-      style={{
-        ...styles.label,
-        display: "block",
-        marginTop: "25px"
-      }}
+    <select
+      name="category"
+      style={styles.input}
+      defaultValue=""
+      required
     >
-      Message *
-    </label>
+      <option value="" disabled>
+        Select Category
+      </option>
+      <option value="General Inquiry">General Inquiry</option>
+      <option value="Technical Support">Technical Support</option>
+      <option value="Partnership">Partnership</option>
+      <option value="Feedback">Feedback</option>
+      <option value="Bug Report">Bug Report</option>
+      <option value="Other">Other</option>
+    </select>
 
-    <textarea
-      style={styles.textarea}
-      placeholder="Write your message..."
-    ></textarea>
+  </div>
 
-    <button
-      type="submit"
-      style={styles.button}
-    >
-      Send Message
-    </button>
+</div>
+
+<label
+  style={{
+    ...styles.label,
+    display: "block",
+    marginTop: "25px",
+  }}
+>
+  Message *
+</label>
+
+<textarea
+  name="message"
+  style={styles.textarea}
+  placeholder="Write your message..."
+  required
+></textarea>
+
+<button
+  type="submit"
+  style={styles.button}
+>
+  Send Message
+</button>
 
   </form>
 

@@ -10,11 +10,15 @@ type SubjectType = {
 
 function Nav() {
   const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth > 600 : false
-  );
+  typeof window !== "undefined" ? window.innerWidth <= 768 : false
+);
 
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [showSubjects, setShowSubjects] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const [homeOpen, setHomeOpen] = useState(false);
+const [readOpen, setReadOpen] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -33,7 +37,13 @@ function Nav() {
   }, []);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth > 600);
+    const handleResize = () => {
+  setIsMobile(window.innerWidth <= 768);
+
+  if (window.innerWidth > 768) {
+    setMenuOpen(false);
+  }
+};
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -51,20 +61,56 @@ function Nav() {
           {isMobile && <span>ASTROSPACIOUS</span>}
         </a>
 
-        <div className="menu-btn" id="menu-btn">
-          <span></span><span></span><span></span>
-        </div>
+       <div
+  className={`menu-btn ${menuOpen ? "active" : ""}`}
+  onClick={() => setMenuOpen(!menuOpen)}
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
 
-        <div className="nav-links" id="nav-links">
+        <div className={`nav-links ${menuOpen ? "active" : ""}`}>
 
-  <div className="nav-dropdown">
-    <a href="/" className="dropdown-toggle">HOME</a>
+  
 
-    <div className="dropdown-menu">
-      <a href="/About">ABOUT</a>
-      <a href="/Contact">CONTACT US</a>
-    </div>
+    <div className={`nav-dropdown ${homeOpen ? "open" : ""}`}>
+  <a
+    href="/"
+    className="dropdown-toggle"
+    onClick={(e) => {
+      if (isMobile) {
+        e.preventDefault();
+        setHomeOpen(!homeOpen);
+        setReadOpen(false);
+      }
+    }}
+  >
+    HOME {isMobile && (homeOpen ? "▲" : "▼")}
+  </a>
+
+  <div className="dropdown-menu">
+    <a
+      href="/About"
+      onClick={() => {
+        setMenuOpen(false);
+        setHomeOpen(false);
+      }}
+    >
+      ABOUT
+    </a>
+
+    <a
+      href="/Contact"
+      onClick={() => {
+        setMenuOpen(false);
+        setHomeOpen(false);
+      }}
+    >
+      CONTACT US
+    </a>
   </div>
+</div>
 
   <div className="nav-dropdown">
     <a href="/Articles" className="dropdown-toggle">READ</a>
@@ -81,29 +127,27 @@ function Nav() {
   </a>
 
 </div>
-          {/* HOVER WRAPPER
-          <div
-            className="subject-wrapper"
-            onMouseEnter={() => setShowSubjects(true)}
-            onMouseLeave={() => setShowSubjects(false)}
-          >
+          {/*
+<div
+  className="subject-wrapper"
+  onMouseEnter={() => setShowSubjects(true)}
+  onMouseLeave={() => setShowSubjects(false)}
+>
+  <a href="/Subject">Subject</a>
 
-          /*
-            <a href="/Subject">Subject</a>
-
-            <div className={`NavSubject ${showSubjects ? "visible" : "hidden"}`}>
-              {subjects.map(subject => (
-                <p
-                  key={subject.id}
-                  onClick={() => scrollToSection(subject.id)}
-                  className="nav-subtopic"
-                >
-                  {subject.name}
-                </p>
-              ))}
-            </div>
-          </div>
-          */}
+  <div className={`NavSubject ${showSubjects ? "visible" : "hidden"}`}>
+    {subjects.map(subject => (
+      <p
+        key={subject.id}
+        onClick={() => scrollToSection(subject.id)}
+        className="nav-subtopic"
+      >
+        {subject.name}
+      </p>
+    ))}
+  </div>
+</div>
+*/}
 
           
       </div>
