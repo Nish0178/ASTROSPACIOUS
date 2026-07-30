@@ -24,7 +24,6 @@ const Footer: React.FC = () => {
       color: "#fff",
       fontSize: "26px",
       transition: "0.3s",
-      padding: "8px",
     },
 
     menu: {
@@ -43,8 +42,6 @@ const Footer: React.FC = () => {
       textDecoration: "none",
       transition: "0.3s ease",
       cursor: "pointer",
-      padding: "12px",
-      display: "inline-block",
     },
 
     email: {

@@ -15,7 +15,7 @@ export default function SectionHeading({
       marginBottom: "60px",
       position: "relative",
       overflow: "hidden",
-      padding: "clamp(40px, 8vw, 80px) 20px clamp(30px, 6vw, 60px)",
+      padding: "80px 20px 60px",
       borderRadius: "28px",
       background:
         "linear-gradient(135deg, rgba(124,92,255,0.18), rgba(79,70,229,0.08), rgba(15,23,42,1))",
@@ -49,7 +49,7 @@ export default function SectionHeading({
     },
 
     title: {
-      fontSize: "clamp(32px, 8vw, 56px)",
+      fontSize: "56px",
       fontWeight: 800,
       color: "#FFFFFF",
       margin: 0,

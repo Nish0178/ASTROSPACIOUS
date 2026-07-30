@@ -18,7 +18,7 @@ export default function TermsConditions() {
 
     hero: {
       textAlign: "center",
-      padding: "clamp(40px, 8vw, 70px) clamp(20px, 5vw, 40px)",
+      padding: "70px 40px",
       borderRadius: "28px",
       background:
         "linear-gradient(135deg,#0B1E39,#11294D,#173A67)",
@@ -34,7 +34,7 @@ export default function TermsConditions() {
     },
 
     heroTitle: {
-      fontSize: "clamp(32px, 8vw, 54px)",
+      fontSize: "54px",
       fontWeight: 800,
       marginBottom: "15px",
       color: "#FFFFFF",
@@ -62,13 +62,13 @@ export default function TermsConditions() {
     overview: {
       background: "#0F172A",
       borderRadius: "22px",
-      padding: "clamp(20px, 5vw, 40px)",
+      padding: "40px",
       marginBottom: "50px",
       border: "1px solid rgba(59,130,246,.20)",
     },
 
     overviewTitle: {
-      fontSize: "clamp(24px, 6vw, 30px)",
+      fontSize: "30px",
       marginBottom: "20px",
     },
 
@@ -82,7 +82,7 @@ export default function TermsConditions() {
     overviewGrid: {
       display: "grid",
       gridTemplateColumns:
-        "repeat(auto-fit,minmax(min(100%, 250px),1fr))",
+        "repeat(auto-fit,minmax(250px,1fr))",
       gap: "20px",
     },
 
@@ -105,11 +105,10 @@ section: {
   display: "flex",
   gap: "35px",
   marginBottom: "60px",
-  flexWrap: "wrap" as const,
 },
 
 number: {
-  fontSize: "clamp(48px, 10vw, 64px)",
+  fontSize: "64px",
   fontWeight: 800,
   color: "#2563EB",
   minWidth: "90px",
@@ -120,7 +119,7 @@ content: {
 },
 
 heading: {
-  fontSize: "clamp(26px, 7vw, 34px)",
+  fontSize: "34px",
   color: "#FFFFFF",
   marginBottom: "15px",
 },
@@ -469,7 +468,7 @@ return (
     background: "#0F172A",
     border: "1px solid rgba(59,130,246,.20)",
     borderRadius: "24px",
-    padding: "clamp(25px, 6vw, 50px)",
+    padding: "50px",
     textAlign: "center",
     marginBottom: "60px",
   }}
@@ -485,7 +484,7 @@ return (
 
   <h2
     style={{
-      fontSize: "clamp(28px, 7vw, 36px)",
+      fontSize: "36px",
       marginBottom: "15px",
       color: "#FFFFFF",
     }}

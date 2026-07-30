@@ -18,7 +18,7 @@ export default function Contact() {
 
     hero: {
       textAlign: "center",
-      padding: "clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px)",
+      padding: "80px 40px",
       borderRadius: "30px",
       background:
         "linear-gradient(135deg,#0F172A,#10283E,#0D3B4D)",
@@ -33,7 +33,7 @@ export default function Contact() {
     },
 
     heroTitle: {
-      fontSize: "clamp(32px, 8vw, 56px)",
+      fontSize: "56px",
       fontWeight: 800,
       marginBottom: "20px",
     },
@@ -48,7 +48,7 @@ export default function Contact() {
 
     cardGrid: {
       display: "grid",
-      gridTemplateColumns: "repeat(auto-fit,minmax(min(100%, 300px),1fr))",
+      gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
       gap: "30px",
       marginTop: "60px",
     },
@@ -80,12 +80,12 @@ export default function Contact() {
   marginTop: "80px",
   background: "#0F172A",
   borderRadius: "24px",
-  padding: "clamp(20px, 5vw, 50px)",
+  padding: "50px",
   border: "1px solid rgba(16,185,129,.20)",
 },
 
 formTitle: {
-  fontSize: "clamp(28px, 6vw, 38px)",
+  fontSize: "38px",
   marginBottom: "15px",
   textAlign: "center" as const,
 },
@@ -99,7 +99,7 @@ formSubtitle: {
 
 formGrid: {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit,minmax(min(100%, 280px),1fr))",
+  gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
   gap: "25px",
 },
 

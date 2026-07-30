@@ -240,11 +240,3 @@ body {
     background: #334155;
     cursor: not-allowed;
 }
-
-@media (max-width: 600px) {
-    .subject-card {
-        width: calc(100% - 32px);
-        padding: 24px;
-        margin-top: 20px;
-    }
-}

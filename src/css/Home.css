@@ -24,34 +24,17 @@
         transform: scale(.5) translateY(-120px);
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 600px) {
         .logo-text {
           transform: scale(.25) translateY(-180px);
         }
 
         .showcaseGrid {
-          grid-template-columns: 1fr;
-          gap: 24px;
+          grid-template-rows: 1fr;
         }
 
         .showcaseItem {
-          width: 100%;
-        }
-
-        .logo {
-          font-size: clamp(40px, 10vw, 72px);
-        }
-
-        .sectionTitle {
-          font-size: clamp(32px, 8vw, 48px);
-        }
-
-        .ctaTitle {
-          font-size: clamp(36px, 9vw, 56px);
-        }
-        
-        .introSection, .showcaseSection, .finalCTA {
-          padding: 80px 16px;
+          width: calc(100vw - 60px);
         }
       }
 
