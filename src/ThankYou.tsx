@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 export default function ThankYou() {
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(30);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -10,7 +10,7 @@ export default function ThankYou() {
 
     const redirect = setTimeout(() => {
       window.location.href = "/";
-    }, 60000);
+    }, 30000);
 
     return () => {
       clearInterval(timer);
