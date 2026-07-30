@@ -23,6 +23,91 @@ body {
     animation: gradientShift 4s ease infinite;
     box-shadow: 0 0 40px rgba(139, 93, 255, 0.3);
 }
+/* ===========================
+   ABOUT HERO
+=========================== */
+
+.about-hero{
+    width:100%;
+    min-height:70vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:80px 20px 60px;
+}
+
+.about-hero-content{
+
+    max-width:900px;
+
+    text-align:center;
+
+    padding:60px;
+
+    border-radius:28px;
+
+    background:
+    rgba(8,15,40,.55);
+
+    backdrop-filter:blur(16px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 25px 70px rgba(0,0,0,.45);
+}
+.hero-tag{
+
+    display:inline-block;
+
+    padding:10px 22px;
+
+    border-radius:999px;
+
+    background:rgba(139,92,246,.15);
+
+    color:#8b5cf6;
+
+    border:1px solid rgba(139,92,246,.4);
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    margin-bottom:30px;
+
+    text-transform:uppercase;
+
+    font-size:.9rem;
+}
+
+.hero-title{
+
+    font-size:3.6rem;
+
+    line-height:1.2;
+
+    font-weight:800;
+
+    color:white;
+
+    margin-bottom:25px;
+}
+
+.hero-description{
+
+    max-width:760px;
+
+    margin:auto;
+
+    color:#cbd5e1;
+
+    font-size:1.2rem;
+
+    line-height:1.9;
+}
 
 @keyframes gradientShift {
     0% {
@@ -59,7 +144,42 @@ body {
     z-index: 2;
     position: relative;
 }
+.about-heading{
 
+    font-size:2.4rem;
+
+    font-weight:800;
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    background:linear-gradient(90deg,#8b5cf6,#22d3ee);
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+}
+
+.about-text{
+
+    font-size:1.1rem;
+
+    line-height:1.9;
+
+    color:#e2e8f0;
+
+    text-align:center;
+
+    margin-bottom:22px;
+}
+
+.about-text:last-child{
+
+    margin-bottom:0;
+}
 /* Scanline / Grid overlay for texture */
 .info .inner::after {
     content: " ";
@@ -70,6 +190,85 @@ body {
     pointer-events: none;
     opacity: 0.4;
     z-index: 1;
+}
+/* ===========================
+   OUR IMPACT
+=========================== */
+
+.impact-section{
+
+    width:100%;
+
+    max-width:1200px;
+
+    margin:90px auto;
+
+    padding:0 20px;
+
+}
+
+.impact-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+
+    margin-top:50px;
+
+}
+
+.impact-card{
+
+    background:rgba(10,20,45,.65);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:22px;
+
+    padding:40px 25px;
+
+    text-align:center;
+
+    transition:.3s;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+
+}
+.card:hover{
+
+    transform:translateY(-8px);
+
+}
+.impact-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#8b5cf6;
+
+    box-shadow:0 20px 40px rgba(139,92,246,.25);
+
+}
+
+.impact-card h2{
+
+    font-size:2.3rem;
+
+    color:white;
+
+    margin-bottom:15px;
+
+}
+
+.impact-card p{
+
+    color:#cbd5e1;
+
+    font-size:1rem;
+
 }
 
 /* 
@@ -84,7 +283,8 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: 80px auto;
-    height: 450px;
+    min-height:450px;
+    height:auto;
     gap: 15px;
     padding: 0 20px;
     box-sizing: border-box;
@@ -179,10 +379,19 @@ body {
         box-shadow: 0 0 30px rgba(139, 93, 255, 0.2);
     }
 
-    .card-content {
-        opacity: 1;
-        transform: none;
-    }
+    .card-content{
+
+    color:#dbe4ff;
+
+    font-size:1rem;
+
+    line-height:1.8;
+
+    text-align:center;
+
+    margin-top:20px;
+
+}
 }
 
 
@@ -452,4 +661,62 @@ body {
         /* Align to the line at 30px minus half width (9) = 21 */
         right: auto;
     }
+}
+@media(max-width:768px){
+
+.about-hero{
+
+min-height:auto;
+
+padding:70px 20px;
+
+}
+
+.about-hero-content{
+
+padding:35px 25px;
+
+}
+
+.hero-title{
+
+font-size:2.2rem;
+
+}
+
+.hero-description{
+
+font-size:1rem;
+
+line-height:1.8;
+
+}
+
+.hero-tag{
+
+font-size:.8rem;
+
+letter-spacing:1px;
+
+}
+
+}
+@media(max-width:900px){
+
+.impact-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:600px){
+
+.impact-grid{
+
+grid-template-columns:1fr;
+
+}
+
 }

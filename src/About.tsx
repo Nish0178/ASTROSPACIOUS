@@ -5,38 +5,42 @@ import './css/base.css';
 import './css/About.css';
 
 const cards = [
-    { title: "Webinars", content: "Join our expert-led webinars to explore the latest in astronomy and space science. Engage with professionals and enthusiasts alike!" },
-    { title: "Workshops", content: "Participate in hands-on workshops designed to deepen your understanding of astrophysics, telescope operation, and space exploration technologies." },
-    { title: "Community Events", content: "Connect with fellow space enthusiasts through our community events. Share your passion, learn from others, and contribute to our growing community." }
-    //{ title: "DataBase", content: "Research to your hearts content with our website formulated by student for students. All material is certified by experts and credible sources." }
-
+    {
+        title: "Research Projects",
+        content:
+            "Collaborate on innovative space research, scientific exploration, and student-led initiatives that transform ideas into impactful discoveries."
+    },
+    {
+        title: "Educational Programs",
+        content:
+            "Access webinars, workshops, learning resources, and expert-led sessions designed to make astronomy and space science accessible to everyone."
+    },
+    {
+        title: "Community Events",
+        content:
+            "Join global events, networking sessions, competitions, and collaborative activities that connect passionate space enthusiasts worldwide."
+    }
 ];
 
-const team = {
-    "heads": [
-        { name: "Anvita Srivastava", role: "Founder", img: "" },
-        { name: "Nathan Dsouza", role: "Head Developer", img: "" },
-        { name: "Vivaan", role: "Head Marketer", img: "" }
-    ],
-
-    "members": [
-        { name: "Anvita Srivastava", role: "Founder", img: "" },
-        { name: "Nathan Dsouza", role: "Head Developer", img: "" },
-        { name: "Vivaan", role: "Head Marketer", img: "" }
-        , { name: "Anvita Srivastava", role: "Founder", img: "" },
-        { name: "Nathan Dsouza", role: "Head Developer", img: "" },
-        { name: "Vivaan", role: "Head Marketer", img: "" }
-        , { name: "Anvita Srivastava", role: "Founder", img: "" },
-        { name: "Nathan Dsouza", role: "Head Developer", img: "" },
-    ]
-}
-
-const timeline = [
-    { year: "2022", events: ["Founded ASTROSPACIOUS", "Hosted first webinar on 'The Wonders of the Universe'"] },
-    { year: "2023", events: ["Invited Professionals to present topics and guide our team ", "Started more collaborations"] },
-    { year: "2023", events: ["Launched interactive workshops on telescope usage", "Expanded community events to include stargazing nights"] },
-    { year: "2024", events: ["Introduced advanced webinars on astrophysics", "Collaborated with local observatories for exclusive events"] }
+const leadership = [
+    {
+        name: "Anvita Srivastava",
+        role: "Founder",
+        img: ""
+    },
+    {
+        name: "Nishant trivedi",
+        role: "Head Developer",
+        img: ""
+    },
+    {
+        name: "Vivaan",
+        role: "Head Marketing",
+        img: ""
+    }
 ];
+
+    
 
 function About() {
     const [activeIndex, setActiveIndex] = useState(1);
@@ -51,15 +55,80 @@ function About() {
 
     return (
         <main>
-            <Space_bg />
-            <h1 className="gradient textclip centered margin-vertical">Welcome to ASTROSPACIOUS</h1>
+       <Space_bg />
 
-            <br className="margin-vertical"></br>
+<section className="about-hero">
 
-            <div className="info centered"><div className="inner"><h3>
-                Astrospacious is a student-driven space education and research initiative created to make astronomy and aerospace learning more accessible, practical, and exciting for young minds.
-                Our team works on research projects, educational content, and collaborative experiments that bring real-world space science closer to students. We focus on learning by doing — sharing knowledge, building together, and encouraging questions that go beyond the textbook.
-            </h3></div></div>
+    <div className="about-hero-content">
+
+        <span className="hero-tag">
+            ABOUT ASTROSPACIOUS
+        </span>
+
+        <h1 className="hero-title">
+            Inspiring the Next Generation of Space Explorers
+        </h1>
+
+        <p className="hero-description">
+            Astrospacious is a global student-led space research and education
+            organization dedicated to making astronomy and space science more
+            accessible through innovation, collaboration, and hands-on learning.
+        </p>
+
+    </div>
+
+</section>
+
+            <section className="info centered">
+
+    <div className="inner">
+
+        <h2 className="about-heading">
+            About Astrospacious
+        </h2>
+
+        <p className="about-text">
+            Astrospacious is a global student-led space research and education organization dedicated to making space more accessible for everyone. Through research projects, educational initiatives, events, and engaging space content, we inspire curiosity, encourage innovation, and empower the next generation of space enthusiasts.
+        </p>
+
+        <p className="about-text">
+            Today, Astrospacious is a growing community of <strong>1,000+ members across 6 continents</strong> and has successfully mentored <strong>35+ interns</strong>. Founded by <strong>Anvita Srivastava</strong>, Astrospacious continues to bring together passionate young minds who believe in learning, collaboration, and shaping the future of space exploration.
+        </p>
+
+    </div>
+
+</section>
+<section className="impact-section">
+
+    <h1 className="gradient-text centered">
+        Our Impact
+    </h1>
+
+    <div className="impact-grid">
+
+        <div className="impact-card">
+            <h2>1000+</h2>
+            <p>Community Members</p>
+        </div>
+
+        <div className="impact-card">
+            <h2>6</h2>
+            <p>Continents</p>
+        </div>
+
+        <div className="impact-card">
+            <h2>35+</h2>
+            <p>Interns Mentored</p>
+        </div>
+
+        <div className="impact-card">
+            <h2>Anvita Srivastava</h2>
+            <p>Founder</p>
+        </div>
+
+    </div>
+
+</section>
             <div className="Hover-Board margin-vertical" onMouseMove={handleMouseMove}>
                 {cards.map((card, index) => {
                     let className = "card";
@@ -123,24 +192,6 @@ function About() {
                 </div>
             </section>
 
-            <section className="timeline">
-                <h1 className="gradient-text centered">Our Journey So Far</h1>
-
-                <div className="timeline-container">
-                    {timeline.map((item, index) => (
-                        <div key={index} className={`timeline-row ${index % 2 === 0 ? "left" : "right"}`}>
-                            <div className="timeline-card glow glow-hover">
-                                <h2 className="year">{item.year}</h2>
-                                <ul>
-                                    {item.events.map((ev, i) => (
-                                        <li key={i}>{ev}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
 
         </main>
     )
