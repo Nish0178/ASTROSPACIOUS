@@ -5,6 +5,7 @@ import ArticleDetails from "./ArticleDetails.tsx";
 import Magazine from "./Magazine";
 import MagazineDetails from "./MagazineDetails";
 
+import ThankYou from "./ThankYou";
 import PrivacyPolicy from "./PrivacyPolicy";
 import TermsConditions from "./TermsConditions";
 
@@ -54,6 +55,8 @@ export default function App() {
             {/* Contact */}
             <Route path="/Contact" element={<Contact />} />
 
+            {/* Thank You */}
+            <Route path="/ThankYou" element={<ThankYou />} />
             {/* Subjects */}
             <Route path="/Subject" element={<Subject />} />
             <Route

@@ -261,7 +261,7 @@ button: {
 <input
   type="hidden"
   name="_next"
-  value="https://www.astrospacious.com/Contact?success=true"
+  value="https://www.astrospacious.com/thank-you"
 />
 
     <div style={styles.formGrid}>
