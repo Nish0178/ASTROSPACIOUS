@@ -153,29 +153,27 @@ function About() {
 
             <br className="margin-vertical"></br>
 
-            <h1 className="gradient textclip centered margin-vertical">Meet our team</h1>
-            <div className="team">
-                <div className="Heads margin-vertical">
-                    {team.heads.map((member, index) => (
-                        <div key={index} className="centered">
-                            <img className="image glow glow-hover"></img>
-                            <h2 className="name">{member.name}</h2>
-                            <p className="role">{member.role}</p>
-                        </div>
-                    ))}
-                </div>
-                <div className="Members margin-vertical">
-                    {team.members.map((member, index) => (
-                        <div key={index} className="centered">
-                            <img className="image glow glow-hover"></img>
-                            <h2 className="name">{member.name}</h2>
-                            <p className="role">{member.role}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <h1 className="gradient textclip centered margin-vertical">
+    Meet our team
+</h1>
 
-            <br className="margin-vertical"></br>
+<div className="team">
+    <div className="Heads margin-vertical">
+        {leadership.map((member, index) => (
+            <div key={index} className="centered">
+                <img
+                    className="image glow glow-hover"
+                    src={member.img}
+                    alt={member.name}
+                />
+                <h2 className="name">{member.name}</h2>
+                <p className="role">{member.role}</p>
+            </div>
+        ))}
+    </div>
+</div>
+
+<br className="margin-vertical" />
 
             <section className="mission-vision">
                 <div className="mission">
