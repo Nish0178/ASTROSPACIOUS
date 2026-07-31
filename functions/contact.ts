@@ -57,48 +57,178 @@ const data = (await request.json()) as ContactFormData;
       to: ["outreach.astrospacious@gmail.com"],
       replyTo: email,
       subject: `📩 ${subject}`,
+html: `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>New Contact Form Submission</title>
+</head>
 
-      html: `
-        <h2>New Contact Form Submission</h2>
+<body style="
+  margin:0;
+  padding:40px;
+  background:#F3F7FC;
+  font-family:Arial, Helvetica, sans-serif;
+">
 
-        <table cellpadding="8" cellspacing="0" border="1">
-          <tr>
-            <td><strong>First Name</strong></td>
-            <td>${firstName}</td>
-          </tr>
+<table
+  width="100%"
+  cellpadding="0"
+  cellspacing="0"
+  style="
+    max-width:700px;
+    margin:auto;
+    background:#ffffff;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid #E5E7EB;
+  "
+>
 
-          <tr>
-            <td><strong>Last Name</strong></td>
-            <td>${lastName}</td>
-          </tr>
+<tr>
+<td
+style="
+background:linear-gradient(135deg,#071B34,#0B2A4D);
+padding:40px;
+text-align:center;
+color:white;
+">
 
-          <tr>
-            <td><strong>Email</strong></td>
-            <td>${email}</td>
-          </tr>
+<h1 style="
+margin:0;
+font-size:34px;
+">
+🚀 Astrospacious
+</h1>
 
-          <tr>
-            <td><strong>Phone</strong></td>
-            <td>${phoneNumber || "-"}</td>
-          </tr>
+<p style="
+margin-top:10px;
+font-size:16px;
+color:#D1E7FF;
+">
+New Contact Form Submission
+</p>
 
-          <tr>
-            <td><strong>Category</strong></td>
-            <td>${category}</td>
-          </tr>
+</td>
+</tr>
 
-          <tr>
-            <td><strong>Subject</strong></td>
-            <td>${subject}</td>
-          </tr>
-        </table>
+<tr>
+<td style="padding:35px;">
 
-        <br/>
+<h2 style="
+margin-top:0;
+color:#0F172A;
+">
+Contact Details
+</h2>
 
-        <h3>Message</h3>
+<table
+width="100%"
+cellpadding="12"
+style="
+border-collapse:collapse;
+">
 
-        <p>${message}</p>
-      `,
+<tr>
+<td style="font-weight:bold;">👤 Name</td>
+<td>${firstName} ${lastName}</td>
+</tr>
+
+<tr style="background:#F8FAFC;">
+<td style="font-weight:bold;">📧 Email</td>
+<td>
+<a href="mailto:${email}">
+${email}
+</a>
+</td>
+</tr>
+
+<tr>
+<td style="font-weight:bold;">📱 Phone</td>
+<td>${phoneNumber || "Not Provided"}</td>
+</tr>
+
+<tr style="background:#F8FAFC;">
+<td style="font-weight:bold;">📂 Category</td>
+<td>${category}</td>
+</tr>
+
+<tr>
+<td style="font-weight:bold;">📝 Subject</td>
+<td>${subject}</td>
+</tr>
+
+</table>
+
+<div
+style="
+margin-top:35px;
+padding:25px;
+background:#F8FAFC;
+border-left:5px solid #10B981;
+border-radius:10px;
+">
+
+<h3 style="
+margin-top:0;
+color:#0F172A;
+">
+💬 Message
+</h3>
+
+<p style="
+font-size:16px;
+line-height:1.8;
+white-space:pre-wrap;
+color:#374151;
+">
+${message}
+</p>
+
+</div>
+
+</td>
+</tr>
+
+<tr>
+
+<td
+style="
+background:#071B34;
+padding:25px;
+text-align:center;
+color:#CBD5E1;
+font-size:14px;
+">
+
+Submitted from
+<br><br>
+
+<a
+href="https://astrospacious.com"
+style="
+color:#10B981;
+text-decoration:none;
+font-weight:bold;
+"
+>
+https://astrospacious.com
+</a>
+
+<br><br>
+
+Astrospacious © ${new Date().getFullYear()}
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+</html>
+`,
     });
 
     return Response.json({
