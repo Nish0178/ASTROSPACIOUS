@@ -1,6 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Contact() {
+const [formData, setFormData] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+  subject: "",
+  category: "",
+  message: "",
+});
+
+const [loading, setLoading] = useState(false);
+const [successMessage, setSuccessMessage] = useState("");
+const [errorMessage, setErrorMessage] = useState(""); 
+const handleChange = (
+  e: React.ChangeEvent<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  >
+) => {
+  setFormData((prev) => ({
+    ...prev,
+    [e.target.name]: e.target.value,
+  }));
+};
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  setLoading(true);
+  setSuccessMessage("");
+  setErrorMessage("");
+
+  try {
+    const response = await fetch("/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Something went wrong.");
+    }
+
+    setSuccessMessage("✅ Thank you! Your message has been sent.");
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      subject: "",
+      category: "",
+      message: "",
+    });
+  } catch (err) {
+    setErrorMessage(
+      err instanceof Error
+        ? err.message
+        : "Unable to send your message."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+{
   const styles: Record<string, React.CSSProperties> = {
     page: {
   minHeight: "100vh",
@@ -10,6 +77,8 @@ export default function Contact() {
       fontFamily: "'Inter', sans-serif",
       padding: "60px 20px",
     },
+  
+    
 
     container: {
       maxWidth: "1200px",
@@ -236,10 +305,8 @@ button: {
     Complete the form below and our team will get back to you within 24–48 hours.
   </p>
 
-  <form
- action="https://formsubmit.co/outreach.astrospacious@gmail.com"
-  method="POST"
->
+  <form onSubmit={handleSubmit}>
+
   <input
   type="hidden"
   name="_subject"
@@ -273,67 +340,78 @@ button: {
 
   <div style={styles.inputGroup}>
     <label style={styles.label}>First Name *</label>
-    <input
-      type="text"
-      name="first name"
-      placeholder="John"
-      style={styles.input}
-      required
-    />
+   <input
+  type="text"
+  name="firstName"
+  value={formData.firstName}
+  onChange={handleChange}
+  placeholder="John"
+  style={styles.input}
+  required
+/>
   </div>
 
   <div style={styles.inputGroup}>
     <label style={styles.label}>Last Name *</label>
     <input
-      type="text"
-      name="last name"
-      placeholder="Doe"
-      style={styles.input}
-      required
-    />
+  type="text"
+  name="lastName"
+  value={formData.lastName}
+  onChange={handleChange}
+  placeholder="Doe"
+  style={styles.input}
+  required
+/>
   </div>
 
   <div style={styles.inputGroup}>
     <label style={styles.label}>Email *</label>
     <input
-      type="email"
-      name="email"
-      placeholder="john@example.com"
-      style={styles.input}
-      required
-    />
+  type="email"
+  name="email"
+  value={formData.email}
+  onChange={handleChange}
+  placeholder="john@example.com"
+  style={styles.input}
+  required
+/>
   </div>
 
   <div style={styles.inputGroup}>
     <label style={styles.label}>Phone number</label>
-    <input
-      type="tel"
-      name="phone number"
-      placeholder="+91 9876543210"
-      style={styles.input}
-    />
+   <input
+  type="tel"
+  name="phoneNumber"
+  value={formData.phoneNumber}
+  onChange={handleChange}
+  placeholder="+91 9876543210"
+  style={styles.input}
+/>
   </div>
 
   <div style={styles.inputGroup}>
     <label style={styles.label}>Subject *</label>
     <input
-      type="text"
-      name="subject"
-      placeholder="Enter subject"
-      style={styles.input}
-      required
-    />
+  type="text"
+  name="subject"
+  value={formData.subject}
+  onChange={handleChange}
+  placeholder="Enter subject"
+  style={styles.input}
+  required
+/>
   </div>
 
   <div style={styles.inputGroup}>
     <label style={styles.label}>Category *</label>
 
     <select
-      name="category"
-      style={styles.input}
-      defaultValue=""
-      required
-    >
+  name="category"
+  value={formData.category}
+  onChange={handleChange}
+  style={styles.input}
+  required
+>
       <option value="" disabled>
         Select Category
       </option>
@@ -361,16 +439,41 @@ button: {
 
 <textarea
   name="message"
+  value={formData.message}
+  onChange={handleChange}
   style={styles.textarea}
   placeholder="Write your message..."
   required
-></textarea>
+/>
+{successMessage && (
+  <p
+    style={{
+      color: "#10B981",
+      marginTop: "20px",
+      fontWeight: 600,
+    }}
+  >
+    {successMessage}
+  </p>
+)}
 
+{errorMessage && (
+  <p
+    style={{
+      color: "#EF4444",
+      marginTop: "20px",
+      fontWeight: 600,
+    }}
+  >
+    {errorMessage}
+  </p>
+)}
 <button
   type="submit"
   style={styles.button}
+  disabled={loading}
 >
-  Send Message
+  {loading ? "Sending..." : "Send Message"}
 </button>
 
   </form>
@@ -379,4 +482,5 @@ button: {
       </div>
     </div>
   );
+}
 }
