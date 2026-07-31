@@ -230,7 +230,145 @@ Astrospacious © ${new Date().getFullYear()}
 </html>
 `,
     });
+      await resend.emails.send({
+  from: "Astrospacious <onboarding@resend.dev>",
+  to: [email],
+  subject: "🚀 We've received your message – Astrospacious",
 
+  html: `
+<!DOCTYPE html>
+<html>
+<body style="
+  margin:0;
+  padding:40px;
+  background:#F3F7FC;
+  font-family:Arial, Helvetica, sans-serif;
+">
+
+<table
+  width="100%"
+  cellpadding="0"
+  cellspacing="0"
+  style="
+    max-width:650px;
+    margin:auto;
+    background:#ffffff;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid #E5E7EB;
+  "
+>
+
+<tr>
+<td
+style="
+background:linear-gradient(135deg,#071B34,#0B2A4D);
+padding:40px;
+text-align:center;
+color:white;
+">
+
+<h1 style="margin:0;">🚀 Astrospacious</h1>
+
+<p style="color:#D1E7FF;">
+Thank you for contacting us!
+</p>
+
+</td>
+</tr>
+
+<tr>
+
+<td style="padding:35px;">
+
+<h2 style="margin-top:0;">
+Hi ${firstName},
+</h2>
+
+<p style="font-size:16px;line-height:1.8;color:#374151;">
+
+Thank you for reaching out to
+<strong>Astrospacious</strong>.
+
+We've successfully received your message.
+
+Our team will review your request and respond as soon as possible.
+
+</p>
+
+<div
+style="
+margin-top:30px;
+padding:20px;
+background:#F8FAFC;
+border-left:5px solid #10B981;
+border-radius:10px;
+">
+
+<h3>Your Submission</h3>
+
+<p><strong>Subject:</strong> ${subject}</p>
+
+<p><strong>Category:</strong> ${category}</p>
+
+</div>
+
+<p
+style="
+margin-top:30px;
+font-size:15px;
+color:#6B7280;
+line-height:1.7;
+">
+
+Our typical response time is
+<strong>24–48 business hours</strong>.
+
+If you'd like to add more information,
+simply reply to this email.
+
+</p>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td
+style="
+background:#071B34;
+padding:25px;
+text-align:center;
+color:#CBD5E1;
+">
+
+<strong>Team Astrospacious</strong>
+
+<br><br>
+
+<a
+href="https://astrospacious.com"
+style="
+color:#10B981;
+text-decoration:none;
+"
+>
+
+https://astrospacious.com
+
+</a>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+</html>
+`,
+});
     return Response.json({
       success: true,
     });
