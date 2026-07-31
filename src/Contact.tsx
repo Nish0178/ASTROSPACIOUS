@@ -47,6 +47,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     }
 
     setSuccessMessage("✅ Thank you! Your message has been sent.");
+    setTimeout(() => {
+  setSuccessMessage("");
+}, 5000);
 
     setFormData({
       firstName: "",
@@ -446,27 +449,86 @@ button: {
   required
 />
 {successMessage && (
-  <p
+  <div
     style={{
-      color: "#10B981",
-      marginTop: "20px",
-      fontWeight: 600,
+      marginTop: "25px",
+      background: "rgba(16,185,129,.12)",
+      border: "1px solid #10B981",
+      borderRadius: "16px",
+      padding: "25px",
+      textAlign: "center",
+      animation: "fadeIn .4s ease",
     }}
   >
-    {successMessage}
-  </p>
+    <div
+      style={{
+        fontSize: "52px",
+        marginBottom: "12px",
+      }}
+    >
+      ✅
+    </div>
+
+    <h3
+      style={{
+        color: "#10B981",
+        margin: 0,
+        fontSize: "24px",
+      }}
+    >
+      Message Sent Successfully!
+    </h3>
+
+    <p
+      style={{
+        color: "#CBD5E1",
+        marginTop: "12px",
+        lineHeight: 1.8,
+      }}
+    >
+      Thank you for contacting <strong>Astrospacious</strong>.
+      <br />
+      We've received your message and our team will get back to you
+      within <strong>24–48 business hours.</strong>
+    </p>
+  </div>
 )}
 
 {errorMessage && (
-  <p
+  <div
     style={{
-      color: "#EF4444",
-      marginTop: "20px",
-      fontWeight: 600,
+      marginTop: "25px",
+      background: "rgba(239,68,68,.12)",
+      border: "1px solid #EF4444",
+      borderRadius: "16px",
+      padding: "20px",
+      textAlign: "center",
     }}
   >
-    {errorMessage}
-  </p>
+    <div
+      style={{
+        fontSize: "42px",
+      }}
+    >
+      ❌
+    </div>
+
+    <h3
+      style={{
+        color: "#EF4444",
+      }}
+    >
+      Message Failed
+    </h3>
+
+    <p
+      style={{
+        color: "#CBD5E1",
+      }}
+    >
+      {errorMessage}
+    </p>
+  </div>
 )}
 <button
   type="submit"
