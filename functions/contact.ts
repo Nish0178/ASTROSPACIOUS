@@ -53,7 +53,7 @@ const data = (await request.json()) as ContactFormData;
     const resend = new Resend(env.RESEND_API_KEY);
 
     await resend.emails.send({
-      from: "Astrospacious <onboarding@resend.dev>", // We'll change this later
+      from: "Astrospacious <noreply@astrospacious.com>", // We'll change this later
       to: ["outreach.astrospacious@gmail.com"],
       replyTo: email,
       subject: `📩 ${subject}`,
@@ -230,11 +230,12 @@ Astrospacious © ${new Date().getFullYear()}
 </html>
 `,
     });
-      const autoReply = await resend.emails.send({
-  from: "Astrospacious <onboarding@resend.dev>",
-  to: [email],
-  subject: "🚀 We've received your message – Astrospacious",
-html: `
+      try {
+  const autoReply = await resend.emails.send({
+    from: "Astrospacious <noreply@astrospacious.com>",
+    to: [email],
+    subject: "🚀 We've received your message – Astrospacious",
+    html: `
 <!DOCTYPE html>
 <html>
 <body style="
@@ -243,6 +244,7 @@ html: `
   background:#F3F7FC;
   font-family:Arial, Helvetica, sans-serif;
 ">
+
 
 <table
   width="100%"
@@ -368,7 +370,10 @@ https://astrospacious.com
 </html>
 `,
 });
-    console.log("Auto Reply Result:", autoReply);
+     console.log("Auto Reply Success:", autoReply);
+} catch (err) {
+  console.error("Auto Reply Failed:", err);
+}
     return Response.json({
       success: true,
     });
