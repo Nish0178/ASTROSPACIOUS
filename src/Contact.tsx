@@ -12,7 +12,7 @@ const [formData, setFormData] = useState({
 });
 
 const [loading, setLoading] = useState(false);
-const [successMessage, setSuccessMessage] = useState("");
+const [submitted, setSubmitted] = useState(false);
 const [errorMessage, setErrorMessage] = useState(""); 
 const handleChange = (
   e: React.ChangeEvent<
@@ -26,10 +26,9 @@ const handleChange = (
 };
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
-
   setLoading(true);
-  setSuccessMessage("");
-  setErrorMessage("");
+
+    setErrorMessage("");
 
   try {
     const response = await fetch("/contact", {
@@ -46,12 +45,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       throw new Error(result.message || "Something went wrong.");
     }
 
-    setSuccessMessage("✅ Thank you! Your message has been sent.");
-    setTimeout(() => {
-  setSuccessMessage("");
-}, 5000);
+    setSubmitted(true);
 
-    setFormData({
+setTimeout(() => {
+  window.location.href = "/";
+}, 3000);
+        setFormData({
       firstName: "",
       lastName: "",
       email: "",
@@ -70,7 +69,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(false);
   }
 };
-{
+
   const styles: Record<string, React.CSSProperties> = {
     page: {
   minHeight: "100vh",
@@ -223,7 +222,73 @@ button: {
   fontWeight: 700,
 },
   };
+if (submitted) {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background:
+          "linear-gradient(180deg,#06131F 0%,#081B29 100%)",
+        color: "#fff",
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div
+        style={{
+          textAlign: "center",
+          maxWidth: "700px",
+          padding: "40px",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "90px",
+            marginBottom: "25px",
+          }}
+        >
+          ✅
+        </div>
 
+        <h1
+          style={{
+            fontSize: "46px",
+            marginBottom: "20px",
+            color: "#10B981",
+          }}
+        >
+          Message Sent Successfully!
+        </h1>
+
+        <p
+          style={{
+            fontSize: "20px",
+            color: "#CBD5E1",
+            lineHeight: 1.8,
+          }}
+        >
+          Thank you for contacting <strong>Astrospacious</strong>.
+          <br />
+          We've received your message and our team will contact you
+          within <strong>24–48 business hours.</strong>
+        </p>
+
+        <p
+          style={{
+            marginTop: "35px",
+            color: "#10B981",
+            fontWeight: 700,
+            fontSize: "18px",
+          }}
+        >
+          Redirecting to Home...
+        </p>
+      </div>
+    </div>
+  );
+}
   return (
     <div style={styles.page}>
       <div style={styles.container}>
@@ -310,40 +375,12 @@ button: {
 
   <form onSubmit={handleSubmit}>
 
-  <input
-  type="hidden"
-  name="_subject"
-  value="New Contact Form Submission - Astrospacious"
-/>
-
-<input
-  type="hidden"
-  name="_captcha"
-  value="false"
-/>
-
-<input
-  type="hidden"
-  name="_next"
-  value="https://www.astrospacious.com/thank-you"
-/>
-
-<input
-  type="hidden"
-  name="_autoresponse"
-  value="Thank you for contacting Astrospacious! We have received your message and will get back to you within 24–48 hours."
-/>
-  <input
-  type="text"
-  name="_honey"
-  style={{ display: "none" }}
-/>
-
+  
       <div style={styles.formGrid}>
 
   <div style={styles.inputGroup}>
     <label style={styles.label}>First Name *</label>
-   <input
+       <input
   type="text"
   name="firstName"
   value={formData.firstName}
@@ -415,6 +452,8 @@ button: {
   style={styles.input}
   required
 >
+  
+  
       <option value="" disabled>
         Select Category
       </option>
@@ -439,7 +478,6 @@ button: {
 >
   Message *
 </label>
-
 <textarea
   name="message"
   value={formData.message}
@@ -448,52 +486,6 @@ button: {
   placeholder="Write your message..."
   required
 />
-{successMessage && (
-  <div
-    style={{
-      marginTop: "25px",
-      background: "rgba(16,185,129,.12)",
-      border: "1px solid #10B981",
-      borderRadius: "16px",
-      padding: "25px",
-      textAlign: "center",
-      animation: "fadeIn .4s ease",
-    }}
-  >
-    <div
-      style={{
-        fontSize: "52px",
-        marginBottom: "12px",
-      }}
-    >
-      ✅
-    </div>
-
-    <h3
-      style={{
-        color: "#10B981",
-        margin: 0,
-        fontSize: "24px",
-      }}
-    >
-      Message Sent Successfully!
-    </h3>
-
-    <p
-      style={{
-        color: "#CBD5E1",
-        marginTop: "12px",
-        lineHeight: 1.8,
-      }}
-    >
-      Thank you for contacting <strong>Astrospacious</strong>.
-      <br />
-      We've received your message and our team will get back to you
-      within <strong>24–48 business hours.</strong>
-    </p>
-  </div>
-)}
-
 {errorMessage && (
   <div
     style={{
@@ -544,5 +536,4 @@ button: {
       </div>
     </div>
   );
-}
 }
