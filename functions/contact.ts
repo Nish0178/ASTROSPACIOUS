@@ -230,12 +230,11 @@ Astrospacious © ${new Date().getFullYear()}
 </html>
 `,
     });
-      await resend.emails.send({
+      const autoReply = await resend.emails.send({
   from: "Astrospacious <onboarding@resend.dev>",
   to: [email],
   subject: "🚀 We've received your message – Astrospacious",
-
-  html: `
+html: `
 <!DOCTYPE html>
 <html>
 <body style="
@@ -369,6 +368,7 @@ https://astrospacious.com
 </html>
 `,
 });
+    console.log("Auto Reply Result:", autoReply);
     return Response.json({
       success: true,
     });
