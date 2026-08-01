@@ -21,10 +21,7 @@
     padding: 0.6rem 1.2rem;
   }
 
-  .navbar-brand img {
-    height: 40px;
-    margin-right: 20px;
-  }
+
 
   .nav-links {
     display: flex;
@@ -41,9 +38,36 @@
     transition: color 0.2s ease;
   }
 
-  .navbar-brand{
+  .navbar-brand {
     display: flex;
     align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: transform 200ms ease;
+  }
+  .navbar-brand:hover {
+    transform: scale(1.02);
+  }
+
+  .nav-logo-small {
+    height: 46px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .nav-logo-full {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  @media (max-width: 1023px) {
+    .nav-logo-small {
+      height: 42px;
+    }
+    .nav-logo-full {
+      height: 30px;
+    }
   }
 
 /* make sure parent (subject-wrapper) is position: relative so absolute dropdown aligns */
@@ -177,14 +201,16 @@ left: auto;
     position: relative;
   }
 
-  .navbar-brand img {
-    height: 34px;
-    margin-right: 10px;
+  .navbar-brand {
+    gap: 0;
   }
 
-  .navbar-brand span {
-    font-size: 18px;
-    font-weight: 700;
+  .nav-logo-small {
+    height: 38px;
+  }
+
+  .nav-logo-full {
+    display: none;
   }
 
   .menu-btn {

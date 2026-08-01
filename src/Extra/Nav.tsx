@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../css/main.css";
 
 type SubjectType = {
@@ -9,6 +10,24 @@ type SubjectType = {
 };
 
 function Nav() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === "/";
+
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    setHomeOpen(false);
+    setReadOpen(false);
+
+    if (isHomePage) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    navigate("/");
+  };
+
   const [isMobile, setIsMobile] = useState(
   typeof window !== "undefined" ? window.innerWidth <= 768 : false
 );
@@ -56,10 +75,16 @@ const [readOpen, setReadOpen] = useState(false);
   return (
     <nav>
       <div className="nav-container">
-        <a className="navbar-brand" href="#">
-          <img src="/logo.jpg" alt="Logo" />
-          {isMobile && <span>ASTROSPACIOUS</span>}
-        </a>
+        <Link 
+          to="/" 
+          className="navbar-brand" 
+          onClick={handleLogoClick}
+          aria-label="Go to Home"
+          title="ASTROSPACIOUS Home"
+        >
+          <img src="/logos/logo-small.png" alt="Astrospacious Icon" className="nav-logo-small" />
+          <img src="/logos/logo-full.png" alt="Astrospacious Logo" className="nav-logo-full" />
+        </Link>
 
        <div
   className={`menu-btn ${menuOpen ? "active" : ""}`}
