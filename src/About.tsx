@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import SpaceBg from "./Extra/Space-bg";
 import { motion } from "framer-motion";
+import { Variants } from "framer-motion";
+
+
 
 import './css/base.css';
 import './css/About.css';
 
 // --- Framer Motion Variants ---
-const staggerContainer = {
+const staggerContainer: Variants = {
     hidden: { opacity: 0 },
     show: {
         opacity: 1,
@@ -14,14 +17,15 @@ const staggerContainer = {
     }
 };
 
-const fadeUpVariant = {
+
+const fadeUpVariant: Variants = {
     hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 70, damping: 20 } }
+    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 70, damping: 20 } }
 };
 
-const scaleVariant = {
+const scaleVariant: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
-    show: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 80, damping: 20 } }
+    show: { opacity: 1, scale: 1, transition: { type: "spring" as const,stiffness: 80, damping: 20 } }
 };
 
 // --- Data Arrays ---
