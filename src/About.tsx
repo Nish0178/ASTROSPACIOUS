@@ -25,7 +25,7 @@ const fadeUpVariant: Variants = {
 
 const scaleVariant: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
-    show: { opacity: 1, scale: 1, transition: { type: "spring" as const,stiffness: 80, damping: 20 } }
+    show: { opacity: 1, scale: 1, transition: { type: "spring" as const, stiffness: 80, damping: 20 } }
 };
 
 // --- Data Arrays ---
