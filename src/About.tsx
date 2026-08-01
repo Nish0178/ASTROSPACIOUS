@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Space_bg from "./Extra/Space-bg.tsx";
+import SpaceBg from "./Extra/Space-bg";
 
 import './css/base.css';
 import './css/About.css';
@@ -26,17 +26,20 @@ const leadership = [
     {
         name: "Anvita Srivastava",
         role: "Founder",
-        img: ""
+        img: "https://via.placeholder.com/160/0a0f23/ffffff?text=Anvita",
+        linkedin: "https://linkedin.com/"
     },
     {
         name: "Nishant trivedi",
         role: "Head Developer",
-        img: ""
+        img: "https://via.placeholder.com/160/0a0f23/ffffff?text=Nishant",
+        linkedin: "https://linkedin.com/"
     },
     {
         name: "Vivaan",
         role: "Head Marketing",
-        img: ""
+        img: "https://via.placeholder.com/160/0a0f23/ffffff?text=Vivaan",
+        linkedin: "https://linkedin.com/"
     }
 ];
 
@@ -53,31 +56,61 @@ function About() {
         setActiveIndex(newIndex);
     }
 
+    const handleScrollToDiscover = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault();
+        document.getElementById('about-content')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
-        <main>
-       <Space_bg />
+        <main className="about-page-wrapper">
+       <SpaceBg />
 
 <section className="about-hero">
+    <div className="about-hero-content fade-up animate-delay-1">
 
-    <div className="about-hero-content">
+        <img
+            src="/images/astrospacious-logo.jpeg"
+            alt="Astrospacious"
+            className="hero-logo fade-up animate-delay-2"
+        />
 
-        <span className="hero-tag">
-            ABOUT ASTROSPACIOUS
-        </span>
-
-        <h1 className="hero-title">
-            Inspiring the Next Generation of Space Explorers
+               <h1 className="hero-title fade-up animate-delay-3">
+            Empowering the Next Generation
+            <br />
+            of Space Explorers
         </h1>
 
-        <p className="hero-description">
+        <p className="hero-description fade-up animate-delay-4">
             Astrospacious is a global student-led space research and education
-            organization dedicated to making astronomy and space science more
-            accessible through innovation, collaboration, and hands-on learning.
+            organization committed to making astronomy and space science
+            accessible through innovation, collaboration, research,
+            and hands-on learning.
         </p>
+
+        <div className="hero-buttons fade-up animate-delay-5">
+
+            <a href="#about-content" onClick={handleScrollToDiscover} className="primary-btn">
+                Explore Our Journey
+            </a>
+
+            <a href="/contact" className="secondary-btn">
+                Join Community
+            </a>
+
+        </div>
+
+        <a href="#about-content" onClick={handleScrollToDiscover} className="scroll-indicator fade-up animate-delay-6">
+
+            <span>↓</span>
+
+            <p>Scroll to Discover</p>
+        </a>
 
     </div>
 
 </section>
+
+<section id="about-content" className="about-section"></section>
 
             <section className="info centered">
 
@@ -87,13 +120,15 @@ function About() {
             About Astrospacious
         </h2>
 
-        <p className="about-text">
-            Astrospacious is a global student-led space research and education organization dedicated to making space more accessible for everyone. Through research projects, educational initiatives, events, and engaging space content, we inspire curiosity, encourage innovation, and empower the next generation of space enthusiasts.
-        </p>
+        <div className="about-text-container">
+            <p className="about-text">
+                Astrospacious is a global student-led space research and education organization dedicated to making space more accessible for everyone. Through research projects, educational initiatives, events, and engaging space content, we inspire curiosity, encourage innovation, and empower the next generation of space enthusiasts.
+            </p>
 
-        <p className="about-text">
-            Today, Astrospacious is a growing community of <strong>1,000+ members across 6 continents</strong> and has successfully mentored <strong>35+ interns</strong>. Founded by <strong>Anvita Srivastava</strong>, Astrospacious continues to bring together passionate young minds who believe in learning, collaboration, and shaping the future of space exploration.
-        </p>
+            <p className="about-text">
+                Today, Astrospacious is a growing community of <strong>1,000+ members across 6 continents</strong> and has successfully mentored <strong>35+ interns</strong>. Founded by <strong>Anvita Srivastava</strong>, Astrospacious continues to bring together passionate young minds who believe in learning, collaboration, and shaping the future of space exploration.
+            </p>
+        </div>
 
     </div>
 
@@ -143,7 +178,7 @@ function About() {
                     else if (index > activeIndex) className += " right inactive";
 
                     return (
-                        <div key={index} className={className}>
+                        <div key={card.title} className={className}>
                             <h2 className="card-title">{card.title}</h2>
                             <p className="card-content">{card.content}</p>
                         </div>
@@ -151,24 +186,31 @@ function About() {
                 })}
             </div>
 
-            <br className="margin-vertical"></br>
+            <br className="margin-vertical" />
 
-            <h1 className="gradient textclip centered margin-vertical">
+            <h1 className="gradient-text textclip centered margin-vertical">
     Meet our team
 </h1>
 
 <div className="team">
     <div className="Heads margin-vertical">
         {leadership.map((member, index) => (
-            <div key={index} className="centered">
-                <img
-                    className="image glow glow-hover"
-                    src={member.img}
-                    alt={member.name}
-                />
+            <a key={member.name} href={member.linkedin} target="_blank" rel="noreferrer" className="centered member-card">
+                <div className="member-image-wrapper">
+                    <img
+                        className="image glow glow-hover"
+                        src={member.img}
+                        alt={member.name}
+                    />
+                    <div className="linkedin-icon">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </div>
+                </div>
                 <h2 className="name">{member.name}</h2>
                 <p className="role">{member.role}</p>
-            </div>
+            </a>
         ))}
     </div>
 </div>

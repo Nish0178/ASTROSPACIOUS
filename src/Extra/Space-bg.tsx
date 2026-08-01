@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-function Space_bg() {
+function SpaceBg() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -140,4 +140,4 @@ function Space_bg() {
   );
 }
 
-export default Space_bg;
+export default SpaceBg;
