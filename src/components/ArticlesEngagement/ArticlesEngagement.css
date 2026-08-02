@@ -1,0 +1,318 @@
+.articles-engagement-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 100px auto 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    z-index: 10;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    width: 100%;
+}
+
+.newsletter-container {
+    display: flex;
+    background: rgba(19, 28, 59, 0.4);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 60px;
+    gap: 60px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.02);
+    align-items: center;
+}
+
+.newsletter-content {
+    flex: 1;
+}
+
+.newsletter-content h2 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 16px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.newsletter-content p {
+    color: #b6bfd6;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.mail-icon {
+    position: absolute;
+    left: 16px;
+    color: #8892b0;
+}
+
+.input-wrapper input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 16px 16px 16px 48px;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: #5b7fff;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(91, 127, 255, 0.2);
+}
+
+.subscribe-btn {
+    background: linear-gradient(90deg, #5b7fff, #9d4edd);
+    color: white;
+    border: none;
+    padding: 0 32px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.subscribe-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(91, 127, 255, 0.4);
+}
+
+.status-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.status-msg.error {
+    color: #fca5a5;
+}
+
+.status-msg.success {
+    color: #86efac;
+}
+
+/* Newsletter Features */
+.newsletter-features {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.newsletter-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 24px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.newsletter-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-4px);
+    border-color: rgba(91, 127, 255, 0.3);
+}
+
+.card-icon {
+    font-size: 2rem;
+}
+
+.card-info h4 {
+    color: white;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.card-info p {
+    color: #8892b0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Final CTA */
+.final-cta-section {
+    width: 100%;
+    text-align: center;
+    padding: 80px 40px;
+    background: radial-gradient(circle at center, rgba(91, 127, 255, 0.1) 0%, rgba(19, 28, 59, 0.2) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.final-cta-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(157, 78, 221, 0.05) 0%, transparent 60%);
+    z-index: 0;
+}
+
+.cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.cta-content h2 {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 24px;
+    font-weight: 800;
+}
+
+.cta-content p {
+    color: #b6bfd6;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cta-btn {
+    padding: 16px 32px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cta-btn.primary {
+    background: linear-gradient(90deg, #5b7fff, #9d4edd);
+    color: white;
+    border: none;
+    box-shadow: 0 10px 20px rgba(91, 127, 255, 0.3);
+}
+
+.cta-btn.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(91, 127, 255, 0.5);
+}
+
+.cta-btn.secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.cta-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #5b7fff;
+    transform: translateY(-3px);
+}
+
+/* Social Links */
+.social-links-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 24px;
+}
+
+.social-icon-link {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #b6bfd6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.social-icon-link:hover {
+    color: white;
+    background: #5b7fff;
+    border-color: #5b7fff;
+    box-shadow: 0 0 20px rgba(91, 127, 255, 0.5);
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .newsletter-container {
+        flex-direction: column;
+        padding: 40px;
+        gap: 40px;
+    }
+    
+    .newsletter-features {
+        width: 100%;
+    }
+    
+    .cta-content h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .newsletter-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+    }
+    
+    .subscribe-btn {
+        padding: 16px;
+    }
+    
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+    }
+}
