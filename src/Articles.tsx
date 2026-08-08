@@ -1,8 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ChevronDown } from "lucide-react";
 import SpaceBg from "./Extra/Space-bg.tsx";
-import { articles } from "./data/articles";
+import { articleApi, PublicArticle } from "./services/api/articleApi";
 import FeaturedArticle from "./components/FeaturedArticle/FeaturedArticle";
 import { ArticlesGrid } from "./components/LatestArticles/ArticlesGrid";
 import { ArticlesEngagement } from "./components/ArticlesEngagement/ArticlesEngagement";
@@ -25,38 +25,135 @@ const FILTER_CATEGORIES = [
 ];
 
 export default function Articles() {
-  const [search, setSearch] = useState("");
-  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [articles, setArticles] = useState<PublicArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  useEffect(() => {
+  loadArticles();
+}, []);
+
+const loadArticles = async () => {
+  try {
+    setLoading(true);
+
+    const response = await articleApi.getArticles();
+
+    setArticles(response);
+
+  } catch (err) {
+    console.error(err);
+    setError("Failed to load articles");
+  } finally {
+    setLoading(false);
+  }
+};
+
   // States for the new Search & Filter section
-  const [filterSearch, setFilterSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOption, setSortOption] = useState("Latest");
 
+  // Handlers for hero buttons
+  const scrollToFeatured = () => {
+    document.getElementById("featured-article")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToFilters = () => {
+    document.getElementById("search-filter")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Base published articles
+  const publishedArticles = useMemo(() => {
+    return articles.filter((article) => {
+      const isPublished = !article.status || String(article.status).toLowerCase() === 'published';
+      const isDeleted = article.isDeleted === true;
+      return isPublished && !isDeleted;
+    });
+  }, [articles]);
+
+  // Featured articles
+  const featuredArticles = useMemo(() => {
+    return publishedArticles.filter(a => a.featured);
+  }, [publishedArticles]);
+
+  // Latest articles (unaffected by search)
+  const latestArticles = useMemo(() => {
+    // API already returns latest first based on sort order
+    return publishedArticles.slice(0, 6);
+  }, [publishedArticles]);
+
   // Filtering logic
   const filteredArticles = useMemo(() => {
-    return articles.filter((article) => {
-      const query = filterSearch.toLowerCase();
-      const matchesSearch = 
-        article.title.toLowerCase().includes(query) ||
-        article.category.toLowerCase().includes(query) ||
-        article.description.toLowerCase().includes(query);
+    return publishedArticles.filter((article) => {
+      const query = searchQuery.trim().toLowerCase();
+      
+      const searchableText = [
+        article.title,
+        article.slug,
+        article.excerpt,
+        article.author?.name,
+        article.category?.name,
+        ...(article.tags ?? [])
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      const matchesSearch = !query || searchableText.includes(query);
 
       const matchesCategory = 
         selectedCategory === "All" || 
-        article.category.toLowerCase() === selectedCategory.toLowerCase();
+        (article.category?.name && article.category.name.toLowerCase() === selectedCategory.toLowerCase());
 
       return matchesSearch && matchesCategory;
     });
-  }, [filterSearch, selectedCategory]);
+  }, [searchQuery, selectedCategory, publishedArticles]);
 
   const sortedArticles = useMemo(() => {
     const sorted = [...filteredArticles];
     if (sortOption === "Oldest") {
-       sorted.reverse();
+      sorted.reverse();
+    } else if (sortOption === "Reading Time") {
+      sorted.sort((a, b) => a.readingTime - b.readingTime);
+    } else if (sortOption === "Most Popular") {
+      // Just a mock shuffle/sort based on title length or random to simulate popular
+      sorted.sort((a, b) => b.title.length - a.title.length);
     }
+    // "Latest" is default as mock data is chronological
     return sorted;
   }, [filteredArticles, sortOption]);
 
+  if (loading) {
+  return (
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontSize: "22px",
+      }}
+    >
+      Loading articles...
+    </div>
+  );
+}
+if (error) {
+  return (
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "red",
+        fontSize: "22px",
+      }}
+    >
+      {error}
+    </div>
+  );
+}
   return (
     <main className="articles-page">
       <SpaceBg />
@@ -88,26 +185,8 @@ export default function Articles() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="hero-ctas"
           >
-            <button className="cta-btn primary">Start Reading</button>
-            <button className="cta-btn secondary">Browse Categories</button>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="search-container"
-          >
-            <div className="search-bar-wrapper">
-              <Search className="search-icon" size={20} />
-              <input
-                type="text"
-                placeholder="Search articles, topics, planets, missions..."
-                className="premium-search-input"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+            <button className="cta-btn primary" onClick={scrollToFeatured}>Start Reading</button>
+            <button className="cta-btn secondary" onClick={scrollToFilters}>Browse Categories</button>
           </motion.div>
         </div>
 
@@ -156,6 +235,7 @@ export default function Articles() {
 
       {/* New Premium Search & Filter Section */}
       <motion.section 
+        id="search-filter"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.5 }}
@@ -167,11 +247,11 @@ export default function Articles() {
             type="text"
             placeholder="Search articles, topics, missions, planets..."
             className="filter-search-input"
-            value={filterSearch}
-            onChange={(e) => setFilterSearch(e.target.value)}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
-          {filterSearch && (
-            <button className="clear-search-btn" onClick={() => setFilterSearch("")}>
+          {searchQuery && (
+            <button className="clear-search-btn" onClick={() => setSearchQuery("")}>
               <X size={18} />
             </button>
           )}
@@ -206,7 +286,7 @@ export default function Articles() {
             >
               <option value="Latest">Latest</option>
               <option value="Most Popular">Most Popular</option>
-              <option value="Featured">Featured</option>
+              <option value="Reading Time">Reading Time</option>
               <option value="Oldest">Oldest</option>
             </select>
             <ChevronDown className="sort-icon" size={16} />
@@ -238,11 +318,23 @@ export default function Articles() {
         </AnimatePresence>
       </motion.section>
 
-      {/* Featured Article Section */}
-      <FeaturedArticle article={articles.find(a => a.featured) || articles[0]} />
+      {featuredArticles.length > 0 && (
+        <FeaturedArticle articles={featuredArticles} />
+      )}
 
-      {/* Latest Articles Grid Section */}
-      <ArticlesGrid />
+      {/* Main Search Results Grid Section */}
+      <ArticlesGrid 
+        articles={sortedArticles} 
+        title="Search Results" 
+        subtitle="Articles matching your search and category filters." 
+      />
+
+      {/* Latest Articles Grid Section (Unaffected by search) */}
+      <ArticlesGrid 
+        articles={latestArticles} 
+        title="Latest Articles" 
+        subtitle="Discover our newest articles covering astronomy, space exploration, technology, cosmology, research, and scientific discoveries." 
+      />
 
       {/* Engagement Section (Newsletter, CTA, Socials) */}
       <ArticlesEngagement />

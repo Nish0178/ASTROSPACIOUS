@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { NewsletterCard } from "./NewsletterCard";
+import { useNewsletter } from "../../hooks/useNewsletter";
 import "./ArticlesEngagement.css";
 
 const features = [
@@ -13,25 +14,14 @@ const features = [
 
 export function NewsletterSection() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "error" | "success" | "exists">("idle");
+  const { subscribe, status, errorMessage, resetStatus } = useNewsletter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) {
-      setStatus("error");
-      return;
+    const success = await subscribe(email);
+    if (success) {
+      setEmail("");
     }
-    if (!email.includes("@")) {
-      setStatus("error");
-      return;
-    }
-    if (email === "test@astrospacious.com") {
-      setStatus("exists");
-      return;
-    }
-    // Simulate successful subscription
-    setStatus("success");
-    setEmail("");
   };
 
   return (
@@ -54,26 +44,45 @@ export function NewsletterSection() {
             <div className="input-wrapper">
               <Mail className="mail-icon" size={20} />
               <input 
-                type="email" 
+                type="text" 
                 placeholder="Enter your email address" 
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  if (status !== "idle") setStatus("idle");
+                  resetStatus();
                 }}
+                disabled={status === "loading"}
               />
             </div>
-            <button type="submit" className="subscribe-btn">Subscribe</button>
+            <button 
+              type="submit" 
+              className="subscribe-btn"
+              disabled={status === "loading"}
+            >
+              {status === "loading" ? (
+                <>
+                  <Loader2 className="spinner-icon" size={18} style={{ animation: "spin 1s linear infinite", marginRight: "8px", verticalAlign: "middle" }} />
+                  Subscribing...
+                </>
+              ) : (
+                "Subscribe"
+              )}
+            </button>
           </form>
 
+          {status === "empty" && (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="status-msg error">
+              <AlertCircle size={16} /> {errorMessage || "Please enter an email address."}
+            </motion.p>
+          )}
           {status === "error" && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="status-msg error">
-              <AlertCircle size={16} /> Please enter a valid email address.
+              <AlertCircle size={16} /> {errorMessage || "Please enter a valid email address."}
             </motion.p>
           )}
           {status === "exists" && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="status-msg error">
-              <AlertCircle size={16} /> This email is already subscribed!
+              <AlertCircle size={16} /> {errorMessage || "This email is already subscribed!"}
             </motion.p>
           )}
           {status === "success" && (

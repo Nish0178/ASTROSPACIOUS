@@ -20,79 +20,111 @@ import About from "./About.tsx";
 
 import TextEdit from "./Dev-Stuff/text-edit.tsx";
 
+// Public Layout Wrapper
+const PublicLayout = ({ children }: { children: React.ReactNode }) => (
+  <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <Nav />
+    <div style={{ flex: 1 }}>{children}</div>
+    <Footer />
+  </div>
+);
+
+import AdminLayout from "./admin/layout/AdminLayout";
+import Login from "./admin/pages/Login";
+import AdminDashboard from "./admin/pages/Dashboard";
+import AdminArticles from "./admin/pages/Articles";
+import CreateArticle from "./admin/pages/CreateArticle";
+import EditArticle from "./admin/pages/EditArticle";
+import TrashArticles from "./admin/pages/Trash";
+import AdminMagazines from "./admin/pages/Magazines";
+import AdminCategories from "./admin/pages/Categories";
+import AdminNewsletter from "./admin/pages/Newsletter";
+import AdminSubscribers from "./admin/pages/Subscribers";
+import AdminMessages from "./admin/pages/Messages";
+import AdminMedia from "./admin/pages/Media";
+import AdminSettings from "./admin/pages/Settings";
+import { AuthProvider } from "./admin/auth/AuthContext";
+import ProtectedRoute from "./admin/auth/ProtectedRoute";
+import PublicAuthRoute from "./admin/auth/PublicAuthRoute";
+import "./admin/styles/admin.css";
+
 export default function App() {
   return (
-    <BrowserRouter>
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Nav />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Admin Routes - Login */}
+          <Route element={<PublicAuthRoute />}>
+            <Route path="/admin/login" element={<Login />} />
+          </Route>
 
-        <div style={{ flex: 1 }}>
-          <Routes>
-            {/* Home */}
-            <Route path="/" element={<Home />} />
+          {/* Admin Routes - Protected Dashboard */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/admin/*" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="articles" element={<AdminArticles />} />
+              <Route path="articles/create" element={<CreateArticle />} />
+              <Route path="articles/edit/:id" element={<EditArticle />} />
+              <Route path="articles/trash" element={<TrashArticles />} />
+              <Route path="magazines" element={<AdminMagazines />} />
+              <Route path="categories" element={<AdminCategories />} />
+              <Route path="newsletter" element={<AdminNewsletter />} />
+              <Route path="subscribers" element={<AdminSubscribers />} />
+              <Route path="messages" element={<AdminMessages />} />
+              <Route path="media" element={<AdminMedia />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
+          </Route>
 
-            {/* Articles */}
-            <Route path="/Articles" element={<Articles />} />
-            <Route path="/articles/:slug" element={<ArticleDetails />} />
+          {/* Public Routes */}
+          <Route path="/*" element={
+            <PublicLayout>
+              <Routes>
+                {/* Home */}
+                <Route path="/" element={<Home />} />
 
-            {/* Magazines */}
-            <Route path="/Magazines" element={<Magazines />} />
-            <Route path="/magazines" element={<Magazine />} />
-            <Route
-              path="/magazines/:slug"
-              element={<MagazineDetails />}
-            />
+                {/* Articles */}
+                <Route path="/Articles" element={<Articles />} />
+                <Route path="/articles/:slug" element={<ArticleDetails />} />
 
-            {/* About */}
-            <Route path="/About" element={<About />} />
+                {/* Magazines */}
+                <Route path="/Magazines" element={<Magazines />} />
+                <Route path="/magazines" element={<Magazine />} />
+                <Route path="/magazines/:slug" element={<MagazineDetails />} />
 
-            {/* Contact */}
-            <Route path="/Contact" element={<Contact />} />
+                {/* About */}
+                <Route path="/About" element={<About />} />
 
-            {/* Thank You */}
-            <Route path="/thank-you" element={<ThankYou />} />
+                {/* Contact */}
+                <Route path="/Contact" element={<Contact />} />
 
-            {/* Subjects */}
-            <Route path="/Subject" element={<Subject />} />
-            <Route
-              path="/Topic/:subject/:subtopic"
-              element={<Topic />}
-            />
+                {/* Thank You */}
+                <Route path="/thank-you" element={<ThankYou />} />
 
-            {/* Select */}
-            <Route path="/Select" element={<Select />} />
+                {/* Subjects */}
+                <Route path="/Subject" element={<Subject />} />
+                <Route path="/Topic/:subject/:subtopic" element={<Topic />} />
 
-            {/* Privacy Policy */}
-            <Route
-              path="/privacy-policy"
-              element={<PrivacyPolicy />}
-            />
+                {/* Select */}
+                <Route path="/Select" element={<Select />} />
 
-            {/* Terms & Conditions */}
-            <Route
-              path="/terms-and-conditions"
-              element={<TermsConditions />}
-            />
+                {/* Privacy Policy */}
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-            {/* Editor */}
-            <Route path="/Write" element={<TextEdit />} />
+                {/* Terms & Conditions */}
+                <Route path="/terms-and-conditions" element={<TermsConditions />} />
 
-            {/* 404 */}
-            <Route
-              path="*"
-              element={<h1 style={{ textAlign: "center" }}>404</h1>}
-            />
-          </Routes>
-        </div>
+                {/* Editor */}
+                <Route path="/Write" element={<TextEdit />} />
 
-        <Footer />
-      </div>
-    </BrowserRouter>
+                {/* 404 */}
+                <Route path="*" element={<h1 style={{ textAlign: "center" }}>404</h1>} />
+              </Routes>
+            </PublicLayout>
+          } />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

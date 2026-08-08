@@ -18,10 +18,13 @@ export function FinalCTA() {
           research, education, and space exploration.
         </p>
         <div className="cta-buttons">
-          <button className="cta-btn primary" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <button 
+            className="cta-btn primary" 
+            onClick={() => document.getElementById('latest-articles')?.scrollIntoView({ behavior: 'smooth' })}
+          >
             Explore More Articles
           </button>
-          <Link to="/" className="cta-btn secondary">
+          <Link to="/Contact" className="cta-btn secondary">
             Join Our Community
           </Link>
         </div>

@@ -1,13 +1,11 @@
 import { motion } from "framer-motion";
-import { Linkedin, Instagram, Github, Youtube, Twitter } from "lucide-react";
+import { Linkedin, Instagram, Mail } from "lucide-react";
 import "./ArticlesEngagement.css";
 
 const socials = [
-  { icon: Linkedin, name: "LinkedIn", href: "#" },
-  { icon: Instagram, name: "Instagram", href: "#" },
-  { icon: Github, name: "GitHub", href: "#" },
-  { icon: Youtube, name: "YouTube", href: "#" },
-  { icon: Twitter, name: "X (Twitter)", href: "#" }
+  { icon: Linkedin, name: "LinkedIn", href: "https://www.linkedin.com/company/astrospacious/" },
+  { icon: Instagram, name: "Instagram", href: "https://www.instagram.com/astrospacious/" },
+  { icon: Mail, name: "Email", href: "mailto:outreach.astrospacious@gmail.com" }
 ];
 
 export function SocialLinks() {
@@ -24,6 +22,8 @@ export function SocialLinks() {
           <motion.a 
             key={index}
             href={Social.href}
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.15, y: -5 }}
             transition={{ type: "spring", stiffness: 300 }}
             className="social-icon-link"
