@@ -30,9 +30,26 @@ export interface PublicArticle {
   isDeleted?: boolean;
 }
 
+async function fetchWithRetry(url: string, options?: RequestInit, retries = 2): Promise<Response> {
+  try {
+    const response = await fetch(url, options);
+    // Retry on server errors (5xx)
+    if (!response.ok && response.status >= 500 && retries > 0) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+    return response;
+  } catch (err) {
+    if (retries > 0) {
+      await new Promise(res => setTimeout(res, 1000));
+      return fetchWithRetry(url, options, retries - 1);
+    }
+    throw err;
+  }
+}
+
 export const articleApi = {
   async getArticles(): Promise<PublicArticle[]> {
-    const response = await fetch(`${API_URL}/articles`);
+    const response = await fetchWithRetry(`${API_URL}/articles`);
 
     if (!response.ok) {
       throw new Error("Failed to fetch articles");
@@ -44,7 +61,7 @@ export const articleApi = {
   },
 
   async getArticle(id: string): Promise<PublicArticle> {
-    const response = await fetch(`${API_URL}/articles/${id}`);
+    const response = await fetchWithRetry(`${API_URL}/articles/${id}`);
 
     if (!response.ok) {
       throw new Error("Article not found");
@@ -56,7 +73,7 @@ export const articleApi = {
   },
 
   async getArticleBySlug(slug: string): Promise<PublicArticle> {
-    const response = await fetch(`${API_URL}/articles/slug/${slug}`);
+    const response = await fetchWithRetry(`${API_URL}/articles/slug/${slug}`);
 
     if (!response.ok) {
       throw new Error("Article not found");

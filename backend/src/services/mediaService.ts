@@ -9,7 +9,6 @@ const storageProvider: StorageProvider = new LocalStorageProvider();
 export const mediaService = {
 
   async uploadFile(file: Express.Multer.File, uploaderId: string, folder: "images" | "pdfs") {
-    // Pass to abstract storage layer
     const storageResult = await storageProvider.uploadFile({
       buffer: file.buffer,
       originalName: file.originalname,
