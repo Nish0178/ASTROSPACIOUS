@@ -32,6 +32,7 @@ app.use(cors({
     }
     return callback(null, true);
   },
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   credentials: true
 }));
 app.use(compression());
