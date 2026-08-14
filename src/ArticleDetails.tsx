@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
   ArrowLeft, Calendar, Clock, Linkedin, Twitter, Facebook, 
-  Link2, ChevronLeft, ChevronRight, Menu, X 
+  Link2, ChevronLeft, ChevronRight, Menu, X, Check
 } from "lucide-react";
 import { ArticleCard } from "./components/LatestArticles/ArticleCard";
 import { articleApi, PublicArticle } from "./services/api/articleApi";
@@ -14,6 +14,7 @@ export default function ArticleDetails() {
   const navigate = useNavigate();
   const [activeTocId, setActiveTocId] = useState("");
   const [mobileTocOpen, setMobileTocOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   
   const [article, setArticle] = useState<PublicArticle | null>(null);
   const [relatedArticles, setRelatedArticles] = useState<PublicArticle[]>([]);
@@ -120,6 +121,24 @@ export default function ArticleDetails() {
     }
   };
 
+  const handleShare = (platform: string) => {
+    const url = window.location.href;
+    const text = article?.title || "";
+    if (platform === 'twitter') {
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    } else if (platform === 'facebook') {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+    } else if (platform === 'linkedin') {
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <main className="article-details-page">
       <motion.div className="scroll-progress-bar" style={{ scaleX }} />
@@ -137,7 +156,7 @@ export default function ArticleDetails() {
           
           <div className="hero-meta">
             <div className="hero-author">
-              <img src={article.author.photo || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={article.author.name} />
+              <img src={article.author.photo || "/logos/logo-small.png"} alt={article.author.name} />
               <div className="hero-author-info">
                 <span className="hero-author-name">{article.author.name}</span>
                 <span className="hero-author-role">{article.author.bio || "Science Communicator"}</span>
@@ -227,20 +246,51 @@ export default function ArticleDetails() {
             <div className="share-section">
               <span>Share this article:</span>
               <div className="share-btns">
-                <button className="share-btn"><Linkedin size={18} /></button>
-                <button className="share-btn"><Twitter size={18} /></button>
-                <button className="share-btn"><Facebook size={18} /></button>
-                <button className="share-btn"><Link2 size={18} /></button>
+                <button 
+                  className="share-btn"
+                  onClick={() => handleShare('twitter')}
+                  aria-label="Share on X"
+                  title="Share on X"
+                >
+                  <Twitter size={16} /> <span>X</span>
+                </button>
+                <button 
+                  className="share-btn"
+                  onClick={() => handleShare('facebook')}
+                  aria-label="Share on Facebook"
+                  title="Share on Facebook"
+                >
+                  <Facebook size={16} /> <span>Facebook</span>
+                </button>
+                <button 
+                  className="share-btn"
+                  onClick={() => handleShare('linkedin')}
+                  aria-label="Share on LinkedIn"
+                  title="Share on LinkedIn"
+                >
+                  <Linkedin size={16} /> <span>LinkedIn</span>
+                </button>
+                <button 
+                  className={`share-btn ${copied ? 'copied' : ''}`}
+                  onClick={handleCopyLink}
+                  aria-label="Copy Link"
+                  title="Copy Link"
+                >
+                  {copied ? <Check size={16} /> : <Link2 size={16} />} 
+                  <span>{copied ? "Link copied!" : "Copy Link"}</span>
+                </button>
               </div>
             </div>
 
             <div className="author-card">
-              <img src={article.author.photo || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={article.author.name} />
+              <div className="author-avatar-container">
+                <img src="/logos/logo-small.png" alt="Astrospacious" />
+              </div>
               <div className="author-card-info">
                 <h3>{article.author.name}</h3>
-                <p>{article.author.bio || "Senior Science Communicator"}</p>
-                <p className="author-bio">
-                  {article.author.bio || `${article.author.name} is a passionate science writer exploring the mysteries of the cosmos, bringing complex astrophysics and space missions to the general public.`}
+                <p className="author-bio">{article.author.bio || "Science Communicator"}</p>
+                <p className="author-meta">
+                  {article.category.name} &bull; {new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
               </div>
             </div>

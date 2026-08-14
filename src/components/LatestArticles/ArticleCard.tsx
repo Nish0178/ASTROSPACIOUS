@@ -38,7 +38,7 @@ export function ArticleCard({ article, index }: ArticleCardProps) {
         
         <div className="card-footer">
           <div className="card-author">
-            <img src={article.author.photo || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={article.author.name} className="author-avatar" />
+            <img src={article.author.photo || "/logos/logo-small.png"} alt={article.author.name} className="author-avatar" />
             <span className="author-name">{article.author.name}</span>
           </div>
           
