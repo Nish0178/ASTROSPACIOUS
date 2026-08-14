@@ -9,6 +9,7 @@ import { buildContactAutoReply } from "../emails/contact/autoReply";
 const resend = new Resend(env.RESEND_API_KEY || "dummy_key");
 const FROM_EMAIL = "Astrospacious <newsletter@astrospacious.com>"; 
 const APP_URL = process.env.APP_URL || (env.NODE_ENV === "production" ? "https://astrospacious.com" : "http://localhost:5173"); 
+const API_URL = process.env.API_URL || (env.NODE_ENV === "production" ? "https://astrospacious-api.onrender.com" : "http://localhost:5000");
 
 export const emailService = {
   
@@ -21,7 +22,7 @@ export const emailService = {
       return;
     }
 
-    const html = buildVerificationEmail({ token, appUrl: APP_URL });
+    const html = buildVerificationEmail({ token, appUrl: APP_URL, apiUrl: API_URL });
 
     const response = await resend.emails.send({
       from: FROM_EMAIL,

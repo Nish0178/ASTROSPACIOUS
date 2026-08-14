@@ -23,11 +23,8 @@ export const newsletterController = {
       const token = req.params.token as string;
       const result = await newsletterService.verify(token);
 
-      return res.status(200).json({
-        success: true,
-        message: result.message,
-        data: {}
-      });
+      const APP_URL = process.env.APP_URL || (process.env.NODE_ENV === "production" ? "https://astrospacious.com" : "http://localhost:5173");
+      return res.redirect(`${APP_URL}/Articles?verified=true`);
     } catch (error) {
       next(error);
     }

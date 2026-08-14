@@ -4,10 +4,11 @@ import { renderHeader, renderFooter, renderButton, renderTypography } from "../s
 interface VerificationPayload {
   token: string;
   appUrl: string;
+  apiUrl: string;
 }
 
 export const buildVerificationEmail = (payload: VerificationPayload) => {
-  const verificationLink = `${payload.appUrl}/api/v1/newsletter/verify/${payload.token}`;
+  const verificationLink = `${payload.apiUrl}/api/v1/newsletter/verify/${payload.token}`;
 
   const content = `
     ${renderHeader("ASTROSPACIOUS")}
