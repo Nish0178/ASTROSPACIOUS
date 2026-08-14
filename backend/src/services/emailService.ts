@@ -8,24 +8,34 @@ import { buildContactAutoReply } from "../emails/contact/autoReply";
 
 const resend = new Resend(env.RESEND_API_KEY || "dummy_key");
 const FROM_EMAIL = "Astrospacious <newsletter@astrospacious.com>"; 
-const APP_URL = process.env.APP_URL || "http://localhost:5173"; 
+const APP_URL = process.env.APP_URL || (env.NODE_ENV === "production" ? "https://astrospacious.com" : "http://localhost:5173"); 
 
 export const emailService = {
   
   async sendVerificationEmail(email: string, token: string) {
     if (!env.RESEND_API_KEY) {
+      if (env.NODE_ENV === "production") {
+        throw new Error("RESEND_API_KEY is not configured in production environment.");
+      }
       console.log(`[Mock Email] Verification for ${email} with token ${token}`);
       return;
     }
 
     const html = buildVerificationEmail({ token, appUrl: APP_URL });
 
-    return resend.emails.send({
+    const response = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: "Verify Your Astrospacious Subscription",
       html
     });
+
+    if (response.error) {
+      console.error("Resend Verification Email Error:", response.error);
+      throw new Error(`Failed to send verification email: ${response.error.message}`);
+    }
+
+    return response;
   },
 
   async sendNewArticleEmail(sub: { email: string, unsubscribeToken: string }, article: any) {
