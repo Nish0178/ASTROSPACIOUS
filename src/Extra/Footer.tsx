@@ -184,6 +184,16 @@ const Footer: React.FC = () => {
             Terms & Conditions
           </a>
         </li>
+        <li>
+          <a
+            href="/careers"
+            style={styles.link}
+            onMouseEnter={hoverIn}
+            onMouseLeave={hoverOut}
+          >
+            Careers
+          </a>
+        </li>
       </ul>
 
       {/* Email */}

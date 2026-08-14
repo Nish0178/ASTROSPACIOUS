@@ -16,6 +16,7 @@ import Select from "./Select.tsx";
 import Topic from "./Topic.tsx";
 import Subject from "./Subject.tsx";
 import Home from "./Home.tsx";
+import Careers from "./Careers.tsx";
 import About from "./About.tsx";
 
 import TextEdit from "./Dev-Stuff/text-edit.tsx";
@@ -87,6 +88,9 @@ export default function App() {
                 {/* Articles */}
                 <Route path="/Articles" element={<Articles />} />
                 <Route path="/articles/:slug" element={<ArticleDetails />} />
+
+                {/* Careers */}
+                <Route path="/careers" element={<Careers />} />
 
                 {/* Magazines */}
                 <Route path="/Magazines" element={<Magazines />} />

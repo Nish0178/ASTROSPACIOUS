@@ -239,6 +239,33 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Publish Your Work Section */}
+      <section className="showcaseSection" style={{ paddingBottom: '60px' }}>
+        <div className="contentWrapper" style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto', padding: '64px 32px', background: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(20px)', borderRadius: '24px', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+          <h2 className="sectionTitle gradient-text centered" style={{ marginBottom: '24px', fontSize: '36px' }}>Publish Your Work with Astrospacious</h2>
+          <p className="ctaSubtitle" style={{ marginBottom: '40px', color: '#cbd5e1', lineHeight: '1.6' }}>
+            Have original astronomy, astrophysics, space science, or research-focused work to share?
+            <br/><br/>
+            Submit your work to the Astrospacious editorial team.
+          </p>
+          <button 
+            className="ctaButtonLarge gradient"
+            style={{ padding: '18px 48px', fontSize: '18px' }}
+            onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSeP5ZAD8YVwpt-grbPh96oY1zh9dGegkoYWclAK_pEfZgcTMA/viewform', '_blank', 'noopener,noreferrer')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 20px 50px rgba(139, 92, 246, 0.6)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 15px 50px rgba(139, 92, 246, 0.5)';
+            }}
+          >
+            Publish Your Article &rarr;
+          </button>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="finalCTA">
         <div className="ctaContent">
