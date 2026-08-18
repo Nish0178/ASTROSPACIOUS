@@ -1,61 +1,12 @@
 import React from "react";
 import PolicyCard from "./components/PolicyCard";
 import SectionHeading from "./components/SectionHeading";
+import "./css/PrivacyPolicy.css";
 
 export default function PrivacyPolicy() {
-  const styles: Record<string, React.CSSProperties> = {
-    page: {
-      minHeight: "100vh",
-      background:
-        "radial-gradient(circle at top, #1E1B4B 0%, #0B1026 45%, #060816 100%)",
-      color: "#fff",
-      fontFamily: "'Inter', sans-serif",
-      padding: "40px 20px 80px",
-    },
-
-    container: {
-      maxWidth: "1150px",
-      margin: "0 auto",
-    },
-
-    toc: {
-      background: "rgba(17,24,39,.75)",
-      border: "1px solid rgba(124,92,255,.25)",
-      borderRadius: "20px",
-      padding: "30px",
-      marginBottom: "50px",
-      backdropFilter: "blur(18px)",
-    },
-
-    tocTitle: {
-      fontSize: "28px",
-      color: "#fff",
-      marginBottom: "20px",
-      fontWeight: 700,
-    },
-
-    list: {
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))",
-      gap: "14px",
-      color: "#CBD5E1",
-      fontSize: "17px",
-      lineHeight: 2,
-    },
-
-    footer: {
-      marginTop: "70px",
-      textAlign: "center",
-      color: "#94A3B8",
-      borderTop: "1px solid rgba(255,255,255,.08)",
-      paddingTop: "35px",
-      lineHeight: 1.8,
-    },
-  };
-
   return (
-    <div style={styles.page}>
-      <div style={styles.container}>
+    <div className="privacy-page">
+      <div className="privacy-container">
 
         <SectionHeading
           title="Privacy Policy"
@@ -64,10 +15,10 @@ export default function PrivacyPolicy() {
 
         {/* Table of Contents */}
 
-        <div style={styles.toc}>
-          <h2 style={styles.tocTitle}>Contents</h2>
+        <div className="privacy-toc">
+          <h2 className="privacy-tocTitle">Contents</h2>
 
-          <div style={styles.list}>
+          <div className="privacy-list">
             <div>🔒 Information We Collect</div>
             <div>📊 How We Use Information</div>
             <div>🍪 Cookies & Analytics</div>
@@ -117,7 +68,7 @@ export default function PrivacyPolicy() {
 
         {/* More cards will be added here */}
 
-        <div style={styles.footer}>
+        <div className="privacy-footer">
           <h2>Questions about your privacy?</h2>
 
           <p>

@@ -1,0 +1,258 @@
+.terms-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg,#071428 0%,#081A32 50%,#0A0F1F 100%);
+  color: #F8FAFC;
+  font-family: 'Inter', sans-serif;
+  padding: 60px 20px;
+}
+
+.terms-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.terms-hero {
+  text-align: center;
+  padding: 70px 40px;
+  border-radius: 28px;
+  background: linear-gradient(135deg,#0B1E39,#11294D,#173A67);
+  border: 1px solid rgba(59,130,246,.25);
+  margin-bottom: 60px;
+  box-shadow: 0 25px 70px rgba(0,0,0,.35);
+}
+
+.terms-heroIcon {
+  font-size: 70px;
+  margin-bottom: 25px;
+}
+
+.terms-heroTitle {
+  font-size: 54px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  color: #FFFFFF;
+}
+
+.terms-heroSubtitle {
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 20px;
+  line-height: 1.8;
+  color: #CBD5E1;
+}
+
+.terms-badge {
+  margin-top: 35px;
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: #2563EB;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.terms-overview {
+  background: #0F172A;
+  border-radius: 22px;
+  padding: 40px;
+  margin-bottom: 50px;
+  border: 1px solid rgba(59,130,246,.20);
+}
+
+.terms-overviewTitle {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.terms-overviewText {
+  color: #CBD5E1;
+  line-height: 1.9;
+  font-size: 17px;
+  margin-bottom: 30px;
+}
+
+.terms-overviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 20px;
+}
+
+.terms-overviewItem {
+  background: #162238;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(59,130,246,.15);
+  font-size: 16px;
+  color: #E2E8F0;
+}
+
+.terms-sectionDivider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,.08);
+  margin: 70px 0;
+}
+
+.terms-section {
+  display: flex;
+  gap: 35px;
+  margin-bottom: 60px;
+}
+
+.terms-number {
+  font-size: 64px;
+  font-weight: 800;
+  color: #2563EB;
+  min-width: 90px;
+}
+
+.terms-content {
+  flex: 1;
+}
+
+.terms-heading {
+  font-size: 34px;
+  color: #FFFFFF;
+  margin-bottom: 15px;
+}
+
+.terms-paragraph {
+  color: #CBD5E1;
+  line-height: 1.9;
+  font-size: 17px;
+}
+
+.terms-blueLine {
+  width: 80px;
+  height: 4px;
+  background: #2563EB;
+  border-radius: 999px;
+  margin-bottom: 25px;
+}
+
+.terms-bulletList {
+  margin-top: 20px;
+  padding-left: 22px;
+  color: #CBD5E1;
+  line-height: 2;
+}
+
+.terms-legalContact {
+  background: #0F172A;
+  border: 1px solid rgba(59,130,246,.20);
+  border-radius: 24px;
+  padding: 50px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.terms-legalIcon {
+  font-size: 52px;
+  margin-bottom: 20px;
+}
+
+.terms-legalTitle {
+  font-size: 36px;
+  margin-bottom: 15px;
+  color: #FFFFFF;
+}
+
+.terms-legalText {
+  color: #CBD5E1;
+  max-width: 700px;
+  margin: 0 auto 30px;
+  line-height: 1.9;
+  font-size: 17px;
+}
+
+.terms-legalLink {
+  display: inline-block;
+  padding: 16px 32px;
+  background: #2563EB;
+  color: #FFFFFF;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.terms-footer {
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 35px;
+  text-align: center;
+  color: #94A3B8;
+  line-height: 1.8;
+}
+
+.terms-indexBox {
+  background: #0F172A;
+  border: 1px solid rgba(59,130,246,.20);
+  border-radius: 24px;
+  padding: 40px;
+  margin-bottom: 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 20px;
+}
+
+.terms-indexTitle {
+  grid-column: 1 / -1;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.terms-indexItem {
+  background: #162238;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(59,130,246,.15);
+  font-size: 16px;
+  color: #E2E8F0;
+  display: flex;
+  align-items: center;
+}
+
+.terms-indexNumber {
+  color: #2563EB;
+  font-weight: 700;
+  margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+  .terms-page {
+    padding: 30px 15px;
+  }
+  .terms-hero {
+    padding: 40px 20px;
+  }
+  .terms-heroTitle {
+    font-size: 36px;
+  }
+  .terms-heroSubtitle {
+    font-size: 16px;
+  }
+  .terms-overview {
+    padding: 30px 20px;
+  }
+  .terms-overviewTitle {
+    font-size: 24px;
+  }
+  .terms-section {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .terms-number {
+    font-size: 48px;
+    min-width: auto;
+  }
+  .terms-heading {
+    font-size: 28px;
+  }
+  .terms-legalContact {
+    padding: 30px 20px;
+  }
+  .terms-legalTitle {
+    font-size: 28px;
+  }
+}

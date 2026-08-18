@@ -1,3 +1,4 @@
+import "./css/Contact.css";
 import React, { useState } from "react";
 
 export default function Contact() {
@@ -70,274 +71,80 @@ setTimeout(() => {
   }
 };
 
-  const styles: Record<string, React.CSSProperties> = {
-    page: {
-  minHeight: "100vh",
-  background:
-    "linear-gradient(180deg,#06131F 0%,#081B29 50%,#09111B 100%)",
-  color: "#FFFFFF",
-      fontFamily: "'Inter', sans-serif",
-      padding: "60px 20px",
-    },
-  
-    
-
-    container: {
-      maxWidth: "1200px",
-      margin: "0 auto",
-    },
-
-    hero: {
-      textAlign: "center",
-      padding: "80px 40px",
-      borderRadius: "30px",
-      background:
-        "linear-gradient(135deg,#0F172A,#10283E,#0D3B4D)",
-      border: "1px solid rgba(16,185,129,.25)",
-      marginBottom: "60px",
-      boxShadow: "0 25px 70px rgba(0,0,0,.35)",
-    },
-
-    heroIcon: {
-      fontSize: "70px",
-      marginBottom: "20px",
-    },
-
-    heroTitle: {
-      fontSize: "56px",
-      fontWeight: 800,
-      marginBottom: "20px",
-    },
-
-    heroSubtitle: {
-      maxWidth: "760px",
-      margin: "0 auto",
-      color: "#CBD5E1",
-      lineHeight: 1.9,
-      fontSize: "20px",
-    },
-
-    cardGrid: {
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
-      gap: "30px",
-      marginTop: "60px",
-    },
-
-    card: {
-      background: "#0F172A",
-      borderRadius: "20px",
-      padding: "35px",
-      border: "1px solid rgba(16,185,129,.15)",
-      transition: ".3s",
-      textAlign: "center",
-    },
-
-    cardIcon: {
-      fontSize: "48px",
-      marginBottom: "18px",
-    },
-
-    cardTitle: {
-      fontSize: "24px",
-      marginBottom: "10px",
-    },
-
-    cardText: {
-      color: "#CBD5E1",
-      lineHeight: 1.8,
-    },
-    formSection: {
-  marginTop: "80px",
-  background: "#0F172A",
-  borderRadius: "24px",
-  padding: "50px",
-  border: "1px solid rgba(16,185,129,.20)",
-},
-
-formTitle: {
-  fontSize: "38px",
-  marginBottom: "15px",
-  textAlign: "center" as const,
-},
-
-formSubtitle: {
-  color: "#CBD5E1",
-  textAlign: "center" as const,
-  marginBottom: "40px",
-  lineHeight: 1.8,
-},
-
-formGrid: {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
-  gap: "25px",
-},
-
-inputGroup: {
-  display: "flex",
-  flexDirection: "column" as const,
-},
-
-label: {
-  marginBottom: "10px",
-  fontWeight: 600,
-  color: "#E5E7EB",
-},
-
-input: {
-  padding: "16px",
-  borderRadius: "12px",
-  border: "1px solid rgba(255,255,255,.10)",
-  background: "#162238",
-  color: "#FFFFFF",
-  fontSize: "16px",
-  outline: "none",
-},
-
-textarea: {
-  marginTop: "25px",
-  width: "100%",
-  minHeight: "180px",
-  padding: "18px",
-  borderRadius: "12px",
-  border: "1px solid rgba(255,255,255,.10)",
-  background: "#162238",
-  color: "#FFFFFF",
-  resize: "vertical" as const,
-  fontSize: "16px",
-  outline: "none",
-},
-
-button: {
-  marginTop: "35px",
-  width: "100%",
-  padding: "18px",
-  background: "#10B981",
-  color: "#FFFFFF",
-  border: "none",
-  borderRadius: "12px",
-  cursor: "pointer",
-  fontSize: "18px",
-  fontWeight: 700,
-},
-  };
 if (submitted) {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background:
-          "linear-gradient(180deg,#06131F 0%,#081B29 100%)",
-        color: "#fff",
-        fontFamily: "'Inter', sans-serif",
-      }}
-    >
-      <div
-        style={{
-          textAlign: "center",
-          maxWidth: "700px",
-          padding: "40px",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "90px",
-            marginBottom: "25px",
-          }}
-        >
-          ✅
-        </div>
+    <div className="contact-success">
+      <div className="contact-success-content">
+        <div style={{ fontSize: "90px", marginBottom: "25px" }}>✅</div>
 
-        <h1
-          style={{
-            fontSize: "46px",
-            marginBottom: "20px",
-            color: "#10B981",
-          }}
-        >
+        <h1 style={{ fontSize: "46px", marginBottom: "20px", color: "#10B981" }}>
           Message Sent Successfully!
         </h1>
 
-        <p
-          style={{
-            fontSize: "20px",
-            color: "#CBD5E1",
-            lineHeight: 1.8,
-          }}
-        >
+        <p style={{ fontSize: "20px", color: "#CBD5E1", lineHeight: 1.8 }}>
           Thank you for contacting <strong>Astrospacious</strong>.
           <br />
           We've received your message and our team will contact you
           within <strong>24–48 business hours.</strong>
         </p>
 
-        <p
-          style={{
-            marginTop: "35px",
-            color: "#10B981",
-            fontWeight: 700,
-            fontSize: "18px",
-          }}
-        >
+        <p style={{ marginTop: "35px", color: "#10B981", fontWeight: 700, fontSize: "18px" }}>
           Redirecting to Home...
         </p>
       </div>
     </div>
   );
 }
-  return (
-    <div style={styles.page}>
-      <div style={styles.container}>
-        <section style={styles.hero}>
 
-  <div style={styles.heroIcon}>
+  return (
+    <div className="contact-page">
+      <div className="contact-container">
+        <section className="contact-hero">
+
+  <div className="contact-heroIcon">
     💬
   </div>
 
-  <h1 style={styles.heroTitle}>
+  <h1 className="contact-heroTitle">
     Contact Astrospacious
   </h1>
 
-  <p style={styles.heroSubtitle}>
+  <p className="contact-heroSubtitle">
     We'd love to hear from you. Whether you have a question,
     partnership proposal, feedback, or need technical support,
     our team is ready to help you.
   </p>
 
 </section>
-<section style={styles.cardGrid}>
+<section className="contact-cardGrid">
 
-  <div style={styles.card}>
+  <div className="contact-card">
 
-    <div style={styles.cardIcon}>
+    <div className="contact-cardIcon">
       📧
     </div>
 
-    <h2 style={styles.cardTitle}>
+    <h2 className="contact-cardTitle">
       Email Us
     </h2>
 
-    <p style={styles.cardText}>
+    <p className="contact-cardText">
       outreach.astrospacious@gmail.com
     </p>
 
   </div>
 
-  <div style={styles.card}>
+  <div className="contact-card">
 
-    <div style={styles.cardIcon}>
+    <div className="contact-cardIcon">
       📍
     </div>
 
-    <h2 style={styles.cardTitle}>
+    <h2 className="contact-cardTitle">
       Location
     </h2>
 
-    <p style={styles.cardText}>
+    <p className="contact-cardText">
       Lucknow<br />
       Uttar Pradesh<br />
       India
@@ -345,17 +152,17 @@ if (submitted) {
 
   </div>
 
-  <div style={styles.card}>
+  <div className="contact-card">
 
-    <div style={styles.cardIcon}>
+    <div className="contact-cardIcon">
       🕒
     </div>
 
-    <h2 style={styles.cardTitle}>
+    <h2 className="contact-cardTitle">
       Response Time
     </h2>
 
-    <p style={styles.cardText}>
+    <p className="contact-cardText">
       Usually within<br />
       24–48 Hours
     </p>
@@ -363,93 +170,93 @@ if (submitted) {
   </div>
 
 </section>
-<section style={styles.formSection}>
+<section className="contact-formSection">
 
-  <h2 style={styles.formTitle}>
+  <h2 className="contact-formTitle">
     Send Us a Message
   </h2>
 
-  <p style={styles.formSubtitle}>
+  <p className="contact-formSubtitle">
     Complete the form below and our team will get back to you within 24–48 hours.
   </p>
 
   <form onSubmit={handleSubmit}>
 
   
-      <div style={styles.formGrid}>
+      <div className="contact-formGrid">
 
-  <div style={styles.inputGroup}>
-    <label style={styles.label}>First Name *</label>
+  <div className="contact-inputGroup">
+    <label className="contact-label">First Name *</label>
        <input
   type="text"
   name="firstName"
   value={formData.firstName}
   onChange={handleChange}
   placeholder="John"
-  style={styles.input}
+  className="contact-input"
   required
 />
   </div>
 
-  <div style={styles.inputGroup}>
-    <label style={styles.label}>Last Name *</label>
+  <div className="contact-inputGroup">
+    <label className="contact-label">Last Name *</label>
     <input
   type="text"
   name="lastName"
   value={formData.lastName}
   onChange={handleChange}
   placeholder="Doe"
-  style={styles.input}
+  className="contact-input"
   required
 />
   </div>
 
-  <div style={styles.inputGroup}>
-    <label style={styles.label}>Email *</label>
+  <div className="contact-inputGroup">
+    <label className="contact-label">Email *</label>
     <input
   type="email"
   name="email"
   value={formData.email}
   onChange={handleChange}
   placeholder="john@example.com"
-  style={styles.input}
+  className="contact-input"
   required
 />
   </div>
 
-  <div style={styles.inputGroup}>
-    <label style={styles.label}>Phone number</label>
+  <div className="contact-inputGroup">
+    <label className="contact-label">Phone number</label>
    <input
   type="tel"
   name="phoneNumber"
   value={formData.phoneNumber}
   onChange={handleChange}
   placeholder="+91 9876543210"
-  style={styles.input}
+  className="contact-input"
 />
   </div>
 
-  <div style={styles.inputGroup}>
-    <label style={styles.label}>Subject *</label>
+  <div className="contact-inputGroup">
+    <label className="contact-label">Subject *</label>
     <input
   type="text"
   name="subject"
   value={formData.subject}
   onChange={handleChange}
   placeholder="Enter subject"
-  style={styles.input}
+  className="contact-input"
   required
 />
   </div>
 
-  <div style={styles.inputGroup}>
-    <label style={styles.label}>Category *</label>
+  <div className="contact-inputGroup">
+    <label className="contact-label">Category *</label>
 
     <select
   name="category"
   value={formData.category}
   onChange={handleChange}
-  style={styles.input}
+  className="contact-input"
   required
 >
   
@@ -470,8 +277,8 @@ if (submitted) {
 </div>
 
 <label
+  className="contact-label"
   style={{
-    ...styles.label,
     display: "block",
     marginTop: "25px",
   }}
@@ -482,7 +289,7 @@ if (submitted) {
   name="message"
   value={formData.message}
   onChange={handleChange}
-  style={styles.textarea}
+  className="contact-textarea"
   placeholder="Write your message..."
   required
 />
@@ -497,34 +304,20 @@ if (submitted) {
       textAlign: "center",
     }}
   >
-    <div
-      style={{
-        fontSize: "42px",
-      }}
-    >
-      ❌
-    </div>
+    <div style={{ fontSize: "42px" }}>❌</div>
 
-    <h3
-      style={{
-        color: "#EF4444",
-      }}
-    >
+    <h3 style={{ color: "#EF4444" }}>
       Message Failed
     </h3>
 
-    <p
-      style={{
-        color: "#CBD5E1",
-      }}
-    >
+    <p style={{ color: "#CBD5E1" }}>
       {errorMessage}
     </p>
   </div>
 )}
 <button
   type="submit"
-  style={styles.button}
+  className="contact-button"
   disabled={loading}
 >
   {loading ? "Sending..." : "Send Message"}

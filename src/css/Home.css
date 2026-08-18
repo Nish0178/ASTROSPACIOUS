@@ -24,17 +24,47 @@
         transform: scale(.5) translateY(-120px);
       }
 
+      @media (max-width: 992px) {
+        .showcaseGrid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .logo-text {
+          transform: scale(.35) translateY(-150px);
+        }
+        .heroSubtitle {
+          font-size: 22px;
+        }
+        .sectionTitle {
+          font-size: 36px;
+        }
+        .ctaTitle {
+          font-size: 40px;
+        }
+      }
+
       @media (max-width: 600px) {
         .logo-text {
           transform: scale(.25) translateY(-180px);
         }
 
         .showcaseGrid {
-          grid-template-rows: 1fr;
+          grid-template-columns: 1fr;
         }
 
         .showcaseItem {
-          width: calc(100vw - 60px);
+          width: 100%;
+        }
+
+        .introSection, .showcaseSection, .finalCTA {
+          padding: 60px 16px;
+        }
+        
+        .ctaButtonLarge {
+          padding: 16px 32px;
+          font-size: 16px;
         }
       }
 

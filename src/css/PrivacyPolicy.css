@@ -1,0 +1,61 @@
+.privacy-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1E1B4B 0%, #0B1026 45%, #060816 100%);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  padding: 40px 20px 80px;
+}
+
+.privacy-container {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+.privacy-toc {
+  background: rgba(17,24,39,.75);
+  border: 1px solid rgba(124,92,255,.25);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 50px;
+  backdrop-filter: blur(18px);
+}
+
+.privacy-tocTitle {
+  font-size: 28px;
+  color: #fff;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.privacy-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  gap: 14px;
+  color: #CBD5E1;
+  font-size: 17px;
+  line-height: 2;
+}
+
+.privacy-footer {
+  margin-top: 70px;
+  text-align: center;
+  color: #94A3B8;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 35px;
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .privacy-page {
+    padding: 20px 15px 60px;
+  }
+  .privacy-toc {
+    padding: 20px;
+  }
+  .privacy-tocTitle {
+    font-size: 24px;
+  }
+  .privacy-list {
+    grid-template-columns: 1fr;
+  }
+}
