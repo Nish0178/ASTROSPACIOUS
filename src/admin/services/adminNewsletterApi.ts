@@ -33,6 +33,7 @@ export const adminNewsletterApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       throw new Error("Failed to fetch subscribers");
     }
 
@@ -47,6 +48,7 @@ export const adminNewsletterApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       throw new Error("Failed to delete subscriber");
     }
   }

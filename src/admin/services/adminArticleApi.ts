@@ -80,6 +80,7 @@ export const adminArticleApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       throw new Error("Failed to fetch articles");
     }
 
@@ -103,6 +104,7 @@ export const adminArticleApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       throw new Error("Failed to fetch trashed articles");
     }
 
@@ -117,6 +119,7 @@ export const adminArticleApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       const err = await response.json().catch(() => ({}));
       throw new Error(err.message || "Failed to delete article");
     }
@@ -129,6 +132,7 @@ export const adminArticleApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       const err = await response.json().catch(() => ({}));
       throw new Error(err.message || "Failed to restore article");
     }
@@ -141,6 +145,7 @@ export const adminArticleApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       const err = await response.json().catch(() => ({}));
       throw new Error(err.message || "Failed to permanently delete article");
     }
@@ -152,7 +157,10 @@ export const adminArticleApi = {
       headers: this.getHeaders(),
       body: JSON.stringify({ ids })
     });
-    if (!response.ok) throw new Error("Failed to trash articles");
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to trash articles");
+    }
   },
 
   async bulkRestoreArticles(ids: string[]): Promise<void> {
@@ -161,7 +169,10 @@ export const adminArticleApi = {
       headers: this.getHeaders(),
       body: JSON.stringify({ ids })
     });
-    if (!response.ok) throw new Error("Failed to restore articles");
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to restore articles");
+    }
   },
 
   async bulkPermanentDeleteArticles(ids: string[]): Promise<void> {
@@ -170,7 +181,10 @@ export const adminArticleApi = {
       headers: this.getHeaders(),
       body: JSON.stringify({ ids })
     });
-    if (!response.ok) throw new Error("Failed to permanently delete articles");
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to permanently delete articles");
+    }
   },
 
   async createArticle(data: CreateArticlePayload): Promise<AdminArticle> {
@@ -181,6 +195,7 @@ export const adminArticleApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       const err = await response.json().catch(() => ({}));
       throw new Error(err.message || "Failed to create article");
     }
@@ -197,6 +212,7 @@ export const adminArticleApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       const err = await response.json().catch(() => ({}));
       throw new Error(err.message || "Failed to update article");
     }
@@ -221,6 +237,7 @@ export const adminArticleApi = {
     });
 
     if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       throw new Error("Failed to upload image");
     }
 
@@ -232,7 +249,10 @@ export const adminArticleApi = {
     const response = await fetch(`${API_URL}/admin/articles/categories`, {
       headers: this.getHeaders()
     });
-    if (!response.ok) throw new Error("Failed to fetch categories");
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to fetch categories");
+    }
     const json = await response.json();
     return json.data;
   },
@@ -241,7 +261,10 @@ export const adminArticleApi = {
     const response = await fetch(`${API_URL}/admin/articles/authors`, {
       headers: this.getHeaders()
     });
-    if (!response.ok) throw new Error("Failed to fetch authors");
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to fetch authors");
+    }
     const json = await response.json();
     return json.data;
   }

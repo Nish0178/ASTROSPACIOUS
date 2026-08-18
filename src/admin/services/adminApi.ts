@@ -26,6 +26,7 @@ export const adminApi = {
 
     if (!response.ok) {
       if (response.status === 401) {
+        window.dispatchEvent(new Event("astro_unauthorized"));
         throw new Error("Unauthorized");
       }
       throw new Error("Failed to fetch dashboard statistics");
