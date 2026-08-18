@@ -48,11 +48,18 @@ export const newsletterService = {
   },
 
   async verify(token: string) {
+    const cleanToken = token ? token.trim() : "";
+    
+    if (!cleanToken) {
+      throw new Error("Invalid or missing verification token.");
+    }
+
     const subscriber = await prisma.newsletterSubscriber.findFirst({
-      where: { verificationToken: token }
+      where: { verificationToken: cleanToken }
     });
 
     if (!subscriber) {
+      console.error(`[Verify Error] Token not found. Prefix: ${cleanToken.substring(0, 6)}...`);
       throw new Error("Invalid or expired verification token.");
     }
 
@@ -72,11 +79,18 @@ export const newsletterService = {
   },
 
   async unsubscribe(token: string) {
+    const cleanToken = token ? token.trim() : "";
+
+    if (!cleanToken) {
+      throw new Error("Invalid or missing unsubscribe token.");
+    }
+
     const subscriber = await prisma.newsletterSubscriber.findUnique({
-      where: { unsubscribeToken: token }
+      where: { unsubscribeToken: cleanToken }
     });
 
     if (!subscriber) {
+      console.error(`[Unsubscribe Error] Token not found. Prefix: ${cleanToken.substring(0, 6)}...`);
       throw new Error("Invalid unsubscribe token.");
     }
 
