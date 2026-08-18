@@ -1,25 +1,12 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { articleApi, PublicArticle } from "./services/api/articleApi";
-import { articles as staticArticles } from "./data/articles";
-import FeaturedArticle from "./components/FeaturedArticle/FeaturedArticle";
-import { ArticlesGrid } from "./components/LatestArticles/ArticlesGrid";
-import { magazines } from "./data/magazines";
-import MagazineCard from "./components/MagazineCard/MagazineCard";
-import { ArticlesEngagement } from "./components/ArticlesEngagement/ArticlesEngagement";
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 import "./css/Home.css";
 import "./css/base.css";
 import "./css/Articles.css";
 import "./css/Magazines.css";
 
-// The original ShowcaseItem component, updated with classNames
-const ShowcaseItem = ({ title, description, gradient }) => (
-  <div className="showcaseItem">
-    <div className="showcaseGradient" style={{ background: gradient }} />
-    <h3 className="showcaseTitle">{title}</h3>
-    <p className="showcaseDescription">{description}</p>
-  </div>
-);
+
 
 
 
@@ -28,38 +15,6 @@ const Home = () => {
   const [scrollY, setScrollY] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroCanvasRef = useRef<HTMLCanvasElement>(null);
-
-  const [dbArticles, setDbArticles] = useState<PublicArticle[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    loadArticles();
-  }, []);
-
-  const loadArticles = async () => {
-    try {
-      setLoading(true);
-      const response = await articleApi.getArticles();
-      setDbArticles(response);
-    } catch (err) {
-      console.error("Failed to load live articles, falling back to static data", err);
-      // Fallback is handled by the useMemos below
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fallback to static articles if dbArticles is empty (e.g. backend down or no articles in DB)
-  const articlesSource: any[] = dbArticles.length > 0 ? dbArticles : staticArticles;
-
-  const featuredArticles = useMemo(() => 
-    articlesSource.filter(article => article.featured),
-  [articlesSource]);
-
-  const latestArticles = useMemo(() => 
-    [...articlesSource].sort((a, b) => new Date(b.publishedAt || b.date).getTime() - new Date(a.publishedAt || a.date).getTime()),
-  [articlesSource]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -270,44 +225,42 @@ const Home = () => {
       {/* Anchor for Explore More button */}
       <div id="explore-target" style={{ position: 'relative', top: '-80px' }}></div>
 
-      {/* Featured Articles Section */}
-      {!loading && featuredArticles.length > 0 && (
-        <FeaturedArticle articles={featuredArticles} />
-      )}
+      {/* About / Mission Section */}
+      <section className="showcaseSection" style={{ padding: '80px 24px', fontFamily: '"Times New Roman", Times, serif' }}>
+        <div className="contentWrapper" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 className="sectionTitle gradient-text centered" style={{ marginBottom: '32px', fontSize: '36px' }}>About ASTROSPACIOUS</h2>
+          <p style={{ fontSize: '20px', lineHeight: '1.8', color: '#cbd5e1' }}>
+            Astrospacious is a pioneering student-led organization operating at the intersection of research, education, and innovation. We believe that astronomy and space science should be universally accessible.
+          </p>
+        </div>
+      </section>
 
-      {/* Latest Articles Section */}
-      {!loading && latestArticles.length > 0 && (
-        <ArticlesGrid articles={latestArticles} title="Latest Space Discoveries" />
-      )}
-      
-      {loading && <div style={{ textAlign: 'center', color: '#fff', padding: '4rem' }}>Loading stellar content...</div>}
-
-      {/* Features Showcase */}
-      <section className="showcaseSection">
-        <div className="contentWrapper">
-          <h2 className="sectionTitle gradient-text centered">Why Choose ASTROSPACIOUS</h2>
-          <div className="showcaseGrid">
-            <ShowcaseItem 
-              title="Visual Excellence"
-              description="Excellet writing , visuals and explainations to make learning engaging"
-              gradient="#8b5cf6"
-            />
-            <ShowcaseItem 
-              title="Interactive Discovery"
-              description="Engage with content through student driven exploration"
-              gradient="#06b6d4"
-            />
-            <ShowcaseItem 
-              title="Seamless Experience"
-              description="Navigate through sources easily"
-              gradient=" #ec4899"
-            />
+      {/* Core Areas Section */}
+      <section className="showcaseSection" style={{ padding: '40px 24px 80px', fontFamily: '"Times New Roman", Times, serif' }}>
+        <div className="contentWrapper" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '40px', textAlign: 'center' }}>
+            <div>
+              <h3 style={{ color: '#fff', fontSize: '22px', marginBottom: '16px', letterSpacing: '1px' }}>ASTRONOMY</h3>
+              <p style={{ color: '#94a3b8', fontSize: '16px', lineHeight: '1.6' }}>Exploring celestial objects, phenomena, and the universe.</p>
+            </div>
+            <div>
+              <h3 style={{ color: '#fff', fontSize: '22px', marginBottom: '16px', letterSpacing: '1px' }}>ASTROPHYSICS</h3>
+              <p style={{ color: '#94a3b8', fontSize: '16px', lineHeight: '1.6' }}>Understanding the physical principles governing the cosmos.</p>
+            </div>
+            <div>
+              <h3 style={{ color: '#fff', fontSize: '22px', marginBottom: '16px', letterSpacing: '1px' }}>SPACE SCIENCE</h3>
+              <p style={{ color: '#94a3b8', fontSize: '16px', lineHeight: '1.6' }}>Following discoveries, missions, exploration, and scientific progress.</p>
+            </div>
+            <div>
+              <h3 style={{ color: '#fff', fontSize: '22px', marginBottom: '16px', letterSpacing: '1px' }}>RESEARCH & EDUCATION</h3>
+              <p style={{ color: '#94a3b8', fontSize: '16px', lineHeight: '1.6' }}>Making scientific knowledge understandable and accessible.</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Publish Your Work Section */}
-      <section className="showcaseSection" style={{ paddingBottom: '60px' }}>
+      <section className="showcaseSection" style={{ paddingBottom: '80px', fontFamily: '"Times New Roman", Times, serif' }}>
         <div className="contentWrapper" style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto', padding: '64px 32px', background: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(20px)', borderRadius: '24px', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
           <h2 className="sectionTitle gradient-text centered" style={{ marginBottom: '24px', fontSize: '36px' }}>Publish Your Work with Astrospacious</h2>
           <p className="ctaSubtitle" style={{ marginBottom: '40px', color: '#cbd5e1', lineHeight: '1.6' }}>
@@ -317,7 +270,7 @@ const Home = () => {
           </p>
           <button 
             className="ctaButtonLarge gradient"
-            style={{ padding: '18px 48px', fontSize: '18px' }}
+            style={{ padding: '18px 48px', fontSize: '18px', fontFamily: '"Times New Roman", Times, serif' }}
             onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSeP5ZAD8YVwpt-grbPh96oY1zh9dGegkoYWclAK_pEfZgcTMA/viewform', '_blank', 'noopener,noreferrer')}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'scale(1.05)';
@@ -333,23 +286,23 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Magazines Section */}
-      <section className="showcaseSection">
-        <div className="contentWrapper">
-          <h2 className="sectionTitle gradient-text centered" style={{ marginBottom: '2rem' }}>Featured Magazines</h2>
-          <div className="articles-grid" style={{ marginBottom: '4rem' }}>
-            {magazines.slice(0, 3).map((magazine) => (
-              <MagazineCard
-                key={magazine.id}
-                magazine={magazine}
-              />
-            ))}
+      {/* Optional Simple Explore CTA */}
+      <section className="showcaseSection" style={{ paddingBottom: '120px', fontFamily: '"Times New Roman", Times, serif' }}>
+        <div className="contentWrapper" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
+          <h2 style={{ color: '#fff', fontSize: '32px', marginBottom: '24px' }}>Explore the Cosmos</h2>
+          <p style={{ color: '#94a3b8', fontSize: '18px', lineHeight: '1.6', marginBottom: '40px' }}>
+            Discover research, articles, magazines, and ideas shaping our understanding of the universe.
+          </p>
+          <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link to="/articles" style={{ color: '#fff', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '4px', fontSize: '18px', transition: 'border-color 0.3s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'} onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'}>
+              Explore Articles &rarr;
+            </Link>
+            <Link to="/magazines" style={{ color: '#fff', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '4px', fontSize: '18px', transition: 'border-color 0.3s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'} onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'}>
+              Explore Magazines &rarr;
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* Newsletter & Community CTA */}
-      <ArticlesEngagement />
 
     </main>
   );
