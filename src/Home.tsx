@@ -51,7 +51,7 @@ const Home = () => {
   };
 
   // Fallback to static articles if dbArticles is empty (e.g. backend down or no articles in DB)
-  const articlesSource = dbArticles.length > 0 ? dbArticles : staticArticles;
+  const articlesSource: any[] = dbArticles.length > 0 ? dbArticles : staticArticles;
 
   const featuredArticles = useMemo(() => 
     articlesSource.filter(article => article.featured),
@@ -202,31 +202,67 @@ const Home = () => {
           className="heroContent"
           style={{ // Inline styles needed for dynamic scrolling effects
             opacity,
-            transform: `scale(${scale}) translateY(${translateY}px)`
+            transform: `scale(${scale}) translateY(${translateY}px)`,
+            height: '100vh',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            boxSizing: 'border-box',
+            padding: '80px 24px 40px 24px',
+            fontFamily: '"Times New Roman", Times, serif'
           }}
         >
-          <div className="logoContainer">
-            <img className='logo-text' src="astrospacious.png"></img>
+          {/* Top Spacer */}
+          <div style={{ flex: '1 1 auto' }}></div>
+
+          {/* Center Area: Logo + Tagline */}
+          <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div className="logoContainer">
+              <img className='logo-text' src="astrospacious.png" alt="Astrospacious Logo"></img>
+            </div>
+            <p className="heroSubtitle" style={{ fontFamily: '"Times New Roman", Times, serif', margin: 0 }}>MAKING SPACE ACCESSIBLE</p>
           </div>
-          <p className="heroSubtitle">MAKING SPACE ACCESSIBLE</p>
-          <div className="heroTagline" style={{ maxWidth: '800px', margin: '8rem auto 2rem auto', lineHeight: '1.6', fontSize: '18px', color: '#cbd5e1' }}>
-            Founded in 2024, Astrospacious is a space research organization dedicated to making astronomy and space science accessible to all. Join 1,000+ members exploring research, articles, and magazines from across the cosmos.
-          </div>
-          <div 
-            className="exploreMore" 
-            style={{ marginTop: '2rem', cursor: 'pointer', opacity: 0.9, fontSize: '18px', color: '#fff', transition: 'opacity 0.3s' }} 
-            onClick={() => {
-              const target = document.getElementById('explore-target');
-              if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-              } else {
-                window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
-              }
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-            onMouseLeave={(e) => e.currentTarget.style.opacity = '0.9'}
-          >
-            Explore more ↓
+
+          {/* Spacer between Center and Lower */}
+          <div style={{ flex: '1 1 auto', minHeight: '40px' }}></div>
+
+          {/* Lower Area: Paragraph + Explore More */}
+          <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+            <div className="heroTagline" style={{ 
+              maxWidth: '800px', 
+              margin: '0 auto', 
+              lineHeight: '1.6', 
+              fontSize: '18px', 
+              color: '#cbd5e1',
+              fontFamily: '"Times New Roman", Times, serif',
+              textAlign: 'center'
+            }}>
+              Founded in 2024, Astrospacious is a space research organization dedicated to making astronomy and space science accessible to all. Join 1,000+ members exploring research, articles, and magazines from across the cosmos.
+            </div>
+            <div 
+              className="exploreMore" 
+              style={{ 
+                marginTop: '2rem', 
+                cursor: 'pointer', 
+                opacity: 0.9, 
+                fontSize: '18px', 
+                color: '#fff', 
+                transition: 'opacity 0.3s',
+                fontFamily: '"Times New Roman", Times, serif'
+              }} 
+              onClick={() => {
+                const target = document.getElementById('explore-target');
+                if (target) {
+                  target.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+                }
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = '0.9'}
+            >
+              Explore more ↓
+            </div>
           </div>
         </div>
     </section>
