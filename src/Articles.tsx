@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Search, X, ChevronDown } from "lucide-react";
 import SpaceBg from "./Extra/Space-bg.tsx";
 import { articleApi, PublicArticle } from "./services/api/articleApi";
@@ -297,44 +297,27 @@ if (error) {
           Showing {sortedArticles.length} Articles
         </div>
 
-        <AnimatePresence>
-          {sortedArticles.length === 0 && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.4 }}
-              className="empty-state"
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop" 
-                alt="No articles found" 
-                className="empty-state-img"
-              />
-              <h3>No articles found.</h3>
-              <p>Try another keyword or category.</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+
       </motion.section>
 
       {featuredArticles.length > 0 && (
         <FeaturedArticle articles={featuredArticles} />
       )}
 
-      {/* Main Search Results Grid Section */}
-      <ArticlesGrid 
-        articles={sortedArticles} 
-        title="Search Results" 
-        subtitle="Articles matching your search and category filters." 
-      />
-
-      {/* Latest Articles Grid Section (Unaffected by search) */}
-      <ArticlesGrid 
-        articles={latestArticles} 
-        title="Latest Articles" 
-        subtitle="Discover our newest articles covering astronomy, space exploration, technology, cosmology, research, and scientific discoveries." 
-      />
+      {/* Main Articles Grid Section (Conditionally rendered title based on search) */}
+      {searchQuery ? (
+        <ArticlesGrid 
+          articles={sortedArticles} 
+          title="Search Results" 
+          subtitle="Articles matching your search and category filters." 
+        />
+      ) : (
+        <ArticlesGrid 
+          articles={sortedArticles} 
+          title="Latest Articles" 
+          subtitle="Discover our newest articles covering astronomy, space exploration, technology, cosmology, research, and scientific discoveries." 
+        />
+      )}
 
       {/* Engagement Section (Newsletter, CTA, Socials) */}
       <ArticlesEngagement />
