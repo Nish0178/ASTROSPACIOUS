@@ -31,17 +31,23 @@
       }
 
       @media (max-width: 768px) {
-        .logo-text {
+        .logoContainer {
           position: relative;
-          transform: none;
-          width: 90vw;
-          max-width: 380px;
+          height: 0;
+          margin: 0;
+        }
+        .logo-text {
+          position: absolute;
+          transform: translateY(-55px);
+          width: 95vw;
+          max-width: 480px;
           height: auto;
-          margin-top: -40px;
-          margin-bottom: 20px;
+          margin: 0;
         }
         .heroSubtitle {
-          font-size: 22px;
+          font-size: 24px;
+          position: relative;
+          z-index: 10;
         }
         .sectionTitle {
           font-size: 36px;
@@ -52,11 +58,18 @@
       }
 
       @media (max-width: 600px) {
+        .logoContainer {
+          position: relative;
+          height: 0;
+          margin: 0;
+        }
         .logo-text {
-          width: 85vw;
-          max-width: 300px;
-          margin-top: -20px;
-          margin-bottom: 15px;
+          position: absolute;
+          transform: translateY(-40px);
+          width: 95vw;
+          max-width: 400px;
+          height: auto;
+          margin: 0;
         }
 
         .showcaseGrid {
