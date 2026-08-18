@@ -1,10 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import { articles } from "./data/articles";
-import ArticleCard from "./components/ArticleCard/ArticleCard";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { articleApi, PublicArticle } from "./services/api/articleApi";
+import { articles as staticArticles } from "./data/articles";
+import FeaturedArticle from "./components/FeaturedArticle/FeaturedArticle";
+import { ArticlesGrid } from "./components/LatestArticles/ArticlesGrid";
+import { magazines } from "./data/magazines";
+import MagazineCard from "./components/MagazineCard/MagazineCard";
+import { ArticlesEngagement } from "./components/ArticlesEngagement/ArticlesEngagement";
 
 import "./css/Home.css";
 import "./css/base.css";
 import "./css/Articles.css";
+import "./css/Magazines.css";
 
 // The original ShowcaseItem component, updated with classNames
 const ShowcaseItem = ({ title, description, gradient }) => (
@@ -15,32 +21,45 @@ const ShowcaseItem = ({ title, description, gradient }) => (
   </div>
 );
 
-const featuredArticles = articles.filter(
-    article => article.featured
-);
-const latestArticles = [...articles]
-  .sort(
-    (a, b) =>
-      new Date(b.date).getTime() -
-      new Date(a.date).getTime()
-  )
-  .slice(0, 3);
 
-// The original FeatureCard component, updated with classNames
-// Not used in Home component, but included for completeness
-const FeatureCard = ({ icon, title, description }) => (
-  <div className="featureCard">
-    <div className="featureIcon">{icon}</div>
-    <h3 className="featureTitle">{title}</h3>
-    <p className="featureDescription">{description}</p>
-  </div>
-);
 
 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
-  const canvasRef = useRef(null);
-  const heroCanvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const heroCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  const [dbArticles, setDbArticles] = useState<PublicArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    loadArticles();
+  }, []);
+
+  const loadArticles = async () => {
+    try {
+      setLoading(true);
+      const response = await articleApi.getArticles();
+      setDbArticles(response);
+    } catch (err) {
+      console.error("Failed to load live articles, falling back to static data", err);
+      // Fallback is handled by the useMemos below
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fallback to static articles if dbArticles is empty (e.g. backend down or no articles in DB)
+  const articlesSource = dbArticles.length > 0 ? dbArticles : staticArticles;
+
+  const featuredArticles = useMemo(() => 
+    articlesSource.filter(article => article.featured),
+  [articlesSource]);
+
+  const latestArticles = useMemo(() => 
+    [...articlesSource].sort((a, b) => new Date(b.publishedAt || b.date).getTime() - new Date(a.publishedAt || a.date).getTime()),
+  [articlesSource]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -190,30 +209,42 @@ const Home = () => {
             <img className='logo-text' src="astrospacious.png"></img>
           </div>
           <p className="heroSubtitle">MAKING SPACE ACCESSIBLE</p>
-          <div className="heroTagline">
-            Where cosmic wonder meets infinite learning
+          <div className="heroTagline" style={{ maxWidth: '800px', margin: '8rem auto 2rem auto', lineHeight: '1.6', fontSize: '18px', color: '#cbd5e1' }}>
+            Founded in 2024, Astrospacious is a space research organization dedicated to making astronomy and space science accessible to all. Join 1,000+ members exploring research, articles, and magazines from across the cosmos.
+          </div>
+          <div 
+            className="exploreMore" 
+            style={{ marginTop: '2rem', cursor: 'pointer', opacity: 0.9, fontSize: '18px', color: '#fff', transition: 'opacity 0.3s' }} 
+            onClick={() => {
+              const target = document.getElementById('explore-target');
+              if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+              } else {
+                window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+              }
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '0.9'}
+          >
+            Explore more ↓
           </div>
         </div>
     </section>
 
-      {/* Featured Articles Section */}
-      {/* Latest Articles */}
-<section className="showcaseSection">
-  <div className="contentWrapper">
-    <h2 className="sectionTitle gradient-text centered">
-      Latest Articles
-    </h2>
+      {/* Anchor for Explore More button */}
+      <div id="explore-target" style={{ position: 'relative', top: '-80px' }}></div>
 
-    <div className="articles-grid">
-      {latestArticles.map((article) => (
-        <ArticleCard
-          key={article.id}
-          article={article}
-        />
-      ))}
-    </div>
-  </div>
-</section>
+      {/* Featured Articles Section */}
+      {!loading && featuredArticles.length > 0 && (
+        <FeaturedArticle articles={featuredArticles} />
+      )}
+
+      {/* Latest Articles Section */}
+      {!loading && latestArticles.length > 0 && (
+        <ArticlesGrid articles={latestArticles} title="Latest Space Discoveries" />
+      )}
+      
+      {loading && <div style={{ textAlign: 'center', color: '#fff', padding: '4rem' }}>Loading stellar content...</div>}
 
       {/* Features Showcase */}
       <section className="showcaseSection">
@@ -266,6 +297,23 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Featured Magazines Section */}
+      <section className="showcaseSection">
+        <div className="contentWrapper">
+          <h2 className="sectionTitle gradient-text centered" style={{ marginBottom: '2rem' }}>Featured Magazines</h2>
+          <div className="articles-grid" style={{ marginBottom: '4rem' }}>
+            {magazines.slice(0, 3).map((magazine) => (
+              <MagazineCard
+                key={magazine.id}
+                magazine={magazine}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter & Community CTA */}
+      <ArticlesEngagement />
 
     </main>
   );
