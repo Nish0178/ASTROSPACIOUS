@@ -255,4 +255,9 @@
   .terms-legalTitle {
     font-size: 28px;
   }
+  .terms-legalLink {
+    padding: 12px 20px;
+    font-size: 15px;
+    word-break: break-all;
+  }
 }

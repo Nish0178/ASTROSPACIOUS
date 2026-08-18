@@ -112,12 +112,40 @@ const [readOpen, setReadOpen] = useState(false);
   </div>
 </div>
 
-  <div className="nav-dropdown">
-    <a href="/Articles" className="dropdown-toggle">READ</a>
+  <div className={`nav-dropdown ${readOpen ? "open" : ""}`}>
+    <a 
+      href="/Articles" 
+      className="dropdown-toggle"
+      onClick={(e) => {
+        if (isMobile) {
+          e.preventDefault();
+          setReadOpen(!readOpen);
+          setHomeOpen(false);
+        }
+      }}
+    >
+      READ {isMobile && (readOpen ? "▲" : "▼")}
+    </a>
 
     <div className="dropdown-menu">
-      <a href="/Articles">ARTICLES</a>
-      <a href="/Magazines">MAGAZINES</a>
+      <a 
+        href="/Articles" 
+        onClick={() => {
+          setMenuOpen(false);
+          setReadOpen(false);
+        }}
+      >
+        ARTICLES
+      </a>
+      <a 
+        href="/Magazines" 
+        onClick={() => {
+          setMenuOpen(false);
+          setReadOpen(false);
+        }}
+      >
+        MAGAZINES
+      </a>
     </div>
   </div>
 

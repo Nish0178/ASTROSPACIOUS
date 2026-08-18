@@ -32,7 +32,13 @@
 
       @media (max-width: 768px) {
         .logo-text {
-          transform: scale(.35) translateY(-150px);
+          position: relative;
+          transform: none;
+          width: 90vw;
+          max-width: 380px;
+          height: auto;
+          margin-top: -40px;
+          margin-bottom: 20px;
         }
         .heroSubtitle {
           font-size: 22px;
@@ -47,7 +53,10 @@
 
       @media (max-width: 600px) {
         .logo-text {
-          transform: scale(.25) translateY(-180px);
+          width: 85vw;
+          max-width: 300px;
+          margin-top: -20px;
+          margin-bottom: 15px;
         }
 
         .showcaseGrid {
