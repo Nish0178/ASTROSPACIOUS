@@ -266,30 +266,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="finalCTA">
-        <div className="ctaContent">
-          <h2 className="ctaTitle gradient textclip">Ready to Explore?</h2>
-          <p className="ctaSubtitle">
-            Your journey through the universe of knowledge begins now
-          </p>
-          <button 
-            className="ctaButtonLarge gradient"
-            onClick={() => window.location.href = '/Subject'}
-            // Keep dynamic onMouseEnter/onMouseLeave logic as inline event handlers
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.05)';
-              e.currentTarget.style.boxShadow = '0 25px 70px rgba(139, 92, 246, 0.7)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = '0 15px 50px rgba(139, 92, 246, 0.5)';
-            }}
-          >
-            Start Exploring
-          </button>
-        </div>
-      </section>
+
     </main>
   );
 };

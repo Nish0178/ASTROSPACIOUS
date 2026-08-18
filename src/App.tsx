@@ -12,9 +12,6 @@ import TermsConditions from "./TermsConditions";
 import Magazines from "./Magazines.tsx";
 import Articles from "./Articles.tsx";
 import Contact from "./Contact.tsx";
-import Select from "./Select.tsx";
-import Topic from "./Topic.tsx";
-import Subject from "./Subject.tsx";
 import Home from "./Home.tsx";
 import Careers from "./Careers.tsx";
 import About from "./About.tsx";
@@ -106,12 +103,7 @@ export default function App() {
                 {/* Thank You */}
                 <Route path="/thank-you" element={<ThankYou />} />
 
-                {/* Subjects */}
-                <Route path="/Subject" element={<Subject />} />
-                <Route path="/Topic/:subject/:subtopic" element={<Topic />} />
 
-                {/* Select */}
-                <Route path="/Select" element={<Select />} />
 
                 {/* Privacy Policy */}
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />

@@ -141,16 +141,6 @@ const Footer: React.FC = () => {
           </a>
         </li>
 
-        <li>
-          <a
-            href="/Subject"
-            style={styles.link}
-            onMouseEnter={hoverIn}
-            onMouseLeave={hoverOut}
-          >
-            Explore Subjects
-          </a>
-        </li>
 
         <li>
           <a

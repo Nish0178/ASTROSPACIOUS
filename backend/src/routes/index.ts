@@ -40,7 +40,7 @@ const placeholderHandler = (req: any, res: any) => {
 router.use("/auth", authRoutes);
 router.use("/articles", articleRoutes);
 router.use("/magazines", magazineRoutes);
-router.use("/subjects", placeholderHandler);
+
 router.use("/contact", contactRoutes);
 router.use("/newsletter", newsletterRoutes);
 router.use("/admin", adminRoutes);

@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../css/main.css";
 
-type SubjectType = {
-  id: string | number;
-  name: string;
-  url: string;
-  subtopics: string[];
-};
+
 
 function Nav() {
   const location = useLocation();
@@ -32,28 +27,11 @@ function Nav() {
   typeof window !== "undefined" ? window.innerWidth <= 768 : false
 );
 
-  const [subjects, setSubjects] = useState<SubjectType[]>([]);
-  const [showSubjects, setShowSubjects] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const [homeOpen, setHomeOpen] = useState(false);
 const [readOpen, setReadOpen] = useState(false);
 
-  useEffect(() => {
-    let mounted = true;
-
-    fetch('/data/subjects.json')
-      .then(res => {
-        if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-        return res.json();
-      })
-      .then((data: SubjectType[]) => {
-        if (mounted) setSubjects(data);
-      })
-      .catch(err => console.error('Error loading subjects:', err));
-
-    return () => { mounted = false };
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -67,10 +45,7 @@ const [readOpen, setReadOpen] = useState(false);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 🟦 CLICK HANDLER — scroll to section on Subject page
-  const scrollToSection = (id: string | number) => {
-    window.location.href = `/Subject#section-${id}`;
-  };
+
 
   return (
     <nav>
@@ -143,38 +118,11 @@ const [readOpen, setReadOpen] = useState(false);
     <div className="dropdown-menu">
       <a href="/Articles">ARTICLES</a>
       <a href="/Magazines">MAGAZINES</a>
-      <a href="/Subject">EXPLORE SUBJECTS</a>
     </div>
   </div>
 
-  <a href="/Select" className="btn">
-    NEW
-  </a>
+    </div>
 
-</div>
-          {/*
-<div
-  className="subject-wrapper"
-  onMouseEnter={() => setShowSubjects(true)}
-  onMouseLeave={() => setShowSubjects(false)}
->
-  <a href="/Subject">Subject</a>
-
-  <div className={`NavSubject ${showSubjects ? "visible" : "hidden"}`}>
-    {subjects.map(subject => (
-      <p
-        key={subject.id}
-        onClick={() => scrollToSection(subject.id)}
-        className="nav-subtopic"
-      >
-        {subject.name}
-      </p>
-    ))}
-  </div>
-</div>
-*/}
-
-          
       </div>
     </nav>
   );
