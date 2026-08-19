@@ -1,44 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import SpaceBg from "./Extra/Space-bg.tsx";
+import { magazineApi, PublicMagazine } from "./services/api/magazineApi";
 import "./css/base.css";
 import "./css/Magazines.css";
 
-const magazines = [
-  {
-    id: 1,
-    edition: "July 2026",
-    title: "ASTRO Monthly",
-    description:
-      "Explore the latest discoveries, missions and astronomical events from around the universe.",
-    image:
-      "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800",
-  },
-  {
-    id: 2,
-    edition: "August 2026",
-    title: "Galaxy Explorer",
-    description:
-      "A special edition covering galaxies, nebulae and deep space exploration.",
-    image:
-      "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800",
-  },
-  {
-    id: 3,
-    edition: "September 2026",
-    title: "Cosmic Horizons",
-    description:
-      "Read about black holes, exoplanets and the future of space technology.",
-    image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800",
-  },
-];
-
 export default function Magazines() {
   const [search, setSearch] = useState("");
+  const [magazines, setMagazines] = useState<PublicMagazine[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMagazines = async () => {
+      try {
+        setLoading(true);
+        const res = await magazineApi.getMagazines();
+        setMagazines(res.data);
+      } catch (err: any) {
+        setError(err.message || "Failed to load magazines.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMagazines();
+  }, []);
 
   const filteredMagazines = magazines.filter((magazine) =>
-    magazine.title.toLowerCase().includes(search.toLowerCase())
+    magazine.title.toLowerCase().includes(search.toLowerCase()) || 
+    magazine.description.toLowerCase().includes(search.toLowerCase())
   );
+
+  const formatEdition = (magazine: PublicMagazine) => {
+    if (magazine.publishedAt) {
+      const date = new Date(magazine.publishedAt);
+      return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+    if (magazine.volume || magazine.issueNumber) {
+      return `Vol ${magazine.volume || '?'} / Issue ${magazine.issueNumber || '?'}`;
+    }
+    return "Special Edition";
+  };
 
   return (
     <main className="magazines-page">
@@ -62,30 +65,40 @@ export default function Magazines() {
       </section>
 
       <section className="magazines-grid">
-        {filteredMagazines.map((magazine) => (
-          <div className="magazine-card glow glow-hover" key={magazine.id}>
-            <img src={magazine.image} alt={magazine.title} />
+        {loading ? (
+          <h2 className="no-results">Loading magazines...</h2>
+        ) : error ? (
+          <h2 className="no-results" style={{ color: '#ef4444' }}>{error}</h2>
+        ) : (
+          <>
+            {filteredMagazines.map((magazine) => (
+              <div className="magazine-card glow glow-hover" key={magazine.id}>
+                <img src={magazine.coverImage || "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800"} alt={magazine.title} />
 
-            <span className="magazine-edition">
-              {magazine.edition}
-            </span>
+                <span className="magazine-edition">
+                  {formatEdition(magazine)}
+                </span>
 
-            <div className="magazine-content">
-              <h3>{magazine.title}</h3>
+                <div className="magazine-content">
+                  <h3>{magazine.title}</h3>
 
-              <p>{magazine.description}</p>
+                  <p>{magazine.description}</p>
 
-              <button className="gradient">
-                Read Magazine
-              </button>
-            </div>
-          </div>
-        ))}
+                  <Link to={`/magazines/${magazine.slug}`} style={{ textDecoration: 'none' }}>
+                    <button className="gradient">
+                      Read Magazine
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ))}
 
-        {filteredMagazines.length === 0 && (
-          <h2 className="no-results">
-            📚 No magazines found.
-          </h2>
+            {filteredMagazines.length === 0 && (
+              <h2 className="no-results">
+                📚 No magazines found.
+              </h2>
+            )}
+          </>
         )}
       </section>
     </main>

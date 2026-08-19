@@ -1,18 +1,53 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import SpaceBg from "./Extra/Space-bg";
-import { magazines } from "./data/magazines";
+import { magazineApi, PublicMagazine } from "./services/api/magazineApi";
 import "./css/Articles.css";
 import "./css/base.css";
 import "./css/MagazineDetails.css";
 
 export default function MagazineDetails() {
   const { slug } = useParams();
+  const [magazine, setMagazine] = useState<PublicMagazine | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const magazine = magazines.find(
-    (magazine) => magazine.slug === slug
-  );
+  useEffect(() => {
+    const fetchMagazine = async () => {
+      if (!slug) return;
+      try {
+        setLoading(true);
+        const data = await magazineApi.getMagazineBySlug(slug);
+        setMagazine(data);
+      } catch (err: any) {
+        setError("Magazine Not Found");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!magazine) {
+    fetchMagazine();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <main
+        style={{
+          minHeight: "100vh",
+          padding: "120px 40px",
+          background: "#030526",
+          color: "white",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <h2>Loading Magazine...</h2>
+      </main>
+    );
+  }
+
+  if (error || !magazine) {
     return (
       <main
         style={{
@@ -22,7 +57,7 @@ export default function MagazineDetails() {
           color: "white",
         }}
       >
-        <h1>Magazine Not Found</h1>
+        <h1>{error || "Magazine Not Found"}</h1>
 
         <Link
           to="/magazines"
@@ -37,6 +72,20 @@ export default function MagazineDetails() {
     );
   }
 
+  const formatPublishDate = () => {
+    if (magazine.publishedAt) {
+      return new Date(magazine.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    return "Unknown Date";
+  };
+
+  const formatIssue = () => {
+    if (magazine.volume && magazine.issueNumber) return `Vol ${magazine.volume}, Issue ${magazine.issueNumber}`;
+    if (magazine.volume) return `Volume ${magazine.volume}`;
+    if (magazine.issueNumber) return `Issue ${magazine.issueNumber}`;
+    return "Special Issue";
+  };
+
   return (
     <main className="magazine-details-page">
       <SpaceBg />
@@ -50,23 +99,21 @@ export default function MagazineDetails() {
         </Link>
 
         <h1 className="magazine-title">
-  {magazine.title}
-</h1>
+          {magazine.title}
+        </h1>
 
         <div className="magazine-meta">
-          <span>{magazine.issue}</span>
+          <span>{formatIssue()}</span>
 
           <span>•</span>
 
-          <span>{magazine.publishDate}</span>
-
-          <span>•</span>
-
-          <span>{magazine.pages} Pages</span>
+          <span>{formatPublishDate()}</span>
+          
+          {/* We don't have 'pages' in DB schema, so we can omit it or hardcode. */}
         </div>
 
         <img
-          src={magazine.cover}
+          src={magazine.coverImage || "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800"}
           alt={magazine.title}
           className="article-image"
         />
@@ -85,24 +132,34 @@ export default function MagazineDetails() {
             flexWrap: "wrap",
           }}
         >
-          <button className="gradient">
-            📖 READ ONLINE
-          </button>
+          {magazine.pdfUrl ? (
+            <>
+              <a href={magazine.pdfUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+                <button className="gradient">
+                  📖 READ ONLINE
+                </button>
+              </a>
 
-          <a
-            href={magazine.pdf}
-            download
-            className="gradient"
-            style={{
-              textDecoration: "none",
-              padding: "14px 24px",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            ⬇ DOWNLOAD PDF
-          </a>
+              <a
+                href={magazine.pdfUrl}
+                download
+                className="gradient"
+                style={{
+                  textDecoration: "none",
+                  padding: "14px 24px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                ⬇ DOWNLOAD PDF
+              </a>
+            </>
+          ) : (
+            <button className="gradient" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+              PDF NOT AVAILABLE
+            </button>
+          )}
         </div>
       </section>
     </main>
