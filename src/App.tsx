@@ -4,6 +4,7 @@ import Footer from "./Extra/Footer.tsx";
 import ArticleDetails from "./ArticleDetails.tsx";
 import Magazine from "./Magazine";
 import MagazineDetails from "./MagazineDetails";
+import MagazineReader from "./pages/MagazineReader";
 
 import ThankYou from "./ThankYou";
 import PrivacyPolicy from "./PrivacyPolicy";
@@ -97,6 +98,7 @@ export default function App() {
                 <Route path="/Magazines" element={<Magazines />} />
                 <Route path="/magazines" element={<Magazine />} />
                 <Route path="/magazines/:slug" element={<MagazineDetails />} />
+                <Route path="/magazines/:slug/read" element={<MagazineReader />} />
 
                 {/* About */}
                 <Route path="/About" element={<About />} />

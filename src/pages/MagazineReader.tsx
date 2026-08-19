@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import { magazineApi, PublicMagazine } from "../services/api/magazineApi";
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import "react-pdf/dist/esm/Page/TextLayer.css";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
 import "../css/MagazineReader.css";
 
 // Setup pdfjs worker
