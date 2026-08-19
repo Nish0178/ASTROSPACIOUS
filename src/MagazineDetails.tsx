@@ -134,11 +134,11 @@ export default function MagazineDetails() {
         >
           {magazine.pdfUrl ? (
             <>
-              <a href={magazine.pdfUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+              <Link to={`/magazines/${magazine.slug}/read`} style={{ textDecoration: 'none' }}>
                 <button className="gradient">
                   📖 READ ONLINE
                 </button>
-              </a>
+              </Link>
 
               <a
                 href={magazine.pdfUrl}

@@ -159,5 +159,29 @@ export const adminMagazineApi = {
 
     const json = await response.json();
     return { publicUrl: json.data.publicUrl };
+  },
+
+  async uploadPdf(file: File): Promise<{ publicUrl: string }> {
+    const token = localStorage.getItem("astro_admin_token");
+    if (!token) throw new Error("No authentication token found");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(`${API_URL}/admin/media/upload/pdf`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to upload PDF");
+    }
+
+    const json = await response.json();
+    return { publicUrl: json.data.publicUrl };
   }
 };

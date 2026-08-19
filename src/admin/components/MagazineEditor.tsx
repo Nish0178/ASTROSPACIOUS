@@ -19,6 +19,7 @@ export default function MagazineEditor({ initialData, mode, onSave }: MagazineEd
   const [volume, setVolume] = useState(initialData?.volume || '');
   const [issueNumber, setIssueNumber] = useState(initialData?.issueNumber || '');
   const [pdfUrl, setPdfUrl] = useState(initialData?.pdfUrl || '');
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   
   const [coverImage, setCoverImage] = useState(initialData?.coverImage || '');
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
@@ -89,6 +90,7 @@ export default function MagazineEditor({ initialData, mode, onSave }: MagazineEd
       setError(null);
 
       let finalImageUrl = coverImage;
+      let finalPdfUrl = pdfUrl;
 
       if (coverImageFile && !coverImage.startsWith("http")) {
         const { publicUrl } = await adminMagazineApi.uploadImage(coverImageFile);
@@ -97,13 +99,20 @@ export default function MagazineEditor({ initialData, mode, onSave }: MagazineEd
         setCoverImageFile(null);
       }
 
+      if (pdfFile) {
+        const { publicUrl } = await adminMagazineApi.uploadPdf(pdfFile);
+        finalPdfUrl = publicUrl;
+        setPdfUrl(publicUrl);
+        setPdfFile(null);
+      }
+
       const payload: Partial<CreateMagazinePayload> = {
         title,
         slug: isSlugEdited ? slug : undefined,
         description,
         volume: volume || undefined,
         issueNumber: issueNumber || undefined,
-        pdfUrl: pdfUrl || undefined,
+        pdfUrl: finalPdfUrl || undefined,
         coverImage: finalImageUrl || undefined,
         tags,
         featured,
@@ -211,14 +220,47 @@ export default function MagazineEditor({ initialData, mode, onSave }: MagazineEd
           </div>
 
           <div className="admin-form-group">
-            <label>PDF URL (Optional)</label>
-            <input 
-              type="text" 
-              className="admin-input" 
-              placeholder="https://.../magazine.pdf" 
-              value={pdfUrl}
-              onChange={e => setPdfUrl(e.target.value)}
-            />
+            <label>PDF File or URL (Optional)</label>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <input 
+                type="text" 
+                className="admin-input" 
+                placeholder="https://.../magazine.pdf" 
+                value={pdfUrl}
+                onChange={e => setPdfUrl(e.target.value)}
+                style={{ flex: 1 }}
+                disabled={!!pdfFile}
+              />
+              <span style={{ fontSize: '13px', color: '#94a3b8' }}>OR</span>
+              <button 
+                className="admin-btn admin-btn-outline" 
+                style={{ padding: '8px 12px' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('pdf-upload')?.click();
+                }}
+              >
+                Upload PDF
+              </button>
+              <input 
+                id="pdf-upload"
+                type="file" 
+                accept="application/pdf"
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setPdfFile(e.target.files[0]);
+                    setPdfUrl('');
+                  }
+                }}
+              />
+            </div>
+            {pdfFile && (
+              <div style={{ fontSize: '13px', color: '#10b981', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                Selected: {pdfFile.name} 
+                <X size={14} style={{ cursor: 'pointer', color: '#ef4444' }} onClick={() => setPdfFile(null)} />
+              </div>
+            )}
           </div>
 
           {error && <div style={{ color: '#ef4444', fontSize: '14px', marginTop: '12px', padding: '12px', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderRadius: '6px' }}>{error}</div>}
