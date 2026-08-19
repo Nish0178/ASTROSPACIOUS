@@ -20,6 +20,7 @@ export default function MagazineEditor({ initialData, mode, onSave }: MagazineEd
   const [issueNumber, setIssueNumber] = useState(initialData?.issueNumber || '');
   const [pdfUrl, setPdfUrl] = useState(initialData?.pdfUrl || '');
   const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [isUploadingPdf, setIsUploadingPdf] = useState(false);
   
   const [coverImage, setCoverImage] = useState(initialData?.coverImage || '');
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
@@ -97,13 +98,6 @@ export default function MagazineEditor({ initialData, mode, onSave }: MagazineEd
         finalImageUrl = publicUrl;
         setCoverImage(publicUrl);
         setCoverImageFile(null);
-      }
-
-      if (pdfFile) {
-        const { publicUrl } = await adminMagazineApi.uploadPdf(pdfFile);
-        finalPdfUrl = publicUrl;
-        setPdfUrl(publicUrl);
-        setPdfFile(null);
       }
 
       const payload: Partial<CreateMagazinePayload> = {
@@ -220,47 +214,114 @@ export default function MagazineEditor({ initialData, mode, onSave }: MagazineEd
           </div>
 
           <div className="admin-form-group">
-            <label>PDF File or URL (Optional)</label>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <input 
-                type="text" 
-                className="admin-input" 
-                placeholder="https://.../magazine.pdf" 
-                value={pdfUrl}
-                onChange={e => setPdfUrl(e.target.value)}
-                style={{ flex: 1 }}
-                disabled={!!pdfFile}
-              />
-              <span style={{ fontSize: '13px', color: '#94a3b8' }}>OR</span>
-              <button 
-                className="admin-btn admin-btn-outline" 
-                style={{ padding: '8px 12px' }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('pdf-upload')?.click();
-                }}
-              >
-                Upload PDF
-              </button>
-              <input 
-                id="pdf-upload"
-                type="file" 
-                accept="application/pdf"
-                style={{ display: 'none' }}
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    setPdfFile(e.target.files[0]);
-                    setPdfUrl('');
-                  }
-                }}
-              />
-            </div>
-            {pdfFile && (
-              <div style={{ fontSize: '13px', color: '#10b981', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                Selected: {pdfFile.name} 
-                <X size={14} style={{ cursor: 'pointer', color: '#ef4444' }} onClick={() => setPdfFile(null)} />
+            <label>Magazine PDF</label>
+            <div style={{ borderTop: '1px solid #334155', paddingTop: '16px', marginTop: '4px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                
+                {/* Upload Section */}
+                <div 
+                  className="admin-pdf-upload-box" 
+                  style={{ 
+                    border: '2px dashed #334155', 
+                    borderRadius: '8px', 
+                    padding: '24px', 
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    backgroundColor: 'rgba(51, 65, 85, 0.1)',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onClick={() => !isUploadingPdf && document.getElementById('pdf-upload-immediate')?.click()}
+                >
+                  {isUploadingPdf ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                      <Loader2 size={24} className="lucide-spin" color="#10b981" />
+                      <span style={{ color: '#10b981', fontWeight: 500 }}>Uploading...</span>
+                    </div>
+                  ) : pdfUrl && pdfFile ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ color: '#10b981', fontWeight: 500 }}>PDF uploaded successfully</div>
+                      <div style={{ fontSize: '13px', color: '#94a3b8' }}>Selected: {pdfFile.name}</div>
+                      <button 
+                        className="admin-btn admin-btn-outline" 
+                        style={{ marginTop: '8px', padding: '4px 12px', fontSize: '13px' }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          document.getElementById('pdf-upload-immediate')?.click();
+                        }}
+                      >
+                        Replace PDF
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                      <button 
+                        className="admin-btn admin-btn-outline" 
+                        style={{ pointerEvents: 'none' }}
+                      >
+                        Upload PDF
+                      </button>
+                      <span style={{ fontSize: '13px', color: '#94a3b8' }}>Click to choose a PDF file (Max 50MB)</span>
+                    </div>
+                  )}
+                  <input 
+                    id="pdf-upload-immediate"
+                    type="file" 
+                    accept="application/pdf"
+                    style={{ display: 'none' }}
+                    onChange={async (e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        const file = e.target.files[0];
+                        
+                        // Validation
+                        if (file.type !== 'application/pdf') {
+                          setError("Please select a valid PDF file.");
+                          return;
+                        }
+                        if (file.size > 50 * 1024 * 1024) {
+                          setError("PDF file must be less than 50MB.");
+                          return;
+                        }
+
+                        setError(null);
+                        setPdfFile(file);
+                        setIsUploadingPdf(true);
+
+                        try {
+                          const { publicUrl } = await adminMagazineApi.uploadPdf(file);
+                          setPdfUrl(publicUrl);
+                        } catch (err: any) {
+                          setError(err.message || "Failed to upload PDF.");
+                          setPdfFile(null);
+                        } finally {
+                          setIsUploadingPdf(false);
+                          // Reset input so the same file can be selected again if needed
+                          if (e.target) e.target.value = '';
+                        }
+                      }
+                    }}
+                  />
+                </div>
+
+                <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '14px', fontWeight: 500 }}>
+                  OR
+                </div>
+
+                {/* URL Section */}
+                <div>
+                  <label style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '4px', display: 'block' }}>PDF URL (Optional)</label>
+                  <input 
+                    type="text" 
+                    className="admin-input" 
+                    placeholder="https://.../magazine.pdf" 
+                    value={pdfUrl}
+                    onChange={e => {
+                      setPdfUrl(e.target.value);
+                      if (pdfFile) setPdfFile(null); // Clear file tracking if they manually edit the URL
+                    }}
+                  />
+                </div>
               </div>
-            )}
+            </div>
           </div>
 
           {error && <div style={{ color: '#ef4444', fontSize: '14px', marginTop: '12px', padding: '12px', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderRadius: '6px' }}>{error}</div>}
