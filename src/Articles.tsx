@@ -206,32 +206,7 @@ if (error) {
         </motion.div>
       </section>
 
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="hero-statistics"
-      >
-        <div className="stat-item">
-          <h3>500+</h3>
-          <p>Articles</p>
-        </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <h3>12</h3>
-          <p>Categories</p>
-        </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <h3>50k+</h3>
-          <p>Readers</p>
-        </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <h3>New</h3>
-          <p>Weekly Content</p>
-        </div>
-      </motion.section>
+
 
       {/* New Premium Search & Filter Section */}
       <motion.section 
