@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import SpaceBg from "./Extra/Space-bg";
 import { magazineApi, PublicMagazine } from "./services/api/magazineApi";
+import { getMediaUrl } from "./utils/urlUtils";
+import { BookOpen } from "lucide-react";
 import "./css/Articles.css";
 import "./css/base.css";
 import "./css/MagazineDetails.css";
@@ -113,7 +115,7 @@ export default function MagazineDetails() {
         </div>
 
         <img
-          src={magazine.coverImage || "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800"}
+          src={getMediaUrl(magazine.coverImage) || "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800"}
           alt={magazine.title}
           className="article-image"
         />
@@ -133,30 +135,29 @@ export default function MagazineDetails() {
           }}
         >
           {magazine.pdfUrl ? (
-            <>
-              <Link to={`/magazines/${magazine.slug}/read`} style={{ textDecoration: 'none' }}>
-                <button className="gradient">
-                  📖 READ ONLINE
-                </button>
-              </Link>
-
-              <a
-                href={magazine.pdfUrl}
-                download
+            <Link to={`/magazines/${magazine.slug}/read`} style={{ textDecoration: 'none' }}>
+              <button 
                 className="gradient"
                 style={{
-                  textDecoration: "none",
-                  padding: "14px 24px",
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  gap: "10px",
+                  padding: "16px 32px",
+                  fontSize: "1.1rem",
+                  fontWeight: "600",
+                  borderRadius: "30px",
+                  border: "none",
+                  color: "white",
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease",
                 }}
               >
-                ⬇ DOWNLOAD PDF
-              </a>
-            </>
+                <BookOpen size={20} /> Read Magazine
+              </button>
+            </Link>
           ) : (
-            <button className="gradient" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+            <button className="gradient" style={{ opacity: 0.5, cursor: 'not-allowed', padding: "16px 32px", borderRadius: "30px", border: "none", color: "white" }}>
               PDF NOT AVAILABLE
             </button>
           )}

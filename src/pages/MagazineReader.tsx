@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import { magazineApi, PublicMagazine } from "../services/api/magazineApi";
+import { getMediaUrl } from "../utils/urlUtils";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import "../css/MagazineReader.css";
@@ -161,7 +162,7 @@ export default function MagazineReader() {
         
         <div className="pdf-viewer-wrapper">
           <Document
-            file={magazine.pdfUrl}
+            file={getMediaUrl(magazine.pdfUrl)}
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<div className="pdf-loading">Loading PDF...</div>}
             error={<div className="pdf-error">Failed to load PDF file.</div>}
