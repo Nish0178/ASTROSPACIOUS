@@ -70,6 +70,12 @@ model Magazine {
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  deletedAt      DateTime?
+  deletedBy      String?
+  previousStatus String?
+  restoredAt     DateTime?
+  restoredBy     String?
+  isDeleted      Boolean   @default(false)
 }
 
 model NewsletterSubscriber {

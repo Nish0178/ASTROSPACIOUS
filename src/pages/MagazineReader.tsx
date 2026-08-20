@@ -1,17 +1,35 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import { magazineApi, PublicMagazine } from "../services/api/magazineApi";
 import { getMediaUrl } from "../utils/urlUtils";
+// @ts-ignore
+import HTMLFlipBook from "react-pageflip";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import "../css/MagazineReader.css";
+
+const FlipBook = HTMLFlipBook as any;
 
 // Setup pdfjs worker
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
 ).toString();
+
+const PDFPage = React.forwardRef(({ pageNumber, scale }: any, ref: any) => {
+  return (
+    <div ref={ref} className="page-wrapper" style={{ backgroundColor: 'white', overflow: 'hidden', height: '100%', width: '100%' }}>
+      <Page 
+        pageNumber={pageNumber} 
+        scale={scale} 
+        renderTextLayer={false} 
+        renderAnnotationLayer={false} 
+        className="pdf-page-flip"
+      />
+    </div>
+  );
+});
 
 export default function MagazineReader() {
   const { slug } = useParams();
@@ -20,10 +38,10 @@ export default function MagazineReader() {
   const [error, setError] = useState<string | null>(null);
 
   const [numPages, setNumPages] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const readerRef = useRef<HTMLDivElement>(null);
+  const flipBookRef = useRef<any>(null);
   
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -56,22 +74,15 @@ export default function MagazineReader() {
   };
 
   const goToPrevPage = () => {
-    setCurrentPage((prev) => {
-      if (isMobile || prev <= 2) return Math.max(prev - 1, 1);
-      return Math.max(prev - 2, 1); // jump 2 pages on desktop
-    });
+    flipBookRef.current?.pageFlip()?.flipPrev();
   };
 
   const goToNextPage = () => {
-    setCurrentPage((prev) => {
-      if (isMobile) return Math.min(prev + 1, numPages);
-      if (prev === 1) return 2; // from cover to spread
-      return Math.min(prev + 2, numPages); // jump 2 pages
-    });
+    flipBookRef.current?.pageFlip()?.flipNext();
   };
 
-  const zoomIn = () => setScale((prev) => Math.min(prev + 0.25, 3));
-  const zoomOut = () => setScale((prev) => Math.max(prev - 0.25, 0.5));
+  const zoomIn = () => setScale((prev) => Math.min(prev + 0.2, 2.5));
+  const zoomOut = () => setScale((prev) => Math.max(prev - 0.2, 0.5));
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -96,28 +107,7 @@ export default function MagazineReader() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [numPages, isMobile]);
-
-  // Touch handlers for swipe
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.targetTouches[0].clientX;
-  };
-  
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.targetTouches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 50) {
-      goToNextPage();
-    }
-    if (touchStartX.current - touchEndX.current < -50) {
-      goToPrevPage();
-    }
-  };
+  }, [numPages]);
 
   if (loading) return <div className="reader-loading">Loading magazine...</div>;
   if (error || !magazine) return (
@@ -132,10 +122,6 @@ export default function MagazineReader() {
       <Link to={`/magazines/${slug}`} className="reader-back-btn">Go Back</Link>
     </div>
   );
-
-  const showTwoPages = !isMobile && currentPage > 1;
-  const leftPageNum = currentPage;
-  const rightPageNum = currentPage + 1 <= numPages ? currentPage + 1 : null;
 
   return (
     <div className="magazine-reader-container" ref={readerRef}>
@@ -152,15 +138,10 @@ export default function MagazineReader() {
       </div>
 
       {/* Main Reader Area */}
-      <div 
-        className="reader-workspace"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <button className="nav-btn prev" onClick={goToPrevPage} disabled={currentPage === 1}>◀</button>
+      <div className="reader-workspace flipbook-workspace">
+        <button className="nav-btn prev" onClick={goToPrevPage}>◀</button>
         
-        <div className="pdf-viewer-wrapper">
+        <div className="pdf-viewer-wrapper" style={{ transform: `scale(${scale})`, transition: 'transform 0.3s ease', transformOrigin: 'center center' }}>
           <Document
             file={getMediaUrl(magazine.pdfUrl)}
             onLoadSuccess={onDocumentLoadSuccess}
@@ -168,33 +149,40 @@ export default function MagazineReader() {
             error={<div className="pdf-error">Failed to load PDF file.</div>}
             className="pdf-document"
           >
-            <div className={`pdf-pages ${showTwoPages ? 'two-pages' : 'single-page'}`}>
-              <Page 
-                pageNumber={leftPageNum} 
-                scale={scale * (isMobile ? 0.6 : 1.0)} 
-                renderTextLayer={true} 
-                renderAnnotationLayer={true} 
-                className="pdf-page"
-              />
-              {showTwoPages && rightPageNum && (
-                <Page 
-                  pageNumber={rightPageNum} 
-                  scale={scale * (isMobile ? 0.6 : 1.0)} 
-                  renderTextLayer={true} 
-                  renderAnnotationLayer={true} 
-                  className="pdf-page"
-                />
-              )}
-            </div>
+            {numPages > 0 && (
+              <FlipBook
+                width={400}
+                height={550}
+                size="stretch"
+                minWidth={315}
+                maxWidth={1000}
+                minHeight={420}
+                maxHeight={1350}
+                maxShadowOpacity={0.5}
+                showCover={true}
+                mobileScrollSupport={true}
+                className="flipbook-component"
+                ref={flipBookRef}
+                usePortrait={isMobile}
+              >
+                {Array.from(new Array(numPages), (el, index) => (
+                  <PDFPage 
+                    key={`page_${index + 1}`} 
+                    pageNumber={index + 1} 
+                    scale={1.2} // We keep internal scale fixed and scale the wrapper for zoom
+                  />
+                ))}
+              </FlipBook>
+            )}
           </Document>
         </div>
 
-        <button className="nav-btn next" onClick={goToNextPage} disabled={showTwoPages ? rightPageNum === numPages || rightPageNum === null : currentPage === numPages}>▶</button>
+        <button className="nav-btn next" onClick={goToNextPage}>▶</button>
       </div>
 
       {/* Bottom status */}
       <div className={`reader-footer ${isFullscreen ? 'fullscreen-hidden' : ''}`}>
-        Page {currentPage} {showTwoPages && rightPageNum ? `- ${rightPageNum}` : ''} / {numPages || '?'}
+        {numPages > 0 ? `${numPages} Pages` : 'Loading...'}
       </div>
     </div>
   );
