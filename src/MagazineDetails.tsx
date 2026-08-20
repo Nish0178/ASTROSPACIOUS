@@ -117,7 +117,7 @@ export default function MagazineDetails() {
         <img
           src={getMediaUrl(magazine.coverImage) || "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800"}
           alt={magazine.title}
-          className="article-image"
+          className="magazine-cover"
         />
 
         <section className="magazine-content">
@@ -126,18 +126,11 @@ export default function MagazineDetails() {
           <p>{magazine.description}</p>
         </section>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "20px",
-            marginTop: "40px",
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="magazine-actions">
           {magazine.pdfUrl ? (
-            <Link to={`/magazines/${magazine.slug}/read`} style={{ textDecoration: 'none' }}>
+            <Link to={`/magazines/${magazine.slug}/read`} className="magazine-read-link" style={{ textDecoration: 'none' }}>
               <button 
-                className="gradient"
+                className="gradient magazine-read-btn"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
