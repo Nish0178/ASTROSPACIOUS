@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
         </a>
 
         <a
-          href="https://www.linkedin.com/in/anvita-srivastava-311b86325/"
+          href="https://www.linkedin.com/company/astrospacious/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn"
