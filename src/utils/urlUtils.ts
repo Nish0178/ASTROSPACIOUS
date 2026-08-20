@@ -10,12 +10,8 @@ export function getMediaUrl(path: string | undefined): string {
   // If path already starts with the correct baseUrl, return it
   if (path.startsWith(baseUrl)) return path;
 
-  // Fix dev URLs leaked into production database
-  if (path.startsWith("http://localhost:5000")) {
-    path = path.replace("http://localhost:5000", "");
-  } else if (path.startsWith("http://127.0.0.1:5000")) {
-    path = path.replace("http://127.0.0.1:5000", "");
-  }
+  // Fix dev URLs leaked into production database (e.g. http://localhost:5000 or http://localhost:10000)
+  path = path.replace(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/, "");
 
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path;

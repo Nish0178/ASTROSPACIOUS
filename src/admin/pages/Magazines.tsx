@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { adminMagazineApi, AdminMagazine } from '../../admin/services/adminMagazineApi';
 import { Search, Eye, Edit2, Trash2, Loader2, AlertCircle, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getMediaUrl } from '../../utils/urlUtils';
 
 export default function Magazines() {
   const [magazines, setMagazines] = useState<AdminMagazine[]>([]);
@@ -215,7 +216,7 @@ export default function Magazines() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         {magazine.coverImage ? (
                           <img 
-                            src={magazine.coverImage} 
+                            src={getMediaUrl(magazine.coverImage)} 
                             alt={magazine.title} 
                             style={{ width: '48px', height: '64px', borderRadius: '4px', objectFit: 'cover' }} 
                           />
