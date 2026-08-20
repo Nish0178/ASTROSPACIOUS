@@ -124,6 +124,32 @@ export const adminMagazineApi = {
     return json.data;
   },
 
+  async getTrashMagazines(params: GetMagazinesParams = {}): Promise<AdminMagazinesResponse> {
+    const query = new URLSearchParams();
+    
+    if (params.page) query.append("page", params.page.toString());
+    if (params.limit) query.append("limit", params.limit.toString());
+    if (params.sort) query.append("sort", params.sort);
+    if (params.search) query.append("search", params.search);
+    if (params.status) query.append("status", params.status);
+    if (params.featured) query.append("featured", params.featured);
+    if (params.category) query.append("category", params.category);
+    if (params.volume) query.append("volume", params.volume);
+    if (params.issueNumber) query.append("issueNumber", params.issueNumber);
+
+    const response = await fetch(`${API_URL}/admin/magazines/trash?${query.toString()}`, {
+      headers: this.getHeaders()
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to fetch trashed magazines");
+    }
+
+    const json = await response.json();
+    return json.data;
+  },
+
   async deleteMagazine(id: string): Promise<void> {
     const response = await fetch(`${API_URL}/admin/magazines/${id}`, {
       method: "DELETE",
@@ -133,7 +159,69 @@ export const adminMagazineApi = {
     if (!response.ok) {
       if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
       const err = await response.json().catch(() => ({}));
-      throw new Error(err.message || "Failed to archive magazine");
+      throw new Error(err.message || "Failed to move magazine to trash");
+    }
+  },
+
+  async restoreMagazine(id: string): Promise<void> {
+    const response = await fetch(`${API_URL}/admin/magazines/${id}/restore`, {
+      method: "PATCH",
+      headers: this.getHeaders()
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.message || "Failed to restore magazine");
+    }
+  },
+
+  async permanentDeleteMagazine(id: string): Promise<void> {
+    const response = await fetch(`${API_URL}/admin/magazines/${id}/permanent`, {
+      method: "DELETE",
+      headers: this.getHeaders()
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.message || "Failed to permanently delete magazine");
+    }
+  },
+
+  async bulkTrashMagazines(ids: string[]): Promise<void> {
+    const response = await fetch(`${API_URL}/admin/magazines-bulk/trash`, {
+      method: "POST",
+      headers: this.getHeaders(),
+      body: JSON.stringify({ ids })
+    });
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to trash magazines");
+    }
+  },
+
+  async bulkRestoreMagazines(ids: string[]): Promise<void> {
+    const response = await fetch(`${API_URL}/admin/magazines-bulk/restore`, {
+      method: "POST",
+      headers: this.getHeaders(),
+      body: JSON.stringify({ ids })
+    });
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to restore magazines");
+    }
+  },
+
+  async bulkPermanentDeleteMagazines(ids: string[]): Promise<void> {
+    const response = await fetch(`${API_URL}/admin/magazines-bulk/delete`, {
+      method: "POST",
+      headers: this.getHeaders(),
+      body: JSON.stringify({ ids })
+    });
+    if (!response.ok) {
+      if (response.status === 401) window.dispatchEvent(new Event('astro_unauthorized'));
+      throw new Error("Failed to permanently delete magazines");
     }
   },
 

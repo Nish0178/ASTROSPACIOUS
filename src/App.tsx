@@ -36,6 +36,7 @@ import CreateArticle from "./admin/pages/CreateArticle";
 import EditArticle from "./admin/pages/EditArticle";
 import TrashArticles from "./admin/pages/Trash";
 import AdminMagazines from "./admin/pages/Magazines";
+import MagazinesTrash from "./admin/pages/MagazinesTrash";
 import CreateMagazine from "./admin/pages/CreateMagazine";
 import EditMagazine from "./admin/pages/EditMagazine";
 import AdminCategories from "./admin/pages/Categories";
@@ -71,6 +72,7 @@ export default function App() {
               <Route path="magazines" element={<AdminMagazines />} />
               <Route path="magazines/create" element={<CreateMagazine />} />
               <Route path="magazines/edit/:id" element={<EditMagazine />} />
+              <Route path="magazines/trash" element={<MagazinesTrash />} />
               <Route path="categories" element={<AdminCategories />} />
               <Route path="newsletter" element={<AdminNewsletter />} />
               <Route path="subscribers" element={<AdminSubscribers />} />

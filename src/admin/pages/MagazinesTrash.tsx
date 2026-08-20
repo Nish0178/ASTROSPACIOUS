@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { adminMagazineApi, AdminMagazine } from '../../admin/services/adminMagazineApi';
-import { Search, Eye, Edit2, Trash2, Loader2, AlertCircle, Star } from 'lucide-react';
+import { adminMagazineApi, AdminMagazine } from '../services/adminMagazineApi';
+import { Search, Loader2, AlertCircle, RotateCcw, Trash2, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export default function Magazines() {
+export default function MagazinesTrash() {
   const [magazines, setMagazines] = useState<AdminMagazine[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -15,18 +15,16 @@ export default function Magazines() {
   
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
-  const [featuredFilter, setFeaturedFilter] = useState("All");
   const [sort, setSort] = useState<"Newest" | "Oldest">("Newest");
+
+  // Bulk Selection State
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [isBulking, setIsBulking] = useState(false);
 
   // Modal State
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [magazineToDelete, setMagazineToDelete] = useState<AdminMagazine | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  // Bulk Selection State
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [isBulkTrashing, setIsBulkTrashing] = useState(false);
 
   // Debounce search
   useEffect(() => {
@@ -47,53 +45,82 @@ export default function Magazines() {
       };
       
       if (debouncedSearch) params.search = debouncedSearch;
-      if (statusFilter !== "All") params.status = statusFilter;
-      if (featuredFilter !== "All") params.featured = featuredFilter === "Featured" ? "true" : "false";
 
-      const res = await adminMagazineApi.getMagazines(params);
+      const res = await adminMagazineApi.getTrashMagazines(params);
       setMagazines(res.data);
       setTotalPages(res.meta.totalPages);
       setTotalItems(res.meta.total);
       setError(null);
     } catch (err: any) {
-      setError(err.message || "Failed to load magazines.");
+      setError(err.message || "Failed to load deleted magazines.");
     } finally {
       setLoading(false);
     }
-  }, [page, sort, debouncedSearch, statusFilter, featuredFilter]);
+  }, [page, sort, debouncedSearch]);
 
   useEffect(() => {
     fetchMagazines();
   }, [fetchMagazines]);
 
-  const handleDeleteConfirm = async () => {
+  const handleRestore = async (id: string) => {
+    try {
+      await adminMagazineApi.restoreMagazine(id);
+      fetchMagazines(); // Refresh list
+    } catch (err: any) {
+      alert("Failed to restore magazine: " + err.message);
+    }
+  };
+
+  const handlePermanentDeleteConfirm = async () => {
     if (!magazineToDelete) return;
     setIsDeleting(true);
     try {
-      await adminMagazineApi.deleteMagazine(magazineToDelete.id);
+      await adminMagazineApi.permanentDeleteMagazine(magazineToDelete.id);
       setDeleteModalOpen(false);
       setMagazineToDelete(null);
-      fetchMagazines(); // Refresh list
+      
+      // If we permanently deleted the only item(s) on the page and we're not on page 1, go back
+      if (magazines.length === 1 && page > 1) {
+        setPage(p => p - 1);
+      } else {
+        fetchMagazines();
+      }
     } catch (err: any) {
-      alert("Failed to move magazine to trash: " + err.message);
+      alert("Failed to permanently delete magazine: " + err.message);
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const handleBulkTrash = async () => {
+  const handleBulkRestore = async () => {
     if (selectedIds.length === 0) return;
-    if (!confirm(`Are you sure you want to move ${selectedIds.length} magazines to Trash?`)) return;
+    if (!confirm(`Are you sure you want to restore ${selectedIds.length} magazines?`)) return;
     
-    setIsBulkTrashing(true);
+    setIsBulking(true);
     try {
-      await adminMagazineApi.bulkTrashMagazines(selectedIds);
+      await adminMagazineApi.bulkRestoreMagazines(selectedIds);
       setSelectedIds([]);
       fetchMagazines();
     } catch (err: any) {
-      alert("Failed to bulk trash: " + err.message);
+      alert("Failed to bulk restore: " + err.message);
     } finally {
-      setIsBulkTrashing(false);
+      setIsBulking(false);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    if (!confirm(`WARNING: This action cannot be undone.\n\nAre you sure you want to PERMANENTLY delete ${selectedIds.length} magazines?`)) return;
+    
+    setIsBulking(true);
+    try {
+      await adminMagazineApi.bulkPermanentDeleteMagazines(selectedIds);
+      setSelectedIds([]);
+      fetchMagazines();
+    } catch (err: any) {
+      alert("Failed to bulk delete: " + err.message);
+    } finally {
+      setIsBulking(false);
     }
   };
 
@@ -117,16 +144,11 @@ export default function Magazines() {
     <div>
       <div className="admin-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <h1 className="admin-page-title">Magazines Management</h1>
-          <p className="admin-page-subtitle">Manage, publish, and edit all magazine issues.</p>
-        </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <Link to="/admin/magazines/trash" className="admin-btn admin-btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Trash2 size={16} /> View Trash
-          </Link>
-          <Link to="/admin/magazines/create" className="admin-btn admin-btn-primary">
-            + Create Magazine
-          </Link>
+          <h1 className="admin-page-title" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Link to="/admin/magazines" className="admin-icon-btn"><ArrowLeft size={20} /></Link>
+            Magazine Trash
+          </h1>
+          <p className="admin-page-subtitle">Manage deleted magazines. Items here can be restored or permanently deleted.</p>
         </div>
       </div>
 
@@ -137,28 +159,15 @@ export default function Magazines() {
             <Search size={18} />
             <input 
               type="text" 
-              placeholder="Search by title or slug..." 
+              placeholder="Search trash by title or slug..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="admin-table-filters">
-            <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}>
-              <option value="All">All Statuses</option>
-              <option value="Published">Published</option>
-              <option value="Draft">Draft</option>
-              <option value="Archived">Archived</option>
-            </select>
-            
-            <select value={featuredFilter} onChange={(e) => { setFeaturedFilter(e.target.value); setPage(1); }}>
-              <option value="All">All Types</option>
-              <option value="Featured">Featured</option>
-              <option value="Standard">Standard</option>
-            </select>
-
             <select value={sort} onChange={(e) => { setSort(e.target.value as any); setPage(1); }}>
-              <option value="Newest">Newest First</option>
-              <option value="Oldest">Oldest First</option>
+              <option value="Newest">Recently Deleted</option>
+              <option value="Oldest">Oldest Deleted</option>
             </select>
           </div>
         </div>
@@ -167,18 +176,19 @@ export default function Magazines() {
         {loading ? (
           <div className="admin-loader-container" style={{ height: '300px' }}>
             <Loader2 size={32} className="lucide-spin" />
-            <p>Loading magazines...</p>
+            <p>Loading trash...</p>
           </div>
         ) : error ? (
           <div className="admin-blank-slate" style={{ height: '300px', border: 'none', color: '#ef4444' }}>
             <AlertCircle size={32} style={{ marginBottom: '16px' }} />
-            <h3>Failed to load magazines</h3>
+            <h3>Failed to load trash</h3>
             <p>{error}</p>
           </div>
         ) : magazines.length === 0 ? (
           <div className="admin-blank-slate" style={{ height: '300px', border: 'none' }}>
-            <h3>No magazines found</h3>
-            <p>Try adjusting your filters or create a new magazine.</p>
+            <Trash2 size={48} color="#475569" style={{ marginBottom: '16px' }} />
+            <h3>No deleted magazines</h3>
+            <p>Your trash is empty.</p>
           </div>
         ) : (
           <>
@@ -196,7 +206,8 @@ export default function Magazines() {
                   <th>Magazine</th>
                   <th>Volume / Issue</th>
                   <th>Status</th>
-                  <th>Published</th>
+                  <th>Deleted Date</th>
+                  <th>Deleted By</th>
                   <th style={{ textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
@@ -223,9 +234,8 @@ export default function Magazines() {
                           <div style={{ width: '48px', height: '64px', borderRadius: '4px', background: 'rgba(255,255,255,0.05)' }} />
                         )}
                         <div>
-                          <div style={{ fontWeight: 600, color: '#f8fafc', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ fontWeight: 600, color: '#f8fafc', marginBottom: '4px' }}>
                             {magazine.title}
-                            {magazine.featured && <Star size={14} color="#f59e0b" fill="#f59e0b" />}
                           </div>
                           <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>/{magazine.slug}</div>
                         </div>
@@ -237,35 +247,28 @@ export default function Magazines() {
                       {!magazine.volume && !magazine.issueNumber && '-'}
                     </td>
                     <td data-label="Status">
-                      {magazine.status === 'Published' ? (
-                        <span className="admin-badge green">Published</span>
-                      ) : magazine.status === 'Archived' ? (
-                        <span className="admin-badge gray">Archived</span>
-                      ) : (
-                        <span className="admin-badge gray">Draft</span>
-                      )}
+                      <span className="admin-badge danger" style={{ backgroundColor: '#fee2e2', color: '#b91c1c' }}>TRASH</span>
                     </td>
-                    <td data-label="Published">
-                      {magazine.publishedAt 
-                        ? new Date(magazine.publishedAt).toLocaleDateString()
-                        : '-'}
+                    <td data-label="Deleted Date">
+                      {/* @ts-ignore */}
+                      {magazine.deletedAt ? new Date(magazine.deletedAt).toLocaleDateString() : 'Unknown'}
+                    </td>
+                    <td data-label="Deleted By">
+                      {/* @ts-ignore */}
+                      {magazine.deletedBy ? "Admin" : "System"}
                     </td>
                     <td data-label="Actions" className="actions-cell">
                       <div className="admin-row-actions" style={{ justifyContent: 'flex-end' }}>
-                        <Link to={`/magazines/${magazine.slug}`} target="_blank" className="admin-icon-btn" title="View Public">
-                          <Eye size={18} />
-                        </Link>
-                        <Link 
-                          to={`/admin/magazines/edit/${magazine.id}`} 
-                          state={{ magazine }}
+                        <button 
                           className="admin-icon-btn" 
-                          title="Edit Magazine"
+                          title="Restore"
+                          onClick={() => handleRestore(magazine.id)}
                         >
-                          <Edit2 size={18} />
-                        </Link>
+                          <RotateCcw size={18} />
+                        </button>
                         <button 
                           className="admin-icon-btn danger" 
-                          title="Trash"
+                          title="Permanent Delete"
                           onClick={() => {
                             setMagazineToDelete(magazine);
                             setDeleteModalOpen(true);
@@ -311,9 +314,11 @@ export default function Magazines() {
         <div className="admin-bulk-actions-bar">
           <span>{selectedIds.length} magazine{selectedIds.length > 1 ? 's' : ''} selected</span>
           <div className="admin-bulk-actions-buttons">
-            <button className="admin-btn admin-btn-danger" onClick={handleBulkTrash} disabled={isBulkTrashing}>
-              {isBulkTrashing ? <Loader2 size={16} className="lucide-spin" /> : <Trash2 size={16} />}
-              Move to Trash
+            <button className="admin-btn admin-btn-outline" onClick={handleBulkRestore} disabled={isBulking}>
+              <RotateCcw size={16} /> Restore
+            </button>
+            <button className="admin-btn admin-btn-danger" onClick={handleBulkDelete} disabled={isBulking}>
+              <Trash2 size={16} /> Permanently Delete
             </button>
           </div>
         </div>
@@ -323,10 +328,9 @@ export default function Magazines() {
       {deleteModalOpen && magazineToDelete && (
         <div className="admin-modal-overlay">
           <div className="admin-modal-content">
-            <h3 className="admin-modal-title">Move to Trash?</h3>
+            <h3 className="admin-modal-title" style={{ color: '#ef4444' }}>Permanent Delete</h3>
             <p className="admin-modal-body">
-              Are you sure you want to move <strong>"{magazineToDelete.title}"</strong> to the Trash? 
-              It will no longer be visible to the public, but you can restore it later.
+              This action cannot be undone. Are you sure you want to permanently delete <strong>"{magazineToDelete.title}"</strong>? 
             </p>
             <div className="admin-modal-actions">
               <button 
@@ -341,17 +345,16 @@ export default function Magazines() {
               </button>
               <button 
                 className="admin-btn admin-btn-danger"
-                onClick={handleDeleteConfirm}
+                onClick={handlePermanentDeleteConfirm}
                 disabled={isDeleting}
               >
-                {isDeleting ? "Moving..." : "Move to Trash"}
+                {isDeleting ? "Deleting..." : "Yes, Delete Permanently"}
               </button>
             </div>
           </div>
         </div>
       )}
       
-      {/* Ensure the spin class is available */}
       <style>{`
         .lucide-spin {
           animation: lucide-spin 2s linear infinite;

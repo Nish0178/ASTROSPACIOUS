@@ -36,7 +36,9 @@ export const magazineService = {
     const { search, status, featured, category, volume, issueNumber, tags } = filters;
     const { page, limit, sort } = pagination;
 
-    const where: Prisma.MagazineWhereInput = {};
+    const where: Prisma.MagazineWhereInput = {
+      isDeleted: false
+    };
 
     if (status) where.status = status;
     if (featured !== undefined && featured !== null) where.featured = featured;
@@ -79,6 +81,48 @@ export const magazineService = {
     };
   },
 
+  async findTrashMagazines(filters: any, pagination: any) {
+    const { search, sort } = filters;
+    const { page, limit } = pagination;
+
+    const where: Prisma.MagazineWhereInput = {
+      isDeleted: true
+    };
+
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: "insensitive" } },
+        { slug: { contains: search, mode: "insensitive" } }
+      ];
+    }
+
+    const orderBy: Prisma.MagazineOrderByWithRelationInput = {
+      deletedAt: sort === "Oldest" ? "asc" : "desc"
+    };
+
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      prisma.magazine.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit
+      }),
+      prisma.magazine.count({ where })
+    ]);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
+    };
+  },
+
   async getMagazineByIdOrSlug(identifier: string, requirePublished = false) {
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier);
     
@@ -86,6 +130,8 @@ export const magazineService = {
       ? { id: identifier }
       : { slug: identifier };
       
+    where.isDeleted = false;
+
     if (requirePublished) {
       where.status = "Published";
     }
@@ -146,10 +192,41 @@ export const magazineService = {
     return updated;
   },
 
-  async softDeleteMagazine(id: string) {
+  async softDeleteMagazine(id: string, userId?: string) {
+    const magazine = await prisma.magazine.findUnique({ where: { id } });
+    if (!magazine) throw new Error("Magazine not found");
+    
     return prisma.magazine.update({
       where: { id },
-      data: { status: "Archived" }
+      data: { 
+        isDeleted: true,
+        deletedAt: new Date(),
+        deletedBy: userId,
+        previousStatus: magazine.status,
+        status: "Archived"
+      }
+    });
+  },
+
+  async restoreMagazine(id: string, userId?: string) {
+    const magazine = await prisma.magazine.findUnique({ where: { id } });
+    if (!magazine) throw new Error("Magazine not found");
+    
+    return prisma.magazine.update({
+      where: { id },
+      data: { 
+        isDeleted: false,
+        restoredAt: new Date(),
+        restoredBy: userId,
+        status: magazine.previousStatus || "Draft",
+        previousStatus: null
+      }
+    });
+  },
+
+  async hardDeleteMagazine(id: string) {
+    return prisma.magazine.delete({
+      where: { id }
     });
   }
 };

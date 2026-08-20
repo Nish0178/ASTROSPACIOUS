@@ -35,9 +35,16 @@ router.post("/articles-bulk/delete", adminArticleController.bulkHardDeleteArticl
 
 // Magazines CMS
 router.get("/magazines", adminMagazineController.getMagazines);
+router.get("/magazines/trash", adminMagazineController.getTrashMagazines);
 router.post("/magazines", adminMagazineController.createMagazine);
 router.patch("/magazines/:id", adminMagazineController.updateMagazine);
 router.delete("/magazines/:id", adminMagazineController.deleteMagazine);
+router.patch("/magazines/:id/restore", adminMagazineController.restoreMagazine);
+router.delete("/magazines/:id/permanent", adminMagazineController.hardDeleteMagazine);
+
+router.post("/magazines-bulk/trash", adminMagazineController.bulkTrashMagazines);
+router.post("/magazines-bulk/restore", adminMagazineController.bulkRestoreMagazines);
+router.post("/magazines-bulk/delete", adminMagazineController.bulkHardDeleteMagazines);
 
 // Newsletter Management
 import { adminNewsletterController } from "../controllers/adminNewsletterController";
