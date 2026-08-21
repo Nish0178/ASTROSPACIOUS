@@ -38,6 +38,7 @@ export class CloudinaryStorageProvider implements StorageProvider {
           folder: folder || "general",
           public_id: isPdf ? fileName : publicId,
           resource_type: resourceType,
+          type: isPdf ? "authenticated" : "upload",
         },
         (error, result) => {
           if (error) {
@@ -52,10 +53,21 @@ export class CloudinaryStorageProvider implements StorageProvider {
             return reject(new Error("Cloudinary upload returned no result"));
           }
 
+          let finalPublicUrl = result.secure_url;
+          if (isPdf) {
+            finalPublicUrl = cloudinary.url(result.public_id, {
+              resource_type: "raw",
+              type: "authenticated",
+              secure: true,
+              sign_url: true,
+              version: result.version
+            });
+          }
+
           resolve({
             fileName: `${publicId}${path.extname(file.originalName)}`,
             storagePath: result.public_id,
-            publicUrl: result.secure_url
+            publicUrl: finalPublicUrl
           });
         }
       );
