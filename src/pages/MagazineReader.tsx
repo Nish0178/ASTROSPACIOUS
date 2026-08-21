@@ -17,12 +17,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-const PDFPage = React.forwardRef(({ pageNumber, scale }: any, ref: any) => {
+const PDFPage = React.forwardRef(({ pageNumber, height }: any, ref: any) => {
   return (
-    <div ref={ref} className="page-wrapper" style={{ backgroundColor: 'white', overflow: 'hidden', height: '100%', width: '100%' }}>
+    <div ref={ref} className="page-wrapper" style={{ backgroundColor: 'white', overflow: 'hidden', height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Page 
         pageNumber={pageNumber} 
-        scale={scale} 
+        height={height}
         renderTextLayer={false} 
         renderAnnotationLayer={false} 
         className="pdf-page-flip"
@@ -42,8 +42,11 @@ export default function MagazineReader() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const readerRef = useRef<HTMLDivElement>(null);
   const flipBookRef = useRef<any>(null);
+  const workspaceRef = useRef<HTMLDivElement>(null);
   
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [workspaceSize, setWorkspaceSize] = useState({ width: 0, height: 0 });
+  const [pdfPageSize, setPdfPageSize] = useState<{width: number, height: number} | null>(null);
 
   useEffect(() => {
     const fetchMagazine = async () => {
@@ -69,8 +72,29 @@ export default function MagazineReader() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
+  useEffect(() => {
+    if (!workspaceRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setWorkspaceSize({
+          width: entry.contentRect.width,
+          height: entry.contentRect.height
+        });
+      }
+    });
+    observer.observe(workspaceRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const onDocumentLoadSuccess = async (pdf: any) => {
+    setNumPages(pdf.numPages);
+    try {
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: 1 });
+      setPdfPageSize({ width: viewport.width, height: viewport.height });
+    } catch (e) {
+      console.error("Failed to get page size", e);
+    }
   };
 
   const goToPrevPage = () => {
@@ -123,6 +147,22 @@ export default function MagazineReader() {
     </div>
   );
 
+  const availableWidth = Math.max(0, workspaceSize.width - 120); // 60px padding for arrows on each side
+  const availableHeight = Math.max(0, workspaceSize.height - 40); // 20px padding top/bottom
+
+  let flipbookPageWidth = 400;
+  let flipbookPageHeight = 550;
+  
+  if (pdfPageSize && availableWidth > 0 && availableHeight > 0) {
+    const targetWidth = isMobile ? availableWidth : availableWidth / 2;
+    const widthRatio = targetWidth / pdfPageSize.width;
+    const heightRatio = availableHeight / pdfPageSize.height;
+    const fitScale = Math.min(widthRatio, heightRatio);
+    
+    flipbookPageWidth = pdfPageSize.width * fitScale;
+    flipbookPageHeight = pdfPageSize.height * fitScale;
+  }
+
   return (
     <div className="magazine-reader-container" ref={readerRef}>
       {/* Top Toolbar */}
@@ -138,10 +178,14 @@ export default function MagazineReader() {
       </div>
 
       {/* Main Reader Area */}
-      <div className="reader-workspace flipbook-workspace">
-        <button className="nav-btn prev" onClick={goToPrevPage}>◀</button>
+      <div 
+        className="reader-workspace flipbook-workspace" 
+        ref={workspaceRef}
+        style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
+      >
+        <button className="nav-btn prev" onClick={goToPrevPage} style={{ zIndex: 10 }}>◀</button>
         
-        <div className="pdf-viewer-wrapper" style={{ transform: `scale(${scale})`, transition: 'transform 0.3s ease', transformOrigin: 'center center' }}>
+        <div className="pdf-viewer-wrapper" style={{ transform: `scale(${scale})`, transition: 'transform 0.3s ease', transformOrigin: 'center center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Document
             file={getMediaUrl(magazine.pdfUrl)}
             onLoadSuccess={onDocumentLoadSuccess}
@@ -149,15 +193,11 @@ export default function MagazineReader() {
             error={<div className="pdf-error">Failed to load PDF file.</div>}
             className="pdf-document"
           >
-            {numPages > 0 && (
+            {numPages > 0 && pdfPageSize && (
               <FlipBook
-                width={400}
-                height={550}
-                size="stretch"
-                minWidth={315}
-                maxWidth={1000}
-                minHeight={420}
-                maxHeight={1350}
+                width={flipbookPageWidth}
+                height={flipbookPageHeight}
+                size="fixed"
                 maxShadowOpacity={0.5}
                 showCover={true}
                 mobileScrollSupport={true}
@@ -169,7 +209,7 @@ export default function MagazineReader() {
                   <PDFPage 
                     key={`page_${index + 1}`} 
                     pageNumber={index + 1} 
-                    scale={1.2} // We keep internal scale fixed and scale the wrapper for zoom
+                    height={flipbookPageHeight}
                   />
                 ))}
               </FlipBook>
@@ -177,7 +217,7 @@ export default function MagazineReader() {
           </Document>
         </div>
 
-        <button className="nav-btn next" onClick={goToNextPage}>▶</button>
+        <button className="nav-btn next" onClick={goToNextPage} style={{ zIndex: 10 }}>▶</button>
       </div>
 
       {/* Bottom status */}
