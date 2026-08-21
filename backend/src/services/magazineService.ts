@@ -147,13 +147,19 @@ export const magazineService = {
       publishedAt = new Date();
     }
 
-    return prisma.magazine.create({
+    const created = await prisma.magazine.create({
       data: {
         ...data,
         slug,
         publishedAt
       }
     });
+
+    if (created.status === "Published") {
+      newsletterService.broadcastNewMagazine(created).catch(console.error);
+    }
+
+    return created;
   },
 
   async updateMagazine(id: string, data: any) {
