@@ -240,6 +240,10 @@
 }
 
 @media (max-width: 768px) {
+  .reader-toolbar {
+    padding: 0 10px;
+  }
+  
   .reader-title {
     display: none; /* Hide title on small screens */
   }

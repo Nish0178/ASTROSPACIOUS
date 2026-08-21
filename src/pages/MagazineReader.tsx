@@ -44,7 +44,8 @@ export default function MagazineReader() {
   const flipBookRef = useRef<any>(null);
   const workspaceRef = useRef<HTMLDivElement>(null);
   
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 1024);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [workspaceSize, setWorkspaceSize] = useState({ width: 0, height: 0 });
   const [pdfPageSize, setPdfPageSize] = useState<{width: number, height: number} | null>(null);
 
@@ -66,7 +67,8 @@ export default function MagazineReader() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth <= 1024);
+      setIsMobile(window.innerWidth <= 768);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -147,14 +149,15 @@ export default function MagazineReader() {
     </div>
   );
 
-  const availableWidth = Math.max(0, workspaceSize.width - 120); // 60px padding for arrows on each side
+  const paddingX = isMobile ? 100 : 140; // 50px per side on mobile, 70px per side on desktop
+  const availableWidth = Math.max(0, workspaceSize.width - paddingX); 
   const availableHeight = Math.max(0, workspaceSize.height - 40); // 20px padding top/bottom
 
   let flipbookPageWidth = 400;
   let flipbookPageHeight = 550;
   
   if (pdfPageSize && availableWidth > 0 && availableHeight > 0) {
-    const targetWidth = isMobile ? availableWidth : availableWidth / 2;
+    const targetWidth = isTablet ? availableWidth : availableWidth / 2;
     const widthRatio = targetWidth / pdfPageSize.width;
     const heightRatio = availableHeight / pdfPageSize.height;
     const fitScale = Math.min(widthRatio, heightRatio);
@@ -203,7 +206,7 @@ export default function MagazineReader() {
                 mobileScrollSupport={true}
                 className="flipbook-component"
                 ref={flipBookRef}
-                usePortrait={isMobile}
+                usePortrait={isTablet}
               >
                 {Array.from(new Array(numPages), (el, index) => (
                   <PDFPage 
