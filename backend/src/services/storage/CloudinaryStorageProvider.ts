@@ -60,6 +60,7 @@ export class CloudinaryStorageProvider implements StorageProvider {
               type: "authenticated",
               secure: true,
               sign_url: true,
+              flags: "attachment",
               version: result.version
             });
           }
