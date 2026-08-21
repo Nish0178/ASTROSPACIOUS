@@ -319,6 +319,11 @@ export default function MagazineEditor({ initialData, mode, onSave }: MagazineEd
                       if (pdfFile) setPdfFile(null); // Clear file tracking if they manually edit the URL
                     }}
                   />
+                  {pdfUrl && (pdfUrl.includes('localhost') || pdfUrl.includes('/uploads/pdfs')) && (
+                    <div style={{ color: '#eab308', fontSize: '13px', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '16px' }}>⚠️</span> This is a legacy local file URL. Please re-upload the PDF to migrate it to Cloudinary.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

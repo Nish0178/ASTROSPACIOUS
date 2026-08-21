@@ -36,15 +36,16 @@ export class CloudinaryStorageProvider implements StorageProvider {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           folder: folder || "general",
-          public_id: publicId,
+          public_id: isPdf ? fileName : publicId,
           resource_type: resourceType,
-          // Add the original extension to raw files so they are downloadable with correct ext
-          ...(isPdf ? { format: "pdf" } : {})
         },
         (error, result) => {
           if (error) {
-            console.error("Cloudinary upload error:", error);
-            return reject(error);
+            console.error("Cloudinary upload error:", {
+              message: error.message,
+              http_code: error.http_code,
+            });
+            return reject(new Error(error.message || "Failed to upload to Cloudinary"));
           }
           
           if (!result) {
