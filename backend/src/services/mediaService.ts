@@ -1,10 +1,10 @@
 import { prisma } from "./db";
 import { Prisma } from "@prisma/client";
-import { LocalStorageProvider } from "./storage/LocalStorageProvider";
+import { CloudinaryStorageProvider } from "./storage/CloudinaryStorageProvider";
 import { StorageProvider } from "./storage/StorageProvider";
 
 // Abstract the storage provider so it can be swapped later (e.g. to S3StorageProvider)
-const storageProvider: StorageProvider = new LocalStorageProvider();
+const storageProvider: StorageProvider = new CloudinaryStorageProvider();
 
 export const mediaService = {
 

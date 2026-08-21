@@ -76,11 +76,6 @@ const loadArticles = async () => {
     return publishedArticles.filter(a => a.featured);
   }, [publishedArticles]);
 
-  // Latest articles (unaffected by search)
-  const latestArticles = useMemo(() => {
-    // API already returns latest first based on sort order
-    return publishedArticles.slice(0, 6);
-  }, [publishedArticles]);
 
   // Filtering logic
   const filteredArticles = useMemo(() => {
@@ -122,6 +117,21 @@ const loadArticles = async () => {
     // "Latest" is default as mock data is chronological
     return sorted;
   }, [filteredArticles, sortOption]);
+
+  // Latest articles (Filtered to last 3 days for the Homepage Latest Articles section)
+  const latestArticles = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const cutoffDate = new Date(today);
+    cutoffDate.setDate(today.getDate() - 2);
+
+    return sortedArticles.filter(article => {
+      if (!article.publishedAt) return false;
+      const pubDate = new Date(article.publishedAt);
+      if (isNaN(pubDate.getTime())) return false;
+      return pubDate >= cutoffDate;
+    });
+  }, [sortedArticles]);
 
   if (loading) {
   return (
@@ -288,7 +298,7 @@ if (error) {
         />
       ) : (
         <ArticlesGrid 
-          articles={sortedArticles} 
+          articles={latestArticles} 
           title="Latest Articles" 
           subtitle="Discover our newest articles covering astronomy, space exploration, technology, cosmology, research, and scientific discoveries." 
         />
