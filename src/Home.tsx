@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { articleApi, PublicArticle } from "./services/api/articleApi";
+import { ArticleCard } from "./components/LatestArticles/ArticleCard";
 
 import "./css/Home.css";
 import "./css/base.css";
@@ -15,6 +17,42 @@ const Home = () => {
   const [scrollY, setScrollY] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  const [latestArticles, setLatestArticles] = useState<PublicArticle[]>([]);
+  const [loadingArticles, setLoadingArticles] = useState(true);
+
+  useEffect(() => {
+    const fetchLatestArticles = async () => {
+      try {
+        setLoadingArticles(true);
+        const articles = await articleApi.getArticles();
+        
+        const now = new Date();
+        const cutoffDate = new Date(now);
+        cutoffDate.setDate(now.getDate() - 3);
+
+        const filtered = articles.filter(article => {
+          const isPublished = !article.status || String(article.status).toLowerCase() === 'published';
+          const isDeleted = article.isDeleted === true;
+          if (!isPublished || isDeleted) return false;
+
+          if (!article.publishedAt) return false;
+          const pubDate = new Date(article.publishedAt);
+          if (isNaN(pubDate.getTime())) return false;
+          return pubDate >= cutoffDate;
+        });
+
+        filtered.sort((a, b) => new Date(b.publishedAt!).getTime() - new Date(a.publishedAt!).getTime());
+
+        setLatestArticles(filtered);
+      } catch (err) {
+        console.error("Failed to fetch latest articles", err);
+      } finally {
+        setLoadingArticles(false);
+      }
+    };
+    fetchLatestArticles();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -256,6 +294,30 @@ const Home = () => {
               <p style={{ color: '#94a3b8', fontSize: '16px', lineHeight: '1.6' }}>Making scientific knowledge understandable and accessible.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Latest Articles - Last 3 Days */}
+      <section className="showcaseSection" style={{ paddingBottom: '80px', fontFamily: '"Times New Roman", Times, serif' }}>
+        <div className="contentWrapper" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <h2 className="sectionTitle gradient-text centered" style={{ fontSize: '36px', marginBottom: '8px' }}>Latest Articles</h2>
+            <p style={{ color: '#94a3b8', fontSize: '18px' }}>Published in the last 3 days</p>
+          </div>
+          
+          {loadingArticles ? (
+            <div style={{ textAlign: 'center', color: '#cbd5e1', fontSize: '18px' }}>Loading articles...</div>
+          ) : latestArticles.length > 0 ? (
+            <div className="latest-articles-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '32px' }}>
+              {latestArticles.map((article, index) => (
+                <ArticleCard key={article.id} article={article} index={index} />
+              ))}
+            </div>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px', background: 'rgba(15, 23, 42, 0.4)', borderRadius: '16px', border: '1px dashed rgba(255, 255, 255, 0.1)' }}>
+              <p style={{ color: '#cbd5e1', fontSize: '18px', margin: 0 }}>No new articles in the last 3 days.</p>
+            </div>
+          )}
         </div>
       </section>
 
