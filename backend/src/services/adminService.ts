@@ -1,23 +1,38 @@
+import { prisma } from './db';
+
 export const adminService = {
-  getDashboardStats() {
+  async getDashboardStats() {
+    const totalArticles = await prisma.article.count({ where: { isDeleted: false } });
+    const publishedArticles = await prisma.article.count({ where: { status: 'Published', isDeleted: false } });
+    const draftArticles = await prisma.article.count({ where: { status: 'Draft', isDeleted: false } });
+    const articlesInTrash = await prisma.article.count({ where: { isDeleted: true } });
+    const totalMagazines = await prisma.magazine.count({ where: { isDeleted: false } });
+    const totalSubscribers = await prisma.newsletterSubscriber.count(); // verified or not, count all for now to match old behavior
+    const totalMessages = await prisma.contactMessage.count();
+
     return {
-      totalArticles: 142,
-      totalMagazines: 12,
-      totalSubscribers: 4059,
-      totalMessages: 38,
-      publishedArticles: 130,
-      draftArticles: 12,
-      articlesInTrash: 5
+      totalArticles,
+      totalMagazines,
+      totalSubscribers,
+      totalMessages,
+      publishedArticles,
+      draftArticles,
+      articlesInTrash
     };
   },
 
-  getAnalytics() {
+  async getAnalytics() {
+    const articles = await prisma.article.count({ where: { isDeleted: false } });
+    const magazines = await prisma.magazine.count({ where: { isDeleted: false } });
+    const subscribers = await prisma.newsletterSubscriber.count();
+    const contactMessages = await prisma.contactMessage.count();
+    
     return {
-      articles: 142,
-      magazines: 12,
-      subscribers: 4059,
-      contactMessages: 38,
-      views: 120500
+      articles,
+      magazines,
+      subscribers,
+      contactMessages,
+      views: 120500 // Not tracked in DB currently, keep mock
     };
   },
 

@@ -3,9 +3,9 @@ import { adminService } from "../services/adminService";
 import { settingsSchema } from "../validators/adminValidator";
 
 export const adminController = {
-  getDashboard(req: Request, res: Response, next: NextFunction) {
+  async getDashboard(req: Request, res: Response, next: NextFunction) {
     try {
-      const stats = adminService.getDashboardStats();
+      const stats = await adminService.getDashboardStats();
       res.status(200).json({
         success: true,
         data: stats
@@ -60,9 +60,9 @@ export const adminController = {
     }
   },
 
-  getAnalytics(req: Request, res: Response, next: NextFunction) {
+  async getAnalytics(req: Request, res: Response, next: NextFunction) {
     try {
-      const analytics = adminService.getAnalytics();
+      const analytics = await adminService.getAnalytics();
       res.status(200).json({
         success: true,
         data: analytics

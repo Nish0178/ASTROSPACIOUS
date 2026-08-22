@@ -32,7 +32,7 @@ export default function Dashboard() {
           
           const recent = articlesArray.filter((article: AdminArticle) => {
             const publishDate = article.publishedAt ? new Date(article.publishedAt) : new Date(article.createdAt);
-            return publishDate >= seventyTwoHoursAgo;
+            return publishDate >= seventyTwoHoursAgo && article.status === 'Published';
           });
           
           // Sort by newest first
