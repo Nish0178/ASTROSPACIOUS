@@ -1,12 +1,10 @@
       body ,html{
      }      
       
-      /* Base Styles */
       .container {
         min-height: 100vh;
         min-width: 100vw;
         position: relative;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
       .backgroundCanvas {

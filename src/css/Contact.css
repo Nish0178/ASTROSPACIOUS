@@ -2,7 +2,6 @@
   min-height: 100vh;
   background: linear-gradient(180deg,#06131F 0%,#081B29 50%,#09111B 100%);
   color: #FFFFFF;
-  font-family: 'Inter', sans-serif;
   padding: 60px 20px;
 }
 
@@ -154,7 +153,6 @@
   align-items: center;
   background: linear-gradient(180deg,#06131F 0%,#081B29 100%);
   color: #fff;
-  font-family: 'Inter', sans-serif;
 }
 
 .contact-success-content {

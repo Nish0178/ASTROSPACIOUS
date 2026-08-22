@@ -28,7 +28,6 @@ export default function ThankYou() {
         "linear-gradient(180deg,#06131F 0%,#081B29 50%,#09111B 100%)",
       color: "#FFFFFF",
       padding: "20px",
-      fontFamily: "'Inter', sans-serif",
     },
 
     card: {

@@ -4,7 +4,6 @@
     min-height: 100vh;
     background: #0b0f19;
     color: #e2e8f0;
-    font-family: 'Inter', sans-serif;
     padding-bottom: 80px;
 }
 
@@ -288,7 +287,6 @@
 }
 
 .article-body code {
-    font-family: 'Fira Code', monospace;
     font-size: 0.95rem;
     color: #a5b4fc;
 }
